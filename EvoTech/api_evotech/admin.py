@@ -36,7 +36,7 @@ class VilleAdmin(admin.ModelAdmin):
 class LieuAdmin(admin.ModelAdmin):
     list = ('idLieu', 'nomLieu', 'descripLieu', 'exigence', 'faitHisto', 'produitArtis',
             'expressCourantes', 'longitude', 'latitude', 'H_ouverture', 'H_fermeture', 'climat','region',
-             'adminRegion' )
+             'adminRegion', 'id_event' )
 
     admin.site.register(Lieu)
 
@@ -55,7 +55,7 @@ class EvenementAdmin(admin.ModelAdmin):
 
     admin.site.register(Evenement)
 
-class LocalEventAdmin(admin.ModelAdmin):
+"""class LocalEventAdmin(admin.ModelAdmin):
     list = ('id_localEvent', 'id_event', 'id_lieu')
 
-    admin.site.register(LocalEvent)
+    admin.site.register(LocalEvent)"""
