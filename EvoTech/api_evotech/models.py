@@ -38,14 +38,14 @@ class User(models.Model):
 class Region(models.Model):
    numRegion = models.AutoField(primary_key=True)
    nomRegion = models.CharField(max_length=100)
-   adminRegion = models.ForeignKey(User, on_delete=models.CASCADE,null=True)
+   adminRegion = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
    def __str__(self) -> str:
         return (self.nomRegion)
 
 class Commune(models.Model):
    idComm = models.AutoField(primary_key=True)
    nomComm = models.CharField(max_length=100, default="")
-   regionC = models.ForeignKey(Region, on_delete=models.CASCADE,null=False)
+   regionC = models.ForeignKey(Region, on_delete=models.CASCADE, null=False)
    def __str__(self) -> str:
         return (self.nomComm)
    
@@ -77,10 +77,10 @@ class Lieu(models.Model):
     latitude = models.FloatField()
     H_ouverture = models.TimeField()
     H_fermeture = models.TimeField()
-    climat = models.ForeignKey(Meteo, on_delete=models.CASCADE,null=True)
-    region = models.ForeignKey(Region, on_delete=models.CASCADE,null=False)
-    adminRegion = models.ForeignKey(User, on_delete=models.CASCADE,null=True)
-    id_event = models.ManyToManyField(Evenement,null=True)
+    climat = models.ForeignKey(Meteo, on_delete=models.CASCADE, null=True, blank=True)
+    region = models.ForeignKey(Region, on_delete=models.CASCADE, null=False)
+    adminRegion = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
+    id_event = models.ManyToManyField(Evenement, null=True, blank=True)
     def __str__(self) -> str:
         return self.nomLieu   
     
