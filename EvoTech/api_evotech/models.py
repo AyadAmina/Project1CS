@@ -38,16 +38,16 @@ class User(models.Model):
 class Region(models.Model):
    numRegion = models.AutoField(primary_key=True)
    nomRegion = models.CharField(max_length=100)
-   adminRegion = models.ForeignKey(User, on_delete=models.CASCADE, default='')
+   adminRegion = models.ForeignKey(User, on_delete=models.CASCADE,null=True)
    def __str__(self) -> str:
         return (self.nomRegion)
 
-class Ville(models.Model):
-   idVille = models.AutoField(primary_key=True)
-   nomVille = models.CharField(max_length=100)
-   regionV = models.ForeignKey(Region, on_delete=models.CASCADE)
+class Commune(models.Model):
+   idComm = models.AutoField(primary_key=True)
+   nomComm = models.CharField(max_length=100, default="")
+   regionC = models.ForeignKey(Region, on_delete=models.CASCADE,null=False)
    def __str__(self) -> str:
-        return (self.nomVille)
+        return (self.nomComm)
    
 class MoyenTransport(models.Model):
    idTransport = models.AutoField(primary_key=True)
@@ -77,10 +77,10 @@ class Lieu(models.Model):
     latitude = models.FloatField()
     H_ouverture = models.TimeField()
     H_fermeture = models.TimeField()
-    climat = models.ForeignKey(Meteo, on_delete=models.CASCADE, default='')
-    region = models.ForeignKey(Region, on_delete=models.CASCADE, default='')
-    adminRegion = models.ForeignKey(User, on_delete=models.CASCADE, default='')
-    id_event = models.ManyToManyField(Evenement, default='')
+    climat = models.ForeignKey(Meteo, on_delete=models.CASCADE,null=True)
+    region = models.ForeignKey(Region, on_delete=models.CASCADE,null=False)
+    adminRegion = models.ForeignKey(User, on_delete=models.CASCADE,null=True)
+    id_event = models.ManyToManyField(Evenement,null=True)
     def __str__(self) -> str:
         return self.nomLieu   
     
