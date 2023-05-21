@@ -30,7 +30,7 @@ class User(models.Model):
    prenomUser = models.CharField(max_length=100)
    username = models.CharField(max_length=100)
    motdepasse = models.CharField(max_length=100)
-   profile = models.CharField(max_length=100)
+   profile = models.CharField(max_length=100)#capable ytbdl ça dépend la fonctionnalitée kifch ttkhdam
 
    def __str__(self) -> str:
         return (self.username)
@@ -93,7 +93,15 @@ class Transport(models.Model):
    H_depart = models.TimeField()
    def __str__(self) -> str:
         return (str(self.id_trans))
-   
+
+class Photo(models.Model):
+    photoId = models.AutoField(primary_key=True)
+    image = models.ImageField(upload_to='img', default = '')
+    lieuId= models.ForeignKey(Lieu, on_delete=models.CASCADE , null=True)
+
+    def __str__(self) -> str:
+          return (str(self.image))
+
    
 """class Appreciation(models.Model):
    idApprec = models.AutoField(primary_key=True)

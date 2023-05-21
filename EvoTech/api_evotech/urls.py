@@ -16,6 +16,7 @@ router.register(r'moyentransports', views.MoyenTransportViewSet, basename='moyen
 router.register(r'evenements', views.EvenementViewSet, basename='evenement')
 router.register(r'lieus', views.LieuViewSet, basename='lieu')
 router.register(r'transports', views.TransportViewSet, basename='transport')
+router.register(r'photos', views.PhotoViewSet, basename='photo')
 
 urlpatterns = [
     path('', views.index, name='index'),

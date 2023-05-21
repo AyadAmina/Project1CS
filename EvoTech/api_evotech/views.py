@@ -48,6 +48,9 @@ class TransportViewSet(viewsets.ModelViewSet):
     serializer_class = TransportSerializer
     queryset = Transport.objects.all()
 
+class PhotoViewSet(viewsets.ModelViewSet):
+    serializer_class = PhotoSerializer
+    queryset = Photo.objects.all()
 
 
 # template views

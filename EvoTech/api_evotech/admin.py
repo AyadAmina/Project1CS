@@ -55,6 +55,11 @@ class EvenementAdmin(admin.ModelAdmin):
 
     admin.site.register(Evenement)
 
+class PhotoAdmin(admin.ModelAdmin):
+    list = ('photoId', 'image', 'lieuId')
+
+    admin.site.register(Photo)
+
 """class LocalEventAdmin(admin.ModelAdmin):
     list = ('id_localEvent', 'id_event', 'id_lieu')
 
