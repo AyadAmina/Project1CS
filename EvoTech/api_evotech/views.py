@@ -21,29 +21,32 @@ def map(request):
     if request.method == 'POST':
         form = SearchForm(request.POST)
         if form.is_valid():
-            form.save()
-            return redirect('/')
+            address = form.save()
+            location = geocoder.osm(address)
+            lat = location.lat
+            lng = location.lng
+            country = location.country
+
+            if lat is None or lng is None:
+                address.delete()
+                return HttpResponse('Your address input is invalid')
+
+            # Create Map Object
+            m = folium.Map(location=[lat, lng], zoom_start=15)
+
+            folium.Marker([lat, lng], tooltip='Click for more',
+                          popup=country).add_to(m)
+            # Get HTML Representation of Map Object
+            m = m._repr_html_()
+            context = {
+                'm': m,
+                'form': form,
+            }
+            return render(request, 'about.html', context)
     else:
         form = SearchForm()
-    address = Search.objects.all().last()
-    location = geocoder.osm(address)
-    lat = location.lat
-    lng = location.lng
-    country = location.country
     
-    if lat == None or lng == None:
-        address.delete()
-        return HttpResponse('You address input is invalid')
-
-    # Create Map Object
-    m = folium.Map(location=[lat, lng], zoom_start=15)
-
-    folium.Marker([lat, lng], tooltip='Click for more',
-                  popup=country).add_to(m)
-    # Get HTML Representation of Map Object
-    m = m._repr_html_()
     context = {
-        'm': m,
         'form': form,
     }
     return render(request, 'about.html', context)
