@@ -41,7 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'api_evotech.apps.ApiEvotechConfig',
-     'channels',
+    'channels',
 ]
 
 MIDDLEWARE = [
@@ -83,6 +83,31 @@ DATABASES = {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
     }
+}
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'root': {
+        'handlers': ['console'],
+        'level': 'INFO',  # Set the desired logging level
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console'],
+            'level': 'INFO',  # Set the desired logging level
+            'propagate': True,
+        },
+        'channels': {
+            'handlers': ['console'],
+            'level': 'INFO',  # Set the desired logging level
+            'propagate': True,
+        },
+    },
 }
 
 
@@ -129,3 +154,8 @@ STATIC_ROOT = Path(BASE_DIR, 'staticfiles')
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels.layers.InMemoryChannelLayer',
+    },
+}
