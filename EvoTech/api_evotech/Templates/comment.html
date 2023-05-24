@@ -1,0 +1,74 @@
+<!-- event_detail.html -->
+
+<!-- Include necessary JavaScript libraries -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        var event_id = "{{ event.idEvent }}";
+        var wsPath = 'ws://' + window.location.host + '/ws/event/' + event_id + '/comments/';
+        var socket = new WebSocket(wsPath);
+
+        // When the WebSocket connection is open
+        socket.onopen = function (event) {
+            console.log('WebSocket connection opened.');
+        };
+
+        // When a new comment is received
+        socket.onmessage = function (event) {
+            var commentData = JSON.parse(event.data);
+            var comment = commentData.comment;
+            var author = commentData.author;
+
+            // Update the comment section in your HTML template
+            var commentSection = document.getElementById('comment-section');
+            var commentElement = document.createElement('div');
+            commentElement.innerHTML = '<strong>' + author + ': </strong>' + comment;
+            commentSection.appendChild(commentElement);
+        };
+
+        // When the WebSocket connection is closed
+        socket.onclose = function (event) {
+            console.log('WebSocket connection closed.');
+        };
+
+        // When the comment form is submitted
+        $('#comment-form').submit(function (event) {
+            event.preventDefault();
+            var comment = $('#comment-text').val();
+            var author = $('#comment-author').val();
+            var commentData = {
+                'comment': comment,
+                'author': author
+            };
+
+            // Send the comment data to the WebSocket
+            socket.send(JSON.stringify(commentData));
+
+            // Clear the comment form
+            $('#comment-text').val('');
+            $('#comment-author').val('');
+        });
+    });
+</script>
+
+<!-- Display event details -->
+<h1>{{ event.nomEvent }}</h1>
+<p>{{ event.descripEvent }}</p>
+<p>Date: {{ event.dateEvent }}</p>
+<p>Time: {{ event.H_debut }} - {{ event.H_fin }}</p>
+
+<!-- Comment section -->
+<div id="comment-section">
+    {% for comment in event.comments.all %}
+    <div>
+        <strong>{{ comment.author }}: </strong>{{ comment.text }}
+    </div>
+    {% endfor %}
+</div>
+
+<!-- Comment form -->
+<form id="comment-form">
+    <input type="text" id="comment-text" placeholder="Write a comment...">
+    <input type="text" id="comment-author" placeholder="Your name">
+    <button type="submit">Submit</button>
+</form>

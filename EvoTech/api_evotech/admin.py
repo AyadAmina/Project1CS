@@ -54,6 +54,10 @@ class EvenementAdmin(admin.ModelAdmin):
     list = ('idEvent', 'nomEvent', 'descripEvent', 'dateEvent', 'H_debut', 'H_fin')
 
     admin.site.register(Evenement)
+class CommentAdmin(admin.ModelAdmin):
+    list = ('evenement', 'author', 'text', 'created_at')
+
+    admin.site.register(Comment)
 
 """class LocalEventAdmin(admin.ModelAdmin):
     list = ('id_localEvent', 'id_event', 'id_lieu')
