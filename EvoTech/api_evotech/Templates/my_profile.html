@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Travelix</title>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="description" content="Travelix Project">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" type="text/css" href="styles/bootstrap4/bootstrap.min.css">
+<link href="plugins/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+<link rel="stylesheet" type="text/css" href="plugins/OwlCarousel2-2.2.1/owl.carousel.css">
+<link rel="stylesheet" type="text/css" href="plugins/OwlCarousel2-2.2.1/owl.theme.default.css">
+<link rel="stylesheet" type="text/css" href="plugins/OwlCarousel2-2.2.1/animate.css">
+<link rel="stylesheet" type="text/css" href="../../static/styles/profile_styles.css">
+<link rel="stylesheet" type="text/css" href="../../static/styles/profile_responsive.css">
+</head>
+
+<body>
+
+<div class="super_container">
+	
+	<!-- Header -->
+
+	<header class="header">
+
+		<!-- Top Bar -->
+
+		<div class="top_bar">			
+		</div>
+
+		<!-- Main Navigation -->
+
+		<nav class="main_nav">
+			<div class="container">
+				<div class="row">
+					<div class="col main_nav_col d-flex flex-row align-items-center justify-content-start">
+						<div class="logo_container">
+							<div class="logo"><a href="#"><img src="images/logo.png" alt="">travelix</a></div>
+						</div>
+						<div class="main_nav_container ml-auto">
+							<ul class="main_nav_list">
+								<li class="main_nav_item"><a href="index.html">Accueil</a></li>
+								<li class="main_nav_item"><a href="about.html">carte</a></li>
+								<li class="main_nav_item"><a href="offers.html">offers</a></li>
+								<li class="main_nav_item"><a href="blog.html">news</a></li>
+								<li class="main_nav_item"><a href="contact.html">contact</a></li>
+							</ul>
+						</div>
+
+
+						
+
+						
+
+
+
+						
+						<!-- the button of user in the nav bar: check CSS file line 563, 525-->
+						<div class=" header-profile ml-lg-0 ml-auto">
+							<!--the white user button-->
+							<a class="nav-link" href="#" role="button" data-toggle="dropdown">
+								<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+								width="17px" height="17px" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve">
+											<g>
+												<path class="mag_glass" fill="#FFFFFF" d="M304 128a80 80 0 1 0 -160 0 80 80 0 1 0 160 0zM96 128a128 128 0 1 1 256 0A128 128 0 1 1 96 
+												128zM49.3 464H398.7c-8.9-63.3-63.3-112-129-112H178.3c-65.7 0-120.1 48.7-129 112zM0 482.3C0 383.8 79.8 304 178.3 304h91.4C368.2 304 
+												448 383.8 448 482.3c0 16.4-13.3 29.7-29.7 29.7H29.7C13.3 512 0 498.7 0 482.3z"/>
+											</g>
+								</svg>
+							</a>
+							<!--the list inside the user button-->
+							<div class="dropdown-menu dropdown-menu-right">
+								<a href="#" class="dropdown-item">
+									<div class="profile-icon">
+										<svg    viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" 
+											clip-rule="evenodd" d="M16.5 7.063C16.5 10.258 14.57 13 12 13c-2.572 0-4.5-2.742-4.5-5.938C7.5 3.868 9.16 2 12 2s4.5 1.867
+											 4.5 5.063zM4.102 20.142C4.487 20.6 6.145 22 12 22c5.855 0 7.512-1.4 7.898-1.857a.416.416 0 0 0 .09-.317C19.9 18.944 19.106
+											  15 12 15s-7.9 3.944-7.989 4.826a.416.416 0 0 0 .091.317z" fill="#264653"/>
+										</svg>
+										<span class="ml-2">PROFILE </span>
+									</div>
+								</a>
+								<a href="" class="dropdown-item">
+									<div>
+										<svg  viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+											<g id="Communication / Mail">
+											<path id="Vector" d="M4 6L10.1076 10.6123L10.1097 10.614C10.7878 11.1113 11.1271 11.3601 11.4988 11.4562C11.8272 11.5412
+											 12.1725 11.5412 12.501 11.4562C12.8729 11.36 13.2132 11.1105 13.8926 10.6123C13.8926 10.6123 17.8101 7.60594 20 6M3 
+											 15.8002V8.2002C3 7.08009 3 6.51962 3.21799 6.0918C3.40973 5.71547 3.71547 5.40973 4.0918 5.21799C4.51962 5 5.08009 5 6.2002
+											  5H17.8002C18.9203 5 19.4796 5 19.9074 5.21799C20.2837 5.40973 20.5905 5.71547 20.7822 6.0918C21 6.5192 21 7.07899 21 
+											  8.19691V15.8036C21 16.9215 21 17.4805 20.7822 17.9079C20.5905 18.2842 20.2837 18.5905 19.9074 18.7822C19.48 19 18.921 19 
+											  17.8031 19H6.19691C5.07899 19 4.5192 19 4.0918 18.7822C3.71547 18.5905 3.40973 18.2842 3.21799 17.9079C3 17.4801 3 16.9203
+											   3 15.8002Z" stroke="#264653" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+											</g>
+										</svg>
+										<span class="ml-2">INBOX </span>
+									</div>
+									
+								</a>
+								<a href="" class="dropdown-item">
+									<div>
+										<svg  viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+											<path d="M12.9999 2C10.2385 2 7.99991 4.23858 7.99991 7C7.99991 7.55228 8.44762 8 8.99991 8C9.55219 8 9.99991 7.55228 9.99991
+											 7C9.99991 5.34315 11.3431 4 12.9999 4H16.9999C18.6568 4 19.9999 5.34315 19.9999 7V17C19.9999 18.6569 18.6568 20 16.9999 
+											 20H12.9999C11.3431 20 9.99991 18.6569 9.99991 17C9.99991 16.4477 9.55219 16 8.99991 16C8.44762 16 7.99991 16.4477 7.99991 17C7.99991 19.7614 10.2385 22 12.9999 22H16.9999C19.7613 22 21.9999 19.7614 21.9999 17V7C21.9999 4.23858 19.7613 2 16.9999 2H12.9999Z" fill="#264653"/>
+											<path d="M13.9999 11C14.5522 11 14.9999 11.4477 14.9999 12C14.9999 12.5523 14.5522 13 13.9999 13V11Z" fill="#264653"/>
+											<path d="M5.71783 11C5.80685 10.8902 5.89214 10.7837 5.97282 10.682C6.21831 10.3723 6.42615 10.1004 6.57291 9.90549C6.64636 9.80795 6.70468 9.72946 6.74495 9.67492L6.79152 9.61162L6.804 9.59454L6.80842 9.58848C6.80846 9.58842 6.80892 9.58778 5.99991 9L6.80842 9.58848C7.13304 9.14167 7.0345 8.51561 6.58769 8.19098C6.14091 7.86637 5.51558 7.9654 5.19094 8.41215L5.18812 8.41602L5.17788 8.43002L5.13612 8.48679C5.09918 8.53682 5.04456 8.61033 4.97516 8.7025C4.83623 8.88702 4.63874 9.14542 4.40567 9.43937C3.93443 10.0337 3.33759 10.7481 2.7928 11.2929L2.08569 12L2.7928 12.7071C3.33759 13.2519 3.93443 13.9663 4.40567 14.5606C4.63874 14.8546 4.83623 15.113 4.97516 15.2975C5.04456 15.3897 5.09918 15.4632 5.13612 15.5132L5.17788 15.57L5.18812 15.584L5.19045 15.5872C5.51509 16.0339 6.14091 16.1336 6.58769 15.809C7.0345 15.4844 7.13355 14.859 6.80892 14.4122L5.99991 15C6.80892 14.4122 6.80897 14.4123 6.80892 14.4122L6.804 14.4055L6.79152 14.3884L6.74495 14.3251C6.70468 14.2705 6.64636 14.1921 6.57291 14.0945C6.42615 13.8996 6.21831 13.6277 5.97282 13.318C5.89214 13.2163 5.80685 13.1098 5.71783 13H13.9999V11H5.71783Z" fill="#264653"/>
+											</svg>
+										<span class="ml-2">LOGOUT </span>
+									</div>
+									
+								</a>
+							</div>
+						</div>
+
+
+
+
+
+
+						
+
+						
+
+						<div class="hamburger">
+							<i class="fa fa-bars trans_200"></i>
+						</div>
+					</div>
+				</div>
+			</div>	
+		</nav>
+
+	</header>
+
+	<div class="menu trans_500">
+		<div class="menu_content d-flex flex-column align-items-center justify-content-center text-center">
+			<div class="menu_close_container"><div class="menu_close"></div></div>
+			<div class="logo menu_logo"><a href="#"><img src="images/logo.png" alt=""></a></div>
+			<ul>
+				<li class="menu_item"><a href="#">Accueil</a></li>
+				<li class="menu_item"><a href="about.html">carte</a></li>
+				<li class="menu_item"><a href="offers.html">offers</a></li>
+				<li class="menu_item"><a href="blog.html">news</a></li>
+				<li class="menu_item"><a href="contact.html">contact</a></li>
+			</ul>
+		</div>
+	</div>
+
+	<!-- Home -->
+<!--
+    <div class="home-profile">
+		<div class="container">
+			<div class="profile-title">
+				<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+					<path d="M19 9L19 17C19 18.8856 19 19.8284 18.4142 20.4142C17.8284 21 16.8856 21 15 21L14 21L10 21L9 21C7.11438 21 6.17157 21 5.58579 20.4142C5 19.8284 5 18.8856 5 17L5 9" stroke="#264653" stroke-width="2" stroke-linejoin="round"/>
+					<path d="M3 11L7.5 7L10.6713 4.18109C11.429 3.50752 12.571 3.50752 13.3287 4.18109L16.5 7L21 11" stroke="#264653" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+					<path d="M10 21V17C10 15.8954 10.8954 15 12 15V15C13.1046 15 14 15.8954 14 17V21" stroke="#264653" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+				</svg>
+				<h7> Acceuil  >  Mon profile</h7>
+				<br><br><br><br>
+			</div>
+			
+			<div class="profile-box">
+				<div class="row">
+					<table >
+						<tr>
+							<td class="profile-item" ><a href="#">Mon Profile</a></td></tr>
+						<tr><td class="profile-item"><a href="">Lieux Favoris</a></td></tr>
+						<tr><td class="profile-item"><a href="">Modifier Profile</a></td></tr>
+					</table>
+				</div>
+			</div>
+		</div>  
+    </div>
+-->
+
+
+
+
+
+<div class="page-content page-container" id="page-content">
+    <div class="padding">
+        <div class="row container d-flex justify-content-center">
+<div class="col-xl-6 col-md-12">
+                                                <div class="card user-card-full">
+                                                    <div class="card-wrapper">
+														<div class="row m-l-0 m-r-0">
+															<div class="col-sm-4 bg-c-lite-green user-profile">
+																<div class="card-block text-center text-white">
+																	<div class="m-b-25">
+																		<img src="https://img.icons8.com/bubbles/100/000000/user.png" class="img-radius" alt="User-Profile-Image">
+																	</div>
+																	<h6 class="f-w-600">Hembo Tingor</h6>
+																	<p>Web Designer</p>
+																	<i class=" mdi mdi-square-edit-outline feather icon-edit m-t-10 f-16"></i>
+																</div>
+															</div>
+															<div class="col-sm-8">
+																<div class="card-block">
+																	<h6 class="m-b-20 p-b-5 b-b-default f-w-600">Information</h6>
+																	<div class="row">
+																		<div class="col-sm-6">
+																			<p class="m-b-10 f-w-600">Email</p>
+																			<h6 class="text-muted f-w-400">rntng@gmail.com</h6>
+																		</div>
+																		<div class="col-sm-6">
+																			<p class="m-b-10 f-w-600">Phone</p>
+																			<h6 class="text-muted f-w-400">98979989898</h6>
+																		</div>
+																	</div>
+																	<h6 class="m-b-20 m-t-40 p-b-5 b-b-default f-w-600">Projects</h6>
+																	<div class="row">
+																		<div class="col-sm-6">
+																			<p class="m-b-10 f-w-600">Recent</p>
+																			<h6 class="text-muted f-w-400">Sam Disuja</h6>
+																		</div>
+																		<div class="col-sm-6">
+																			<p class="m-b-10 f-w-600">Most Viewed</p>
+																			<h6 class="text-muted f-w-400">Dinoter husainm</h6>
+																		</div>
+																	</div>
+																	<ul class="social-link list-unstyled m-t-40 m-b-10">
+																		<li><a href="#!" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="facebook" data-abc="true"><i class="mdi mdi-facebook feather icon-facebook facebook" aria-hidden="true"></i></a></li>
+																		<li><a href="#!" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="twitter" data-abc="true"><i class="mdi mdi-twitter feather icon-twitter twitter" aria-hidden="true"></i></a></li>
+																		<li><a href="#!" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="instagram" data-abc="true"><i class="mdi mdi-instagram feather icon-instagram instagram" aria-hidden="true"></i></a></li>
+																	</ul>
+																</div>
+															</div>
+													</div> </div>
+                                                </div>
+                                            </div>
+                                             </div>
+                                                </div>
+                                            </div>
+
+
+
+
+
+    
+
+
+
+	<!-- Footer -->
+
+	<footer class="footer">
+		<div class="container">
+			<div class="row">
+
+				<!-- Footer Column -->
+				<div class="col-lg-3 footer_column">
+					<div class="footer_col">
+						<div class="footer_content footer_about">
+							<div class="logo_container footer_logo">
+								<div class="logo"><a href="#"><img src="images/logo.png" alt="">travelix</a></div>
+							</div>
+							<p class="footer_about_text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus quis vu lputate eros, iaculis consequat nisl. Nunc et suscipit urna. Integer eleme ntum orci eu vehicula pretium.</p>
+							<ul class="footer_social_list">
+								<li class="footer_social_item"><a href="#"><i class="fa fa-pinterest"></i></a></li>
+								<li class="footer_social_item"><a href="#"><i class="fa fa-facebook-f"></i></a></li>
+								<li class="footer_social_item"><a href="#"><i class="fa fa-twitter"></i></a></li>
+								<li class="footer_social_item"><a href="#"><i class="fa fa-dribbble"></i></a></li>
+								<li class="footer_social_item"><a href="#"><i class="fa fa-behance"></i></a></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+
+				<!-- Footer Column -->
+				<div class="col-lg-3 footer_column">
+					<div class="footer_col">
+						<div class="footer_title">blog posts</div>
+						<div class="footer_content footer_blog">
+							
+							<!-- Footer blog item -->
+							<div class="footer_blog_item clearfix">
+								<div class="footer_blog_image"><img src="images/footer_blog_1.jpg" alt="https://unsplash.com/@avidenov"></div>
+								<div class="footer_blog_content">
+									<div class="footer_blog_title"><a href="blog.html">Travel with us this year</a></div>
+									<div class="footer_blog_date">Nov 29, 2017</div>
+								</div>
+							</div>
+							
+							<!-- Footer blog item -->
+							<div class="footer_blog_item clearfix">
+								<div class="footer_blog_image"><img src="images/footer_blog_2.jpg" alt="https://unsplash.com/@deannaritchie"></div>
+								<div class="footer_blog_content">
+									<div class="footer_blog_title"><a href="blog.html">New destinations for you</a></div>
+									<div class="footer_blog_date">Nov 29, 2017</div>
+								</div>
+							</div>
+
+							<!-- Footer blog item -->
+							<div class="footer_blog_item clearfix">
+								<div class="footer_blog_image"><img src="images/footer_blog_3.jpg" alt="https://unsplash.com/@bergeryap87"></div>
+								<div class="footer_blog_content">
+									<div class="footer_blog_title"><a href="blog.html">Travel with us this year</a></div>
+									<div class="footer_blog_date">Nov 29, 2017</div>
+								</div>
+							</div>
+
+						</div>
+					</div>
+				</div>
+
+				<!-- Footer Column -->
+				<div class="col-lg-3 footer_column">
+					<div class="footer_col">
+						<div class="footer_title">tags</div>
+						<div class="footer_content footer_tags">
+							<ul class="tags_list clearfix">
+								<li class="tag_item"><a href="#">design</a></li>
+								<li class="tag_item"><a href="#">fashion</a></li>
+								<li class="tag_item"><a href="#">music</a></li>
+								<li class="tag_item"><a href="#">video</a></li>
+								<li class="tag_item"><a href="#">party</a></li>
+								<li class="tag_item"><a href="#">photography</a></li>
+								<li class="tag_item"><a href="#">adventure</a></li>
+								<li class="tag_item"><a href="#">travel</a></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+
+				<!-- Footer Column -->
+				<div class="col-lg-3 footer_column">
+					<div class="footer_col">
+						<div class="footer_title">contact info</div>
+						<div class="footer_content footer_contact">
+							<ul class="contact_info_list">
+								<li class="contact_info_item d-flex flex-row">
+									<div><div class="contact_info_icon"><img src="images/placeholder.svg" alt=""></div></div>
+									<div class="contact_info_text">4127 Raoul Wallenber 45b-c Gibraltar</div>
+								</li>
+								<li class="contact_info_item d-flex flex-row">
+									<div><div class="contact_info_icon"><img src="images/phone-call.svg" alt=""></div></div>
+									<div class="contact_info_text">2556-808-8613</div>
+								</li>
+								<li class="contact_info_item d-flex flex-row">
+									<div><div class="contact_info_icon"><img src="images/message.svg" alt=""></div></div>
+									<div class="contact_info_text"><a href="mailto:contactme@gmail.com?Subject=Hello" target="_top">contactme@gmail.com</a></div>
+								</li>
+								<li class="contact_info_item d-flex flex-row">
+									<div><div class="contact_info_icon"><img src="images/planet-earth.svg" alt=""></div></div>
+									<div class="contact_info_text"><a href="https://colorlib.com">www.colorlib.com</a></div>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</footer>
+
+	<!-- Copyright -->
+
+	<div class="copyright">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-3 order-lg-1 order-2  ">
+					<div class="copyright_content d-flex flex-row align-items-center">
+						<div><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
+<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></div>
+					</div>
+				</div>
+				<div class="col-lg-9 order-lg-2 order-1">
+					<div class="footer_nav_container d-flex flex-row align-items-center justify-content-lg-end">
+						<div class="footer_nav">
+							<ul class="footer_nav_list">
+								<li class="footer_nav_item"><a href="#">Accueil</a></li>
+								<li class="footer_nav_item"><a href="about.html">carte</a></li>
+								<li class="footer_nav_item"><a href="offers.html">offers</a></li>
+								<li class="footer_nav_item"><a href="blog.html">news</a></li>
+								<li class="footer_nav_item"><a href="contact.html">contact</a></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</div>
+
+<script src="js/jquery-3.2.1.min.js"></script>
+<script src="styles/bootstrap4/popper.js"></script>
+<script src="styles/bootstrap4/bootstrap.min.js"></script>
+<script src="plugins/OwlCarousel2-2.2.1/owl.carousel.js"></script>
+<script src="plugins/easing/easing.js"></script>
+<script src="js/custom.js"></script>
+
+</body>
+
+</html>

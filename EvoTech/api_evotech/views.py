@@ -7,3 +7,7 @@ from django.template import loader
 def index(request):
   template = loader.get_template('index.html')
   return HttpResponse(template.render())
+
+def profile(request):
+  template = loader.get_template('my_profile.html')
+  return HttpResponse(template.render())
