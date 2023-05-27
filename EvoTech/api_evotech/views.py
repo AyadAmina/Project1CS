@@ -62,7 +62,44 @@ class CommentConsumer(AsyncWebsocketConsumer):
 def index(request):
     template = loader.get_template('index.html')
     return HttpResponse(template.render())
+def comm(request):
+ 
+    return render(request,'comm.html')
 
 def event_detail(request, event_id):
     event = Evenement.objects.get(pk=event_id)
-    return render(request, 'comment.html', {'event': event})
+    username = request.user.username
+    return render(request, 'comm.html', {'event': event,'name':username})
+
+
+    
+class AdminNotificationConsumer(AsyncWebsocketConsumer):
+    async def connect(self):
+        # Add the admin user's channel name to a group
+        admin_username = self.scope['user'].username
+        await self.channel_layer.group_add(
+            admin_username,
+            self.channel_name
+        )
+        await self.accept()
+
+    async def disconnect(self, close_code):
+        # Remove the admin user's channel name from the group
+        admin_username = self.scope['user'].username
+        await self.channel_layer.group_discard(
+            admin_username,
+            self.channel_name
+        )
+
+    async def admin_notification(self, event):
+        notification_id = event['notification_id']
+
+        # Mark the notification as read
+        notification = Notification.objects.get(id=notification_id)
+        notification.is_read = True
+        notification.save()
+
+        # Send the notification message to the WebSocket
+        await self.send(text_data=json.dumps({
+            'message': notification.message
+        }))

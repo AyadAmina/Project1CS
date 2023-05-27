@@ -12,7 +12,7 @@
         socket.onopen = function (event) {
             console.log('WebSocket connection opened.');
         };
-
+ 
         // When a new comment is received
         socket.onmessage = function (event) {
             var commentData = JSON.parse(event.data);

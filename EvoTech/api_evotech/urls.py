@@ -9,6 +9,7 @@ websocket_urlpatterns = [
 
 urlpatterns = [
     path('', views.index, name='index'),
+    path('comm/', views.comm, name='comm'),
     
     path('<int:event_id>/', views.event_detail, name='event_detail'),
 

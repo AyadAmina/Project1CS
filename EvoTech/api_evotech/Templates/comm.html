@@ -1,0 +1,177 @@
+{% load static %}
+<!DOCTYPE html>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        var event_id = "{{ event.idEvent }}";
+        var name="{{name}}"
+        var wsPath = 'ws://' + window.location.host + '/ws/event/' + event_id + '/comments/';
+        var socket = new WebSocket(wsPath);
+
+        // When the WebSocket connection is open
+        socket.onopen = function (event) {
+            console.log('WebSocket connection opened.');
+        };
+ 
+        // When a new comment is received
+        socket.onmessage = function (event) {
+            var commentData = JSON.parse(event.data);
+            var comment = commentData.comment;
+            var author = commentData.author;
+
+// Update the comment section in your HTML template
+
+var commentElement = document.createElement('div');
+commentElement.className = 'item';
+
+var shadowEffect = document.createElement('div');
+shadowEffect.className = 'shadow-effect';
+var commentText = document.createElement('p');
+commentText.textContent = comment;
+shadowEffect.appendChild(commentText);
+
+var testimonialName = document.createElement('div');
+testimonialName.className = 'testimonial-name';
+testimonialName.textContent = author;
+
+commentElement.appendChild(shadowEffect);
+commentElement.appendChild(testimonialName);
+
+// Append the new comment to the comment section
+$('#customers-testimonials').trigger('add.owl.carousel', [commentElement]).trigger('refresh.owl.carousel');
+
+        };
+
+        // When the WebSocket connection is closed
+        socket.onclose = function (event) {
+            console.log('WebSocket connection closed.');
+        };
+
+        // When the comment form is submitted
+        $('#contact_form').submit(function (event) {
+            event.preventDefault();
+            var comment = $('#contact_form_message').val();
+            var author = $('#comment-author').val();
+            var commentData = {
+                'comment': comment,
+                'author': name
+            };
+            console.log(commentData);
+            // Send the comment data to the WebSocket
+            socket.send(JSON.stringify(commentData));
+
+            // Clear the comment form
+            $('#contact_form_message').val('');
+            
+        });
+    });
+</script>
+
+
+<html lang="en">
+<head>
+    <!-- Favicon icon -->
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'images/favicon.png' %}">
+    <!-- Custom Stylesheet -->
+    <link href="{% static 'styles/style.css' %}" rel="stylesheet">
+
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.1.1/assets/owl.carousel.min.css" rel="stylesheet" />
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+<link rel="stylesheet" href="../../static/styles/comment.css">
+<link rel="stylesheet" type="text/css" href="../../static/styles/bootstrap4/bootstrap.min.css">
+<link href="plugins/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+<link rel="stylesheet" type="text/css" href="../../static/styles/contact_responsive.css">
+    <title>Document</title>
+</head>
+<body>
+    <h1>{{ event.nomEvent }}</h1>
+    <p>{{ event.descripEvent }}</p>
+    <p>Date: {{ event.dateEvent }}</p>
+    <p>Time: {{ event.H_debut }} - {{ event.H_fin }}</p>
+
+
+    <div class="container">
+    <h2 class="title">Commentaire</h2>
+
+    <!--Contact -->
+   <div class="container">
+   <!-- TESTIMONIALS -->
+<section class="testimonials">
+	<div class="container">
+
+      <div class="row">
+        <div class="col-sm-12">
+          <div id="customers-testimonials" class="owl-carousel">
+
+            <!--TESTIMONIAL 1 -->
+
+            {% for comment in event.comments.all %}
+            <div class="item">
+              <div class="shadow-effect">
+                <p>{{ comment.text }}.</p>
+              </div>
+              <div class="testimonial-name">{{ comment.author }}</div>
+            </div>
+            {% endfor %}
+
+
+          </div>
+        </div>
+      </div>
+      </div>
+    </section>
+    <!-- END OF TESTIMONIALS -->
+     <div class="contact_form_section">
+		<div class="container">
+			<div class="row">
+				<div class="col">
+					<!-- Contact Form -->
+					<div class="contact_form_container">
+                        <div class="contact_title" >Que pensez-vous ?</div>
+						<form action="#" id="contact_form" class="contact_form text-center">  
+							<textarea id="contact_form_message" class="text_field contact_form_message" name="message" rows="4" placeholder="Message" required="required" data-error="Please, write us a message."></textarea>
+							<button type="submit" id="form_submit_button" class="form_submit_button button trans_200">Ajouter <span></span><span></span><span></span></button>
+						</form>
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+</div> 
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.1.1/owl.carousel.min.js"></script>
+    <script>
+    jQuery(document).ready(function($) {
+        "use strict";
+        //  TESTIMONIALS CAROUSEL HOOK
+        $('#customers-testimonials').owlCarousel({
+            loop: true,
+            center: true,
+            items: 3,
+            margin: 0,
+            autoplay: true,
+            dots:true,
+            autoplayTimeout: 8500,
+            smartSpeed: 450,
+            responsive: {
+              0: {
+                items: 1
+              },
+              768: {
+                items: 2
+              },
+              1170: {
+                items: 3
+              }
+            }
+        });
+    });
+</script>
+</body>
+</html>
