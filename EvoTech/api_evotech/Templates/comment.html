@@ -9,16 +9,82 @@
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
 <link rel="stylesheet" href="../../static/styles/comment.css">
 <link rel="stylesheet" type="text/css" href="../../static/styles/bootstrap4/bootstrap.min.css">
-<link href="plugins/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+<link href="../../static/plugins/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 <link rel="stylesheet" type="text/css" href="../../static/styles/contact_responsive.css">
+<link rel="stylesheet" type="text/css" href="../../static/styles/main_styles.css">
+<style>
+  .ratesection{
+      display:flex;
+  justify-content: center; 
+  flex-wrap: wrap;
+  }
+.ratiing {
+  display: inline-block;
+}
+.ratiing input {
+  display: none;
+}
+.ratiing label {
+  float: right;
+  color:rgba(255, 255,255, 0.8);
+  margin-right: 25px;
+}
+.ratiing label:before {
+  content: "\2605";
+  font-size: 40px;
+}
+
+.ratiing input:checked ~ label {
+  color:#ef910a;
+}
+</style>
     <title>Document</title>
 </head>
 <body>
     <div class="container">
     <h2 class="title">Commentaire</h2>
 
-    <!--Contact -->
-   <div class="container">
+    <!--Stars -->
+    <div class="container ml-5">
+      <div class="rating ">
+        <i class="fa fa-star rating_1"></i>
+        <i class="fa fa-star "></i>
+        <i class="fa fa-star "></i>
+        <i class="fa fa-star "></i>
+        <i class="fa fa-star "></i>
+      </div>
+        <div class="rating ">
+          <i class="fa fa-star rating_1"></i>
+          <i class="fa fa-star rating_2"></i>
+          <i class="fa fa-star "></i>
+          <i class="fa fa-star "></i>
+          <i class="fa fa-star "></i>
+        </div>
+          <div class="rating ">
+            <i class="fa fa-star rating_1"></i>
+            <i class="fa fa-star rating_2"></i>
+            <i class="fa fa-star rating_3"></i>
+            <i class="fa fa-star "></i>
+           <i class="fa fa-star "></i>
+          </div>
+            <div class="rating ">
+              <i class="fa fa-star rating_1"></i>
+              <i class="fa fa-star rating_2"></i>
+              <i class="fa fa-star rating_3"></i>
+              <i class="fa fa-star rating_4"></i>
+              <i class="fa fa-star "></i>
+            </div>
+    <div class="rating ">
+      <i class="fa fa-star rating_1"></i>
+      <i class="fa fa-star rating_2"></i>
+      <i class="fa fa-star rating_3"></i>
+      <i class="fa fa-star rating_4"></i>
+      <i class="fa fa-star rating_5"></i>
+</div>
+</div>
+
+    <!-- End Stars -->
+  
    <!-- TESTIMONIALS -->
 <section class="testimonials">
 	<div class="container">
@@ -73,6 +139,21 @@
       </div>
     </section>
     <!-- END OF TESTIMONIALS -->
+    <h2>Rate us</h2>
+    <section class="ratesection">
+    <div class="ratiing">
+      <input type="radio" id="star5" name="ratiing" value="5">
+      <label for="star5"></label>
+      <input type="radio" id="star4" name="ratiing" value="4">
+      <label for="star4"></label>
+      <input type="radio" id="star3" name="ratiing" value="3">
+      <label for="star3"></label>
+      <input type="radio" id="star2" name="ratiing" value="2">
+      <label for="star2"></label>
+      <input type="radio" id="star1" name="ratiing" value="1">
+      <label for="star1"></label>
+    </div>
+  </section>
      <div class="contact_form_section">
 		<div class="container">
 			<div class="row">
@@ -121,5 +202,15 @@
         });
     });
 </script>
+<script>
+var ratingInputs = document.querySelectorAll('.ratiing input');
+  ratingInputs.forEach(function(input) {
+    input.addEventListener('change', function() {
+      // Perform any necessary action upon rating selection
+      var selectedRating = this.value;
+      console.log('Selected rating:', selectedRating);
+    });
+  });</script>
+
 </body>
 </html>

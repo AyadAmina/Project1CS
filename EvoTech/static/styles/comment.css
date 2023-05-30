@@ -71,7 +71,7 @@ display: inline-block;
 }
 .contact_form_section
 {
-	padding-top: 105px;
+	padding-top: 70px;
 }
 .contact_form_container {
      padding-bottom: 50px;
@@ -354,4 +354,42 @@ section
 {
     min-height: 400px;
     background: transparent;
+}
+
+/* Rating stars */
+.rating_1 {color: #ffeb8d;}
+.rating_2 {color: #fed46b;}
+.rating_3{color: #fbb53d;}
+.rating_4 {color: #fa9e1b;}
+.rating_5 {color: #ef910a;}
+
+.testimonials {
+    width: 100%;
+    padding-top: 70px !important;
+    padding-bottom: 70px !important;
+    background: #FFFFFF;
+}
+.ratesection{
+	display:flex;
+justify-content: center; 
+flex-wrap: wrap;
+}
+.ratiing {
+display: inline-block;
+}
+.ratiing input {
+display: none;
+}
+.ratiing label {
+float: right;
+color:rgba(255, 255,255, 0.8);
+margin-right: 25px;
+}
+.ratiing label:before {
+content: "\2605";
+font-size: 40px;
+}
+
+.ratiing input:checked ~ label {
+color:#ef910a;
 }
