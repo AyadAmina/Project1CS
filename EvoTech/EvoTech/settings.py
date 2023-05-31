@@ -57,11 +57,6 @@ MIDDLEWARE = [
 ]
 
 USE_I18N = True
-LANGUAGES = [
-    ('en', 'English'),
-    ('fr', 'French'),
-    # Add more languages as needed
-]
 
 
 ROOT_URLCONF = 'EvoTech.urls'
@@ -69,7 +64,7 @@ ROOT_URLCONF = 'EvoTech.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR, 'Templates'],
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -117,12 +112,20 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
-
+from django.utils.translation import gettext_lazy as _
 LANGUAGE_CODE = 'en-us'
-import os 
-LOCALE_PATHS = [
-    os.path.join(BASE_DIR, 'locale')
+LANGUAGES = [
+    ('en', _('English')),
+    ('fr', _('French')),
+    # Add more languages as needed
 ]
+
+import os
+
+LOCALE_PATHS = [
+    os.path.join(BASE_DIR, '../../../EvoTech'),
+]
+
 
 TIME_ZONE = 'UTC'
 

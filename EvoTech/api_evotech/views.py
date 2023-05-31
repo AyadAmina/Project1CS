@@ -5,10 +5,30 @@ from .models import Search, Lieu
 from .forms import SearchForm
 import folium
 import geocoder
+from django.urls import reverse
+from django.http import HttpResponseRedirect
+from django.utils.translation import gettext as _
+from django.utils.translation import get_language, activate, gettext
+
+
+  
+
 
 def index(request):
     template = loader.get_template('index.html')
     return HttpResponse(template.render())
+
+def contact(request):
+    language_code = request.GET.get('language')
+    if language_code:
+        activate(language_code)
+    else:
+        language_code = get_language()
+
+    context = {'language_code': language_code}
+    return render(request, 'contact.html', context)
+
+
 
 def map(request):
     form = SearchForm()
