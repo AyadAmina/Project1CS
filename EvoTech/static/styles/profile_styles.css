@@ -653,7 +653,7 @@ section
 4. Home
 *********************************/
 .home{
-	margin: 290px;
+	margin: 240px;
 	
 }
 .wrapper{
@@ -696,11 +696,11 @@ header .slider{
 	position: absolute;
 	height: 85%;
 	border-radius: inherit;
-	background: #2a9d8f;
+	background: #fa9e1b;
 	transition: all 0.3s ease;
 }
 #tab-1:checked ~ header .slider{
-	left: 3%;
+	left: 5.5%;
 	width: 150px;
 	transform: translateX(5%);
 }
@@ -710,7 +710,7 @@ header .slider{
 	transform: translateX(-50%);
 }
 #tab-3:checked ~ header .slider{
-	left: 92%;
+	left: 90.5%;
 	width: 100px;
 	transform: translateX(-105%);
 }
@@ -750,7 +750,7 @@ header .slider{
 
 }
 .pricing-details span{
-	font-size: 65px;
+	font-size: 40px;
 	font-weight: 600;
 	position: relative;
 	font-family: 'Noto Sans', sans-serif;
@@ -762,21 +762,9 @@ header .slider{
 	font-family: "Poppins", sans-serif;
 
 }
-.pricing-details span::before{
-	content: "$";
-	font-size: 20px;
-	left: -13px;
-	top: 17px;
-}
-.pricing-details span::after{
-	content: "/mon";
-	font-size: 13px;
-	right: -33px;
-	bottom: 17px;
-}
-.pricing-details p{
-	font-size: 18px;
-	margin-top: 5px;
+.pricing-details img{
+	width: 150px;
+	height: 150px;
 }
 .row .features li{
 	display: flex;
@@ -794,11 +782,19 @@ header .slider{
 	margin-left: 10px;
 	margin-bottom: 10px;
 }
-.wrapper button{
+.features li .type-profile{
+	font-size: 10px;
+	margin-top: 10px;
+	margin-bottom: -10px;
+	color: #929191;
+}
+
+.row .logout{
 	height: 55px;
-	
-	width: 100%;
-	margin-top: 20px;
+	width: 15%;
+	margin-top: 10px;
+
+	margin-left: 42.5%;
 	border: none;
 	outline: none;
 	cursor: pointer;
@@ -811,6 +807,56 @@ header .slider{
 .wrapper button:hover{
 	transform: scale(0.98);
 }
+.row .form{
+	margin-left: 5%;
+}
+.row .form .column{
+	display: flex;
+	column-gap: 15px;
+
+}
+.form .input-box {
+	width: 100%;
+	margin-top: 20px;
+  }
+  .input-box label {
+	color: #333;
+  }
+  .form :where(.input-box input, .select-box) {
+	position: relative;
+	height: 50px;
+	width: 70%;
+	outline: none;
+	font-size: 1rem;
+	color: #707070;
+	margin-top: 8px;
+	border: 1px solid #ddd;
+	border-radius: 6px;
+	padding: 0 15px;
+  }
+  .input-box input:focus {
+	box-shadow: 0 1px 0 rgba(0, 0, 0, 0.1);
+  }
+
+  .form button{
+	height: 55px;
+	width: 20%;
+	margin-top: 50px;
+	margin-bottom: 20px;
+	margin-left: 38%;
+	border: none;
+	outline: none;
+	cursor: pointer;
+	color: #fff;
+	font-size:18px ;
+	border-radius: 30px;
+	background:  linear-gradient(to right,  #2a9d8f, #fa9e1b);
+	transition: transform 0.3s ease;
+}
+.form button:hover{
+	transform: scale(0.98);
+}
+
 
 
 /**profile section**

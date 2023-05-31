@@ -55,6 +55,11 @@ class EvenementAdmin(admin.ModelAdmin):
 
     admin.site.register(Evenement)
 
+class FavorisAdmin(admin.ModelAdmin):
+    list = (' id_favoris', 'idUser', 'id_lieu')
+
+    admin.site.register(Favoris)
+
 """class LocalEventAdmin(admin.ModelAdmin):
     list = ('id_localEvent', 'id_event', 'id_lieu')
 

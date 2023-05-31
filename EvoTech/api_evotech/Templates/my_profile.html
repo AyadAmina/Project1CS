@@ -21,7 +21,7 @@
 
 <div class="super_container">
 	<video id="background-video" autoplay loop muted>
-        <source src="../../static/videos/Algiers By Drone - Skycam Algeria(720P_HD).mp4" type="video/mp4">
+        <source src="../../static/videos/Oran vue du ciel(720P_HD).mp4" type="video/mp4">
     </video>
 	<!-- Header -->
 
@@ -168,29 +168,56 @@
 			<div class="cards-area">
 				<div class="cards">
 					<div class="row row-1">
-						<div class="pricing-details">
-							<span >19</span>
-							<p>For beginner use</p>
+						<div class="pricing-details"> <!--MODIFICATIONS-->
+							<span >Mise à jour</span>
+							<p>Des informations</p>
 						</div>
-						<ul class="features">
-							<li><i class="fas fa-check"></i><span>100 GB Premium Bandwidth</span></li>
-							<li><i class="fas fa-check"></i><span>FREE 50+ Installation Scripts WordPress Supported</span></li>
-							<li><i class="fas fa-check"></i><span>One FREE Domain Registration .com and .np extensions only</span></li>
-							<li><i class="fas fa-check"></i><span>Unlimited Email Accounts & Databases</span></li>
-						</ul>
+						
+						<form action="{% url 'profile' id=1 %}" method="POST" class="form">
+							{% csrf_token %}
+							<div class="column">
+							  <div class="input-box">
+								<label>Nom</label>
+								<br>
+								<input type="text" name="nom" placeholder="Votre Nom" />
+							  </div>
+							  <div class="input-box">
+								<label>Prénom</label>
+								<br>
+								<input type="text" name="prenom" placeholder="Votre Prénom" />
+							  </div>
+							</div>
+							<div class="input-box middle">
+							  <label>Nom D'utilisateur</label>
+							  <br>
+							  <input type="text" name="nom_utilisateur" placeholder="Votre Nom D'utilisateur"/>
+							</div>
+							<button type="submit">CONFIRMER</button>
+						  </form>
+						  
+					
+					  
+					  
+					  
+					  
+					  
+					  
 						
 					</div>
 					<div class="row ">
 						<div class="pricing-details">
-							<span >99</span>
-							<p>For professional use</p>
+							<span >Mon Profile</span>
+							<br>
+							<img src="../../static/images/user image.png" alt="">
 						</div>
 						<ul class="features">
-							<li><i class="fas fa-check"></i><span>Unlimited Premium Bandwidth</span></li>
-							<li><i class="fas fa-check"></i><span>FREE 50+ Installation Scripts WordPress Supported</span></li>
-							<li><i class="fas fa-check"></i><span>One FREE Domain Registration .com and .np extensions only</span></li>
-							<li><i class="fas fa-check"></i><span>Unlimited Email Accounts & Databases</span></li>
+							
+								<li>{{ user.nomUser }} {{ user.prenomUser }}</li>
+								<li><span>{{ user.username }}</span></li>
+								<li><span class="type-profile">Bienvenue en Algérie cher {{ user.profile }}</span></li>
+							
 						</ul>
+						<button class="logout">LOGOUT</button>
 						
 					</div>
 					<div class="row ">
@@ -199,15 +226,46 @@
 							<p>For Team collaboration</p>
 						</div>
 						<ul class="features">
-							<li><i class="fas fa-check"></i><span>100 GB Premium Bandwidth</span></li>
-							<li><i class="fas fa-check"></i><span>FREE 50+ Installation Scripts WordPress Supported</span></li>
-							<li><i class="fas fa-check"></i><span>One FREE Domain Registration .com and .np extensions only</span></li>
-							<li><i class="fas fa-check"></i><span>Unlimited Email Accounts & Databases</span></li>
+							<!-- event -->
+							<div class="room">
+								{% for event in events %}
+								   <div class="col-lg-2">
+									   {% if event.images.all %}
+										   {% with first_image=event.images.first %}
+												<div class="room_image"><img src="{{first_image.image.url}}" alt="Photo"></div>
+										   {% endwith %} 
+										   {% else %}
+												  <div class="offers_image_background">
+												  </br>
+													  <span style="font-size: larger;"><i class="fas fa-image" style="color: black;"></i> Pas De photos</span>
+												 </div>
+									 
+									   {% endif %}    
+								   </div>
+								   <div class="col-lg-7">
+									 </br>
+									   <div class="room_content">
+										   <div class="room_title">{{event.nomEvent}}</div>
+										   <div class="room_text">{{event.id_lieu}}</div>
+										   
+									   </div>
+								   </div>
+								   <div class="col-lg-3 text-lg-right">
+									   <div class="room_button">
+										   <div class="button book_button trans_200"><a href="{% url 'EventDetail' event.nomEvent event.idEvent %}">À propos<span></span><span></span><span></span></a></div>
+									   </div>
+								   </div>
+								 
+								{% endfor %}
+								 
+							</div>
 						</ul>
 					</div>
 				</div>
 			  </div>
-			  <button>Choose plan</button>
+			  
+
+
 			</div>
 
 			</div>

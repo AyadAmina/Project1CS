@@ -38,7 +38,7 @@ class User(models.Model):
 class Region(models.Model):
    numRegion = models.AutoField(primary_key=True)
    nomRegion = models.CharField(max_length=100)
-   adminRegion = models.ForeignKey(User, on_delete=models.CASCADE, default='')
+   adminRegion = models.ForeignKey(User, on_delete=models.CASCADE)
    def __str__(self) -> str:
         return (self.nomRegion)
 
@@ -94,7 +94,15 @@ class Transport(models.Model):
    def __str__(self) -> str:
         return (str(self.id_trans))
    
-   
+#Relation de l'association entre Lieu et User
+class Favoris(models.Model):
+   id_favoris = models.AutoField(primary_key=True)
+   idUser = models.ForeignKey(User, on_delete=models.CASCADE)
+   id_lieu = models.ForeignKey(Lieu, on_delete=models.CASCADE)
+   def __str__(self) -> str:
+        return (str(self.id_favoris))
+     
+
 """class Appreciation(models.Model):
    idApprec = models.AutoField(primary_key=True)
    commentaire = models.CharField(max_length=100)
