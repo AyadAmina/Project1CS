@@ -55,15 +55,6 @@ class MoyenTransport(models.Model):
    def __str__(self) -> str:
         return (str(self.idTransport))
 
-class Evenement(models.Model):
-   idEvent = models.AutoField(primary_key=True)
-   nomEvent = models.CharField(max_length=100)
-   descripEvent = models.CharField(max_length=1000)
-   dateEvent = models.DateField()
-   H_debut = models.TimeField()
-   H_fin = models.TimeField()
-   def __str__(self) -> str:
-        return (str(self.idEvent))
    
 class Lieu(models.Model):
     idLieu = models.AutoField(primary_key=True)
@@ -77,14 +68,29 @@ class Lieu(models.Model):
     latitude = models.FloatField()
     H_ouverture = models.TimeField()
     H_fermeture = models.TimeField()
-    climat = models.ForeignKey(Meteo, on_delete=models.CASCADE, default='')
-    region = models.ForeignKey(Region, on_delete=models.CASCADE, default='')
-    adminRegion = models.ForeignKey(User, on_delete=models.CASCADE, default='')
-    id_event = models.ManyToManyField(Evenement, default='')
+    climat = models.ForeignKey(Meteo, on_delete=models.CASCADE, null=True)
+    region = models.ForeignKey(Region, on_delete=models.CASCADE, null=True)
+    adminRegion = models.ForeignKey(User, on_delete=models.CASCADE,null=True)
+    feedback=models.FloatField(default=0)
+    nmb_feedbach=models.IntegerField(default=0)
+    
     def __str__(self) -> str:
         return self.nomLieu   
     
 
+class Evenement(models.Model):
+   idEvent = models.AutoField(primary_key=True)
+   nomEvent = models.CharField(max_length=100)
+   descripEvent = models.CharField(max_length=1000)
+   dateEvent = models.DateField()
+   H_debut = models.TimeField()
+   H_fin = models.TimeField()
+   lieu = models.ForeignKey(Lieu, on_delete=models.CASCADE,default=1)
+   def __str__(self) -> str:
+        return (str(self.idEvent))
+   def get_admin_id(self):
+        return self.Lieu.adminRegion.idUser
+   
 #Relation de l'association entre Lieu et MoyenTransport
 class Transport(models.Model):
    id_trans = models.AutoField(primary_key=True)
@@ -95,7 +101,7 @@ class Transport(models.Model):
         return (str(self.id_trans))
    
 class Comment(models.Model):
-    evenement = models.ForeignKey(Evenement, on_delete=models.CASCADE, related_name='comments')
+    lieu = models.ForeignKey(Lieu, on_delete=models.CASCADE, related_name='comments')
     author = models.CharField(max_length=100)
     text = models.CharField(max_length=1000)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -106,31 +112,15 @@ class Comment(models.Model):
 
 
 class Notification(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    message = models.CharField(max_length=255)
+    adminreg = models.ForeignKey(User, on_delete=models.CASCADE)
+    lieu =models.CharField(max_length=1000,default='')
+    author=models.CharField(max_length=100,default='')
     created_at = models.DateTimeField(auto_now_add=True)
     is_read = models.BooleanField(default=False)
 
     def __str__(self):
-        return self.message
+        return self.event
 
    
    
-"""class Appreciation(models.Model):
-   idApprec = models.AutoField(primary_key=True)
-   commentaire = models.CharField(max_length=100)
-   id_lieu = models.ForeignKey(Lieu, on_delete=models.CASCADE)
-   id_user = models.ForeignKey(User, on_delete=models.CASCADE)
-   #+ feedback with stars ça dépend li yimplementih
-   def __str__(self) -> str:
-        return (str(self.idApprec))
-"""
-"""class Notification(models.Model):
-   idNotif = models.AutoField(primary_key=True)
-   contenu = models.CharField(max_length=100)
-   emetteur = models.ForeignKey(User, on_delete=models.CASCADE)
-   destinataire = models.ForeignKey(User, on_delete=models.CASCADE)
-   #+ ça dépend li yimplementih
-   def __str__(self) -> str:
-        return (str(self.idNotif))
-"""
+

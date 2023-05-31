@@ -36,7 +36,7 @@ class VilleAdmin(admin.ModelAdmin):
 class LieuAdmin(admin.ModelAdmin):
     list = ('idLieu', 'nomLieu', 'descripLieu', 'exigence', 'faitHisto', 'produitArtis',
             'expressCourantes', 'longitude', 'latitude', 'H_ouverture', 'H_fermeture', 'climat','region',
-             'adminRegion', 'id_event' )
+             'adminRegion','feedback' ,'nmb_feedbach')
 
     admin.site.register(Lieu)
 
@@ -51,13 +51,18 @@ class TransportAdmin(admin.ModelAdmin):
     admin.site.register(Transport)
 
 class EvenementAdmin(admin.ModelAdmin):
-    list = ('idEvent', 'nomEvent', 'descripEvent', 'dateEvent', 'H_debut', 'H_fin')
+    list = ('idEvent', 'nomEvent', 'descripEvent', 'dateEvent', 'H_debut', 'H_fin','lieu')
 
     admin.site.register(Evenement)
 class CommentAdmin(admin.ModelAdmin):
-    list = ('evenement', 'author', 'text', 'created_at')
+    list = ('lieu', 'author', 'text', 'created_at')
 
     admin.site.register(Comment)
+
+class NotificationAdmin(admin.ModelAdmin):
+    list = ('adminreg', 'author', 'lieu', 'created_at','is_read')
+
+    admin.site.register(Notification)    
 
 """class LocalEventAdmin(admin.ModelAdmin):
     list = ('id_localEvent', 'id_event', 'id_lieu')

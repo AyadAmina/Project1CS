@@ -3,19 +3,19 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     $(document).ready(function () {
-        var event_id = "{{ event.idEvent }}";
+        var lieu_id = "{{ lieu.idLieu }}";
         var name="{{name}}"
-        var wsPath = 'ws://' + window.location.host + '/ws/event/' + event_id + '/comments/';
+        var wsPath = 'ws://' + window.location.host + '/ws/lieu/' + lieu_id + '/comments/';
         var socket = new WebSocket(wsPath);
 
         // When the WebSocket connection is open
-        socket.onopen = function (event) {
+        socket.onopen = function (lieu) {
             console.log('WebSocket connection opened.');
         };
  
         // When a new comment is received
-        socket.onmessage = function (event) {
-            var commentData = JSON.parse(event.data);
+        socket.onmessage = function (lieu) {
+            var commentData = JSON.parse(lieu.data);
             var comment = commentData.comment;
             var author = commentData.author;
 
@@ -43,13 +43,13 @@ $('#customers-testimonials').trigger('add.owl.carousel', [commentElement]).trigg
         };
 
         // When the WebSocket connection is closed
-        socket.onclose = function (event) {
+        socket.onclose = function (lieu) {
             console.log('WebSocket connection closed.');
         };
 
         // When the comment form is submitted
-        $('#contact_form').submit(function (event) {
-            event.preventDefault();
+        $('#contact_form').submit(function (lieu) {
+            lieu.preventDefault();
             var comment = $('#contact_form_message').val();
             var author = $('#comment-author').val();
             var commentData = {
@@ -74,7 +74,6 @@ $('#customers-testimonials').trigger('add.owl.carousel', [commentElement]).trigg
     <link rel="icon" type="image/png" sizes="16x16" href="{% static 'images/favicon.png' %}">
     <!-- Custom Stylesheet -->
     <link href="{% static 'styles/style.css' %}" rel="stylesheet">
-
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -83,15 +82,26 @@ $('#customers-testimonials').trigger('add.owl.carousel', [commentElement]).trigg
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
 <link rel="stylesheet" href="../../static/styles/comment.css">
 <link rel="stylesheet" type="text/css" href="../../static/styles/bootstrap4/bootstrap.min.css">
-<link href="plugins/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+<link href="../../static/plugins/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 <link rel="stylesheet" type="text/css" href="../../static/styles/contact_responsive.css">
+<link rel="stylesheet" type="text/css" href="../../static/styles/main_styles.css">
+<style>
+.rating_1 {color: #ffeb8d;}
+.rating_2 {color: #fed46b;}
+.rating_3{color: #fbb53d;}
+.rating_4 {color: #fa9e1b;}
+.rating_5 {color: #ef910a;}
+</style>
+
+
+
     <title>Document</title>
 </head>
 <body>
-    <h1>{{ event.nomEvent }}</h1>
-    <p>{{ event.descripEvent }}</p>
-    <p>Date: {{ event.dateEvent }}</p>
-    <p>Time: {{ event.H_debut }} - {{ event.H_fin }}</p>
+    <h1>{{ lieu.nomLieu }}</h1>
+    <p>{{ lieu.descripLieu }}</p>
+    <p>Date: {{ lieu.H_ouverture }}</p>
+    <p>Time: {{ lieu.H_fermeture }} - {{ lieu.H_ouverture }}</p>
 
 
     <div class="container">
@@ -99,6 +109,70 @@ $('#customers-testimonials').trigger('add.owl.carousel', [commentElement]).trigg
 
     <!--Contact -->
    <div class="container">
+
+    <div class="container ml-5">
+      {% if lieu.feedback == 0 %}
+        <div class="rating">
+          <i class="fa fa-star"></i>
+          <i class="fa fa-star"></i>
+          <i class="fa fa-star"></i>
+          <i class="fa fa-star"></i>
+          <i class="fa fa-star"></i>
+        </div>
+      {% elif lieu.feedback < 1 %}
+        <div class="rating">
+          <i class="fa fa-star"></i>
+          <i class="fa fa-star"></i>
+          <i class="fa fa-star"></i>
+          <i class="fa fa-star"></i>
+          <i class="fa fa-star"></i>
+        </div>
+      {% elif lieu.feedback < 2 %}
+        <div class="rating">
+          <i class="fa fa-star rating_1"></i>
+          <i class="fa fa-star"></i>
+          <i class="fa fa-star"></i>
+          <i class="fa fa-star"></i>
+          <i class="fa fa-star"></i>
+        </div>
+      {% elif lieu.feedback < 3 %}
+        <div class="rating">
+          <i class="fa fa-star rating_1"></i>
+          <i class="fa fa-star rating_2"></i>
+          <i class="fa fa-star"></i>
+          <i class="fa fa-star"></i>
+          <i class="fa fa-star"></i>
+        </div>
+      {% elif lieu.feedback < 4 %}
+        <div class="rating">
+          <i class="fa fa-star rating_1"></i>
+          <i class="fa fa-star rating_2"></i>
+          <i class="fa fa-star rating_3"></i>
+          <i class="fa fa-star"></i>
+          <i class="fa fa-star"></i>
+        </div>
+      {% elif lieu.feedback < 5 %}
+        <div class="rating">
+          <i class="fa fa-star rating_1"></i>
+          <i class="fa fa-star rating_2"></i>
+          <i class="fa fa-star rating_3"></i>
+          <i class="fa fa-star rating_4"></i>
+          <i class="fa fa-star"></i>
+        </div>
+      {% else %}
+        <div class="rating">
+          <i class="fa fa-star rating_1"></i>
+          <i class="fa fa-star rating_2"></i>
+          <i class="fa fa-star rating_3"></i>
+          <i class="fa fa-star rating_4"></i>
+          <i class="fa fa-star rating_5"></i>
+        </div>
+      {% endif %}
+    </div>
+    
+    
+
+    <!-- End Stars -->
    <!-- TESTIMONIALS -->
 <section class="testimonials">
 	<div class="container">
@@ -109,7 +183,7 @@ $('#customers-testimonials').trigger('add.owl.carousel', [commentElement]).trigg
 
             <!--TESTIMONIAL 1 -->
 
-            {% for comment in event.comments.all %}
+            {% for comment in lieu.comments.all %}
             <div class="item">
               <div class="shadow-effect">
                 <p>{{ comment.text }}.</p>
@@ -125,6 +199,25 @@ $('#customers-testimonials').trigger('add.owl.carousel', [commentElement]).trigg
       </div>
     </section>
     <!-- END OF TESTIMONIALS -->
+
+
+    <h2>Rate us</h2>
+    <section class="ratesection">
+    <div class="ratiing">
+      
+      <input type="radio" id="star5" name="ratiing" value="5" data-lieu-id="{{ lieu.idLieu }}">
+      <label for="star5"></label>
+      <input type="radio" id="star4" name="ratiing" value="4" data-lieu-id="{{ lieu.idLieu }}">
+      <label for="star4"></label>
+      <input type="radio" id="star3" name="ratiing" value="3" data-lieu-id="{{ lieu.idLieu }}">
+      <label for="star3"></label>
+      <input type="radio" id="star2" name="ratiing" value="2" data-lieu-id="{{ lieu.idLieu }}">
+      <label for="star2"></label>
+      <input type="radio" id="star1" name="ratiing" value="1" data-lieu-id="{{ lieu.idLieu }}">
+      <label for="star1"></label>
+    </div>
+  </section>
+
      <div class="contact_form_section">
 		<div class="container">
 			<div class="row">
@@ -132,7 +225,8 @@ $('#customers-testimonials').trigger('add.owl.carousel', [commentElement]).trigg
 					<!-- Contact Form -->
 					<div class="contact_form_container">
                         <div class="contact_title" >Que pensez-vous ?</div>
-						<form action="#" id="contact_form" class="contact_form text-center">  
+						<form action="#" id="contact_form" class="contact_form text-center">
+              {% csrf_token %}  
 							<textarea id="contact_form_message" class="text_field contact_form_message" name="message" rows="4" placeholder="Message" required="required" data-error="Please, write us a message."></textarea>
 							<button type="submit" id="form_submit_button" class="form_submit_button button trans_200">Ajouter <span></span><span></span><span></span></button>
 						</form>
@@ -173,5 +267,72 @@ $('#customers-testimonials').trigger('add.owl.carousel', [commentElement]).trigg
         });
     });
 </script>
+<script>
+  var ratingInputs = document.querySelectorAll('.ratiing input');
+  ratingInputs.forEach(function(input) {
+    input.addEventListener('change', function() {
+      // Perform any necessary action upon rating selection
+      var selectedRating = this.value;
+      console.log('Selected rating:', selectedRating);
+      console.log('heloooooooooooooooooooooooooo*************');
+      var lieuId = this.getAttribute('data-lieu-id');
+      update_feedback(lieuId, selectedRating);
+    });
+  });
+
+  function update_feedback(lieuId, rating) {
+    var csrftoken = getCookie('csrftoken');
+    // AJAX request to update the feedback value
+    $.ajax({
+      url: '/update-feedback/',  // Replace with your Django URL for updating feedback
+      type: 'POST',
+      data: {
+        'lieu_id': lieuId,
+        'rating': rating
+      },
+      beforeSend: function(xhr, settings) {
+        // Add CSRF token to the request headers
+        xhr.setRequestHeader('X-CSRFToken', csrftoken);
+      },
+      success: function(response) {
+        // Handle the response if needed
+        console.log('Feedback updated successfully');
+
+        // Calculate the new feedback value and update the displayed stars
+        var feedback = response.feedback;
+        var numFeedback = response.num_feedback;
+        var updatedFeedback = (feedback * numFeedback + parseInt(rating)) / (numFeedback + 1);
+        var updatedStars = Math.round(updatedFeedback);
+        $('.ratiing input').prop('checked', false);  // Uncheck all stars
+        for (var i = 1; i <= updatedStars; i++) {
+          $('#star' + i).prop('checked', true);  // Check stars up to the updated rating
+        }
+      },
+      error: function(error) {
+        // Handle the error if needed
+        console.log('Error updating feedback:', error);
+      }
+    });
+    console.log('Updating feedback for lieu:', lieuId, 'with rating:', rating);
+  }
+
+  function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+      var cookies = document.cookie.split(';');
+      for (var i = 0; i < cookies.length; i++) {
+        var cookie = cookies[i].trim();
+        // Extract the CSRF token value
+        if (cookie.substring(0, name.length + 1) === (name + '=')) {
+          cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+          break;
+        }
+      }
+    }
+    return cookieValue;
+  }
+</script>
+
+
 </body>
 </html>
