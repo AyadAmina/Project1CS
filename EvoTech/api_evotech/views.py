@@ -82,7 +82,7 @@ def lieu(request, lieu_id):
     return render(request, 'comm.html', {'lieu': lieu,'name':username})
 
 def adminnot(request):
-    notifications = Notification.filter(adminreg=request.user).order_by('-created_at')[:5]  
+    notifications = Notification.objects.filter(adminreg=request.user.id).order_by('-created_at')[:5]  
     template = loader.get_template('indexadmin.html')
     context = {
         'notifications': notifications
@@ -122,7 +122,7 @@ class AdminNotificationConsumer(AsyncWebsocketConsumer):
 
 
 def update_feedback(request):
-    print('helooooooooooooooooo')
+
     if request.method == 'POST' and request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest':
         lieu_id = request.POST.get('lieu_id')
         rating = request.POST.get('rating')
