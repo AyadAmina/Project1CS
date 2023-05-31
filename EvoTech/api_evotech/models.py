@@ -32,8 +32,10 @@ class User(models.Model):
    motdepasse = models.CharField(max_length=100)
    profile = models.CharField(max_length=100)
 
+
    def __str__(self) -> str:
         return (self.username)
+
 
 class Region(models.Model):
    numRegion = models.AutoField(primary_key=True)
@@ -94,8 +96,7 @@ class Transport(models.Model):
    def __str__(self) -> str:
         return (str(self.id_trans))
    
-   
-"""class Appreciation(models.Model):
+class Appreciation(models.Model):
    idApprec = models.AutoField(primary_key=True)
    commentaire = models.CharField(max_length=100)
    id_lieu = models.ForeignKey(Lieu, on_delete=models.CASCADE)
@@ -103,13 +104,29 @@ class Transport(models.Model):
    #+ feedback with stars ça dépend li yimplementih
    def __str__(self) -> str:
         return (str(self.idApprec))
-"""
-"""class Notification(models.Model):
-   idNotif = models.AutoField(primary_key=True)
-   contenu = models.CharField(max_length=100)
-   emetteur = models.ForeignKey(User, on_delete=models.CASCADE)
-   destinataire = models.ForeignKey(User, on_delete=models.CASCADE)
-   #+ ça dépend li yimplementih
-   def __str__(self) -> str:
+
+
+class Notification(models.Model):
+    idNotif = models.AutoField(primary_key=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    event = models.ForeignKey(Evenement, on_delete=models.CASCADE)
+    seen = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+def __str__(self) -> str:
         return (str(self.idNotif))
-"""
+
+
+
+
+class Favoris(models.Model):
+    idFav = models.AutoField(primary_key=True)
+    idLieu = models.ForeignKey(Lieu, on_delete=models.CASCADE, default='')
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+   
+   
+    def __str__(self) -> str:
+        return (str(self.idFav))
+
+
+       
