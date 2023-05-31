@@ -1,0 +1,8 @@
+<p>hi admin regional</p>
+<p>User ID: {{ user.idUser }}</p>
+<p>Username: {{ user.username }}</p>
+
+<a href="{% url 'add_lieu' user_id=user.idUser  %}">Add lieu</a> <br>
+<a href="{% url 'add_evenement' user_id=user.idUser  %}">Add Event</a> <br>
+<a href="{% url 'add_moyen_transport' user_id=user.idUser  %}">Add Moyen de transport</a> <br>
+<a href="{% url 'add_transport' user_id=user.idUser  %}">Add transport</a>

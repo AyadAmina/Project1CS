@@ -28,10 +28,11 @@ class RegionAdmin(admin.ModelAdmin):
 
     admin.site.register(Region)
 
-class VilleAdmin(admin.ModelAdmin):
-    list = ('idVille', 'nomVille', 'regionV')
+class CommuneAdmin(admin.ModelAdmin):
+    list = ('idCommune', 'nomCommune', 'regionC')
 
-    admin.site.register(Ville)
+    admin.site.register(Commune)
+
 
 class LieuAdmin(admin.ModelAdmin):
     list = ('idLieu', 'nomLieu', 'descripLieu', 'exigence', 'faitHisto', 'produitArtis',
