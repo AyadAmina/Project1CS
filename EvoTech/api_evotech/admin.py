@@ -41,13 +41,9 @@ class LieuAdmin(admin.ModelAdmin):
 
     admin.site.register(Lieu)
 
-class MoyenTransportAdmin(admin.ModelAdmin):
-    list = ('idTransport', 'typeTrans')
-
-    admin.site.register(MoyenTransport)
 
 class TransportAdmin(admin.ModelAdmin):
-    list = ('id_trans', 'id_moytrans', 'id_lieu', 'H_depart')
+    list = ('id_trans', 'typeTrans', 'id_lieu')
 
     admin.site.register(Transport)
 

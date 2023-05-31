@@ -56,10 +56,6 @@ class TransportForm(forms.ModelForm):
         fields = '__all__'
 
 
-class MoyenTransportForm(forms.ModelForm):
-    class Meta:
-        model = MoyenTransport
-        fields = '__all__'
-    
+
 
 

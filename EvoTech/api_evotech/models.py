@@ -56,12 +56,6 @@ class Commune(models.Model):
         return (self.nomCommune)
 
 
-class MoyenTransport(models.Model):
-   idTransport = models.AutoField(primary_key=True)
-   typeTrans = models.CharField(max_length=100)
-
-   def __str__(self) -> str:
-        return (str(self.idTransport))
 
 
 class Lieu(models.Model):
@@ -106,10 +100,9 @@ class Evenement(models.Model):
 class Transport(models.Model):
    id_trans = models.AutoField(primary_key=True)
    
-   id_moytrans = models.ForeignKey(MoyenTransport, on_delete=models.CASCADE, blank=True)
+   typeTrans = models.CharField(max_length=100, blank=True, null=True)
    
    id_lieu = models.ForeignKey(Lieu, on_delete=models.CASCADE, blank=True)
-   H_depart = models.TimeField()
 
    def __str__(self) -> str:
         return (str(self.id_trans))

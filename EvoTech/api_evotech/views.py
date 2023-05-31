@@ -195,9 +195,6 @@ def add_transport(request, user_id):
     lieux_choices = [(lieu.idLieu, lieu.nomLieu) for lieu in lieux]
     form.fields['id_lieu'].choices = lieux_choices
 
-    moyensT = MoyenTransport.objects.all()
-    moyensT_choices = [(moyen.idTransport, moyen.typeTrans) for moyen in moyensT]
-    form.fields['id_moytrans'].choices = moyensT_choices
 
     context = {
        'form': form , 
@@ -210,17 +207,3 @@ def add_transport(request, user_id):
 
 
 
-def add_moyen_transport(request, user_id):
-    if request.method == 'POST':
-        form = MoyenTransportForm(request.POST)
-        if form.is_valid():  
-            form.save()
-            return redirect('AdminRegionalPage',user_id)
-    else:
-        form = MoyenTransportForm()
-    
-    context = {
-       'form': form , 
-       'user_id' : user_id
-       }
-    return render(request, 'add_moyen_transport.html', context)

@@ -250,7 +250,7 @@
                                 <ul aria-expanded="false">
                                     <li><a href="{% url 'add_lieu' user_id=user_id %}">Ajouter Lieu</a></li>
                                     <li><a href="{% url 'add_evenement' user_id=user_id %}">Ajouter événement</a></li>
-                                    <li><a href="{% url 'add_moyen_transport' user_id=user_id %}">Ajouter moyen de transport</a></li>
+                                    
                                     <li><a href="{% url 'add_transport' user_id=user_id %}">Ajouter un transport</a></li>
                                 </ul>
                     </li>
@@ -318,26 +318,7 @@
                                 <div class="basic-form">
                                     <form method="POST" >
                                         {% csrf_token %}
-                                        <div class="card">
-                                            <div class="card-header">
-                                                <h4 class="card-title">Moyen</h4>
-                                            </div>
-                                            <div class="card-body">
-                                                <div class="basic-form">
-                                                        <div class="form-row align-items-center">
-                                                            <div class="col-auto my-1">
-                                                                <select class="custom-select mr-sm-2" id="inlineFormCustomSelect" name="id_moytrans">
-                                                                    <!-- <option value="0">Choisir</option> -->
-                                                                    {% for option in form.id_moytrans.field.choices %}
-                                                                         <option value="{{ option.0 }}" {% if form.id_moytrans == option.0 %} selected {% endif %}>{{ option.1 }}</option>
-                                                                    {% endfor %}
-                                                                </select>
-                                                            </div>
-                                                        </div>
                                         
-                                                </div>
-                                            </div>
-                                        </div>
                                         <div class="card">
                                             <div class="card-header">
                                                 <h4 class="card-title">Lieu</h4>
@@ -361,19 +342,17 @@
                                         </div>
                                         <div class="card">
                                             <div class="card-header">
-                                                <h4 class="card-title">Heure de depart </h4>
+                                                <h4 class="card-title">Type </h4>
                                             </div>
                                             <div class="card-body">
                                                 <div class="basic-form">
-                                             
                                                         <div class="form-group">
-                                                            <input type="time" class="form-control input-rounded" name="H_depart">
+                                                            <input type="text" class="form-control input-rounded" placeholder="Entrer le type du moyen de transport" name="typeTrans">
                                                         </div>
-                                                  
+                                              
                                                 </div>
                                             </div>
-                                        </div> 
-                                    
+                                        </div>      
                                      
                                     
                                         <button type="submit" class="btn btn-primary" href="{% url 'AdminRegionalPage' user_id %}">add</button>

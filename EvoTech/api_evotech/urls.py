@@ -17,7 +17,7 @@ urlpatterns = [
 
     path('login/admin/AdminRegionalPage/<int:user_id>/AddLieu', views.add_lieu, name='add_lieu'),
     path('login/admin/AdminRegionalPage/<int:user_id>/AddEvenement', views.add_evenement, name='add_evenement'),
-    path('login/admin/AdminRegionalPage/<int:user_id>/AddMoyenTransport', views.add_moyen_transport, name='add_moyen_transport'),
+    
     path('login/admin/AdminRegionalPage/<int:user_id>/AddTransport', views.add_transport, name='add_transport'),
 
    
