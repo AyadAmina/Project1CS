@@ -36,27 +36,23 @@ class CommuneAdmin(admin.ModelAdmin):
 class LieuAdmin(admin.ModelAdmin):
     list = ('idLieu', 'nomLieu', 'descripLieu', 'exigence', 'faitHisto', 'produitArtis',
             'expressCourantes', 'longitude', 'latitude', 'H_ouverture', 'H_fermeture', 'climat','region',
-             'adminRegion', 'id_event' )
+             'commune','categorie','theme','transport' )
 
     admin.site.register(Lieu)
 
-class MoyenTransportAdmin(admin.ModelAdmin):
-    list = ('idTransport', 'typeTrans')
-
-    admin.site.register(MoyenTransport)
-
 class TransportAdmin(admin.ModelAdmin):
-    list = ('id_trans', 'id_moytrans', 'id_lieu', 'H_depart')
+    list = ('idTransport', 'typeTrans')
 
     admin.site.register(Transport)
 
+
 class EvenementAdmin(admin.ModelAdmin):
-    list = ('idEvent', 'nomEvent', 'descripEvent', 'dateEvent', 'H_debut', 'H_fin')
+    list = ('idEvent', 'nomEvent', 'descripEvent', 'dateEvent', 'H_debut', 'H_fin','id_lieu')
 
     admin.site.register(Evenement)
 
 class PhotoAdmin(admin.ModelAdmin):
-    list = ('photoId', 'image', 'lieuId')
+    list = ('photoId', 'image', 'lieuId', 'eventId')
 
     admin.site.register(Photo)
 

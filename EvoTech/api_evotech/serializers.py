@@ -35,14 +35,7 @@ class RegionSerializer(serializers.ModelSerializer):
         model = Region
         fields = '__all__'
 
-
-class MoyenTransportSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = MoyenTransport
-        fields = '__all__'
-
-        
-
+    
 class EvenementSerializer(serializers.ModelSerializer):
     class Meta:
         model = Evenement

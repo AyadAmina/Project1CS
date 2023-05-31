@@ -12,6 +12,12 @@ with open('Communes.csv', 'r') as file:
      
     for row in csv_reader:
         row = [cell if cell != '' else None for cell in row]
+        # Determine the number of columns in the row
+        num_columns = len(row)
+
+        # Create the placeholders for the SQL query
+        placeholders = ','.join(['?'] * num_columns)
+
         cursor.execute('INSERT INTO api_evotech_commune VALUES (?, ?, ?)', row)
 
 # Commit the changes and close the connection

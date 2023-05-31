@@ -155,7 +155,7 @@ h6::selection
 }
 .form-control
 {
-	color: #db5246;
+	color: #000000 !important;
 }
 section
 {
@@ -1464,6 +1464,7 @@ section
 {
 	margin-right: 0px;
 }
+
 .book_button
 {
 	background: #2a9d8f  ;

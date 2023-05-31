@@ -18,7 +18,7 @@ class Theme(models.Model):
         return (self.labelT)
 
 class Categorie(models.Model):
-   idCategorie = models.AutoField(primary_key=True, default='')
+   idCategorie = models.AutoField(primary_key=True)
    labelC = models.CharField(max_length=100, default='')
 
    def __str__(self) -> str:
@@ -44,17 +44,40 @@ class Region(models.Model):
 
 class Commune(models.Model):
    idComm = models.AutoField(primary_key=True)
-   nomComm = models.CharField(max_length=100, default="")
+   nomComm = models.CharField(max_length=100)
    regionC = models.ForeignKey(Region, on_delete=models.CASCADE, null=False)
    def __str__(self) -> str:
         return (self.nomComm)
    
-class MoyenTransport(models.Model):
+class Transport(models.Model):
    idTransport = models.AutoField(primary_key=True)
-   typeTrans = models.CharField(max_length=100)
+   typeTrans = models.CharField(max_length=100, default="")
    def __str__(self) -> str:
-        return (str(self.idTransport))
+        return (str(self.typeTrans))
 
+
+   
+class Lieu(models.Model):
+    idLieu = models.AutoField(primary_key=True)
+    nomLieu = models.CharField(max_length=100)
+    descripLieu = models.CharField(max_length=1000, blank=True)
+    exigence = models.CharField(max_length=1000, blank=True)
+    faitHisto = models.CharField(max_length=1000, blank=True)
+    produitArtis = models.CharField(max_length=1000, default="", blank=True)
+    expressCourantes = models.CharField(max_length=1000, blank=True)
+    longitude = models.FloatField()
+    latitude = models.FloatField()
+    H_ouverture = models.TimeField(blank=True, null=True)
+    H_fermeture = models.TimeField(blank=True, null=True)
+    climat = models.ForeignKey(Meteo, on_delete=models.CASCADE, null=True, blank=True)
+    region = models.ForeignKey(Region, on_delete=models.CASCADE, null=False)
+    commune = models.ForeignKey(Commune, on_delete=models.CASCADE, null=True,  blank=True)
+    categorie = models.ManyToManyField(Categorie, null=True, blank=True)
+    theme = models.ManyToManyField(Theme, null=True, blank=True)
+    transport = models.ManyToManyField(Transport, null=True, blank=True)
+    def __str__(self) -> str:
+        return self.nomLieu   
+    
 class Evenement(models.Model):
    idEvent = models.AutoField(primary_key=True)
    nomEvent = models.CharField(max_length=100)
@@ -62,42 +85,15 @@ class Evenement(models.Model):
    dateEvent = models.DateField()
    H_debut = models.TimeField()
    H_fin = models.TimeField()
+   id_lieu = models.ForeignKey(Lieu, on_delete=models.CASCADE, null=True, blank=True)
    def __str__(self) -> str:
-        return (str(self.idEvent))
-   
-class Lieu(models.Model):
-    idLieu = models.AutoField(primary_key=True)
-    nomLieu = models.CharField(max_length=100)
-    descripLieu = models.CharField(max_length=1000)
-    exigence = models.CharField(max_length=1000)
-    faitHisto = models.CharField(max_length=1000)
-    produitArtis = models.CharField(max_length=1000, default="")
-    expressCourantes = models.CharField(max_length=1000)
-    longitude = models.FloatField()
-    latitude = models.FloatField()
-    H_ouverture = models.TimeField()
-    H_fermeture = models.TimeField()
-    climat = models.ForeignKey(Meteo, on_delete=models.CASCADE, null=True, blank=True)
-    region = models.ForeignKey(Region, on_delete=models.CASCADE, null=False)
-    adminRegion = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
-    id_event = models.ManyToManyField(Evenement, null=True, blank=True)
-    def __str__(self) -> str:
-        return self.nomLieu   
-    
-
-#Relation de l'association entre Lieu et MoyenTransport
-class Transport(models.Model):
-   id_trans = models.AutoField(primary_key=True)
-   id_moytrans = models.ForeignKey(MoyenTransport, on_delete=models.CASCADE)
-   id_lieu = models.ForeignKey(Lieu, on_delete=models.CASCADE)
-   H_depart = models.TimeField()
-   def __str__(self) -> str:
-        return (str(self.id_trans))
+        return (str(self.nomEvent))
 
 class Photo(models.Model):
     photoId = models.AutoField(primary_key=True)
-    image = models.ImageField(upload_to='img', default = '')
-    lieuId= models.ForeignKey(Lieu, on_delete=models.CASCADE , null=True)
+    image = models.ImageField(upload_to='static/images', default = '')
+    lieuId= models.ForeignKey(Lieu, on_delete=models.CASCADE , null=True, related_name='photos', blank=True)
+    eventId = models.ForeignKey(Evenement, on_delete=models.CASCADE , null=True, related_name='images')
 
     def __str__(self) -> str:
           return (str(self.image))
