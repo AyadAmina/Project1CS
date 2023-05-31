@@ -4,7 +4,7 @@ from django.template import loader
 from .models import *
 from .forms import *
 
-import secrets
+"""import secrets
 from faker import Faker
 
 def create_admin_regional(number_regions):
@@ -32,7 +32,7 @@ def link_region_adminregional(number_regions):
     region.adminRegion = User.objects.get(username=f"admin_user{i}")
     region.save()
     
-
+"""
 # Create your views here.
 def index(request):
   template = loader.get_template('index.html')
