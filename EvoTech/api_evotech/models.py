@@ -69,7 +69,7 @@ class Lieu(models.Model):
     latitude = models.FloatField()
     H_ouverture = models.TimeField(blank=True, null=True)
     H_fermeture = models.TimeField(blank=True, null=True)
-    region = models.ForeignKey(Region, on_delete=models.CASCADE, null=False)
+    region = models.ForeignKey(Region, on_delete=models.CASCADE,blank=True, null=True)
     commune = models.ForeignKey(Commune, on_delete=models.CASCADE, null=True,  blank=True)
     categorie = models.ForeignKey(Categorie, on_delete=models.CASCADE,null=True, blank=True)
     theme = models.ForeignKey(Theme, on_delete=models.CASCADE, null=True, blank=True)

@@ -255,7 +255,7 @@ section
 	left: 0;
 	width: 200%;
 	height: 100%;
-	background: linear-gradient(to right, #fa9e1b, #2a9d8f, #fa9e1b);
+	background: linear-gradient(to right, #fa9e1b, #2a9d8f  , #fa9e1b);
 	z-index: -1;
 	-webkit-transition: all 400ms ease;
 	-moz-transition: all 400ms ease;
@@ -317,7 +317,7 @@ section
 {
 	position: fixed;
 	width: 100%;
-	background: rgba(54, 19, 84, 0.6);
+	background: rgba(38, 70, 83, 0.5) ;
 	z-index: 12;
 }
 .header.scrolled
@@ -513,7 +513,7 @@ section
 	bottom: -11px;
 	width: calc(100% + 2px);
 	height: 2px;
-	background: linear-gradient(to right, #fa9e1b, #2a9d8f);
+	background: linear-gradient(to right, #fa9e1b, #2a9d8f  );
 	content: '';
 	opacity: 0;
 	-webkit-transition: all 200ms ease;
@@ -637,7 +637,7 @@ section
 	position: fixed;
 	width: 100vw;
 	height: 100vh;
-	background: linear-gradient(to right, #fa9e1b, #2a9d8f);
+	background: linear-gradient(to right, #fa9e1b, #2a9d8f  );
 	z-index: 100;
 	opacity: 0;
 	visibility: hidden;
@@ -824,7 +824,7 @@ section
 }
 .button_color_1
 {
-	background: #31124b;
+	background: #2a9d8f   ;
 }
 .button_color_1:hover
 {
@@ -841,20 +841,20 @@ section
 .button_line_1
 {
 	background: transparent;
-	border: solid 2px #31124b;
+	border: solid 2px #2a9d8f   ;
 }
 .button_line_1 a
 {
-	color: #31124b;
+	color: #2a9d8f   ;
 	line-height: 49px;
 }
 .button_line_1 span
 {
-	background: #31124b;
+	background: #2a9d8f   ;
 }
 .button_line_1:hover
 {
-	background: #31124b;
+	background: #2a9d8f   ;
 }
 .button_line_1:hover a
 {
@@ -1154,7 +1154,7 @@ section
 	width: 100%;
 	padding-top: 113px;
 	padding-bottom: 104px;
-	background: #31124b;
+	background: #2a9d8f   ;
 }
 .footer_title
 {
@@ -1234,7 +1234,7 @@ section
 }
 .footer_social_item:hover a i
 {
-	color: #31124b;
+	color: #2a9d8f   ;
 }
 
 /*********************************
@@ -1368,7 +1368,7 @@ section
 
 .copyright
 {
-	background: #1f0733;
+	background: #2a9d8f   ;
 }
 .copyright_content
 {
@@ -1378,7 +1378,7 @@ section
 {
 	font-size: 12px;
 	font-weight: 600;
-	color: #685677;
+	color: #2a9d8f   ;
 }
 .footer_nav_container
 {
@@ -1401,7 +1401,7 @@ section
 {
 	font-size: 12px;
 	font-weight: 600;
-	color: #685677;
+	color: #2a9d8f   ;
 	text-transform: uppercase;
 	line-height: 2;
 	-webkit-transition: all 200ms ease;

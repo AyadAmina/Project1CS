@@ -53,8 +53,8 @@
 	margin: 0;
 	padding: 0;
 	-webkit-font-smoothing: antialiased;
-	-webkit-text-shadow: rgba(0,0,0,.01) 0 0 1px;
-	text-shadow: rgba(0,0,0,.01) 0 0 1px;
+	-webkit-text-shadow: rgba(38,70,83,0.5) 0 0 1px;
+	text-shadow: rgba(38,70,83,0.5) 0 0 1px;
 }
 body
 {
@@ -85,8 +85,8 @@ p
 	font-weight: 400;
 	color: #929191;
 	-webkit-font-smoothing: antialiased;
-	-webkit-text-shadow: rgba(0,0,0,.01) 0 0 1px;
-	text-shadow: rgba(0,0,0,.01) 0 0 1px;
+	-webkit-text-shadow: rgba(38,70,83,0.5) 0 0 1px;
+	text-shadow: rgba(38,70,8,0.5) 0 0 1px;
 }
 p a
 {
@@ -104,8 +104,8 @@ a, a:hover, a:visited, a:active, a:link
 {
 	text-decoration: none;
 	-webkit-font-smoothing: antialiased;
-	-webkit-text-shadow: rgba(0,0,0,.01) 0 0 1px;
-	text-shadow: rgba(0,0,0,.01) 0 0 1px;
+	-webkit-text-shadow: rgba(38,70,83,0.5) 0 0 1px;
+	text-shadow: rgba(38,70,83,0.5) 0 0 1px;
 }
 p a:active
 {
@@ -138,8 +138,8 @@ h1, h2, h3, h4, h5, h6
 {
 	font-family: 'Open Sans', sans-serif;
 	-webkit-font-smoothing: antialiased;
-	-webkit-text-shadow: rgba(0,0,0,.01) 0 0 1px;
-	text-shadow: rgba(0,0,0,.01) 0 0 1px;
+	-webkit-text-shadow: rgba(38,70,8,0.5) 0 0 1px;
+	text-shadow: rgba(38,70,83,0.5) 0 0 1px;
 }
 h1::selection, 
 h2::selection, 
@@ -253,7 +253,7 @@ section
 	left: 0;
 	width: 200%;
 	height: 100%;
-	background: linear-gradient(to right, #fa9e1b, #2a9d8f, #fa9e1b);
+	background: linear-gradient(to right, #fa9e1b, #2a9d8f  , #fa9e1b);
 	z-index: -1;
 	-webkit-transition: all 400ms ease;
 	-moz-transition: all 400ms ease;
@@ -315,7 +315,7 @@ section
 {
 	position: fixed;
 	width: 100%;
-	background: rgba(54, 19, 84, 0.6);
+	background: rgba(38, 70, 83, 0.5) ;
 	z-index: 12;
 }
 .header.scrolled
@@ -331,7 +331,7 @@ section
 {
 	width: 100%;
 	height: 36px;
-	background: #264653;
+	background: #2a9d8f;
 	-webkit-transition: all 400ms ease;
 	-moz-transition: all 400ms ease;
 	-ms-transition: all 400ms ease;
@@ -511,7 +511,7 @@ section
 	bottom: -11px;
 	width: calc(100% + 2px);
 	height: 2px;
-	background: linear-gradient(to right, #fa9e1b, #2a9d8f);
+	background: linear-gradient(to right, #fa9e1b, #2a9d8f  );
 	content: '';
 	opacity: 0;
 	-webkit-transition: all 200ms ease;
@@ -583,11 +583,11 @@ section
 	width: 100%;
 	height: 100%;
 	background: #FFFFFF;
-	color: #1b0b32;
+	color: #264653;
 	padding-left: 20px;
 	outline: none !important;
 	border: none !important;
-	box-shadow: 0px 8px 20px rgba(0,0,0,0.15);
+	box-shadow: 0px 8px 20px rgba(38,70,83,0.5);
 }
 .bez_1
 {
@@ -635,7 +635,7 @@ section
 	position: fixed;
 	width: 100vw;
 	height: 100vh;
-	background: linear-gradient(to right, #fa9e1b, #2a9d8f);
+	background: linear-gradient(to right, #fa9e1b, #2a9d8f  );
 	z-index: 100;
 	opacity: 0;
 	visibility: hidden;
@@ -808,7 +808,7 @@ section
 {
 	font-size: 30px;
 	font-weight: 700;
-	color: #2d2c2c;
+	color: #264653;
 	text-transform: uppercase;
 }
 .intro_text
@@ -832,7 +832,7 @@ section
 {
 	font-size: 30px;
 	font-weight: 700;
-	color: #2d2c2c;
+	color: #264653;
 	margin-top: -8px;
 	text-transform: uppercase;
 }
@@ -972,7 +972,7 @@ section
 {
 	font-size: 24px;
 	font-weight: 600;
-	color: #2d2c2c;
+	color: #264653;
 }
 .stats_type
 {
@@ -993,7 +993,7 @@ section
 	position: absolute;
 	top: 0;
 	height: 2px;
-	background: #31124b;
+	background: #2a9d8f   ;
 	max-width: 100% !important;
 }
 .stats_bar_perc div
@@ -1090,7 +1090,7 @@ section
 {
 	font-size: 48px;
 	font-weight: 600;
-	color: #2d2c2c;
+	color: #264653;
 	line-height: 1;
 	margin-top: 25px;
 }
@@ -1112,7 +1112,7 @@ section
 	width: 100%;
 	padding-top: 113px;
 	padding-bottom: 104px;
-	background: #31124b;
+	background: #264653   ;
 }
 .footer_title
 {
@@ -1192,7 +1192,7 @@ section
 }
 .footer_social_item:hover a i
 {
-	color: #31124b;
+	color: #2a9d8f   ;
 }
 
 /*********************************
@@ -1326,7 +1326,7 @@ section
 
 .copyright
 {
-	background: #1f0733;
+	background: #2a9d8f   ;
 }
 .copyright_content
 {
@@ -1336,7 +1336,7 @@ section
 {
 	font-size: 12px;
 	font-weight: 600;
-	color: #685677;
+	color: #ffffff   ;
 }
 .footer_nav_container
 {
@@ -1359,7 +1359,7 @@ section
 {
 	font-size: 12px;
 	font-weight: 600;
-	color: #685677;
+	color: #ffffff   ;
 	text-transform: uppercase;
 	line-height: 2;
 	-webkit-transition: all 200ms ease;
