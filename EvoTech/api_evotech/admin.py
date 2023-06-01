@@ -28,34 +28,30 @@ class RegionAdmin(admin.ModelAdmin):
 
     admin.site.register(Region)
 
-class VilleAdmin(admin.ModelAdmin):
-    list = ('idVille', 'nomVille', 'regionV')
+class CommuneAdmin(admin.ModelAdmin):
+    list = ('idComm', 'nomComm', 'regionC')
 
-    admin.site.register(Ville)
+    admin.site.register(Commune)
 
 class LieuAdmin(admin.ModelAdmin):
     list = ('idLieu', 'nomLieu', 'descripLieu', 'exigence', 'faitHisto', 'produitArtis',
             'expressCourantes', 'longitude', 'latitude', 'H_ouverture', 'H_fermeture', 'climat','region',
-             'adminRegion', 'id_event' )
+             'commune','categorie','theme','transport' )
 
     admin.site.register(Lieu)
 
-class MoyenTransportAdmin(admin.ModelAdmin):
-    list = ('idTransport', 'typeTrans')
-
-    admin.site.register(MoyenTransport)
-
 class TransportAdmin(admin.ModelAdmin):
-    list = ('id_trans', 'id_moytrans', 'id_lieu', 'H_depart')
+    list = ('idTransport', 'typeTrans')
 
     admin.site.register(Transport)
 
+
 class EvenementAdmin(admin.ModelAdmin):
-    list = ('idEvent', 'nomEvent', 'descripEvent', 'dateEvent', 'H_debut', 'H_fin')
+    list = ('idEvent', 'nomEvent', 'descripEvent', 'dateEvent', 'H_debut', 'H_fin','id_lieu')
 
     admin.site.register(Evenement)
 
-"""class LocalEventAdmin(admin.ModelAdmin):
-    list = ('id_localEvent', 'id_event', 'id_lieu')
+class PhotoAdmin(admin.ModelAdmin):
+    list = ('photoId', 'image', 'lieuId', 'eventId')
 
-    admin.site.register(LocalEvent)"""
+    admin.site.register(Photo)
