@@ -20,3 +20,11 @@ input[type="file"] {
   height: 150px;
   object-fit: cover;
 }
+
+#add_images {
+  background-color: #c7d4d1;
+  color: #151517 ;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+}
