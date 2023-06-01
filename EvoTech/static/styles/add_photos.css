@@ -1,0 +1,22 @@
+.container {
+  margin-top: 10px;
+  position: relative;
+}
+
+input[type="file"] {
+  opacity: 0;
+  position: absolute;
+  z-index: -1;
+}
+
+#images {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+#images img {
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+}

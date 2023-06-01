@@ -55,7 +55,11 @@ class Commune(models.Model):
    def __str__(self) -> str:
         return (self.nomCommune)
 
-
+class Transport(models.Model):
+   idTransport = models.AutoField(primary_key=True)
+   typeTrans = models.CharField(max_length=100, default="")
+   def __str__(self) -> str:
+        return (str(self.typeTrans))
 
 
 class Lieu(models.Model):
@@ -70,13 +74,15 @@ class Lieu(models.Model):
     latitude = models.FloatField()
     H_ouverture = models.TimeField()
     H_fermeture = models.TimeField()
+      
+    categorie = models.ForeignKey(Categorie, on_delete=models.CASCADE, null=True, blank=True)
+    theme = models.ForeignKey(Theme, on_delete=models.CASCADE, null=True, blank=True)
 
-    #climat = models.ForeignKey(Meteo, on_delete=models.CASCADE, blank=True, null=True) 
-    
-    adminRegion = models.ForeignKey(User, on_delete=models.CASCADE, blank=True)
+    transport = models.ManyToManyField(Transport, blank=True)
+
+    region = models.ForeignKey(Region, on_delete=models.CASCADE, blank=True, null=True)
     commune = models.ForeignKey(Commune, on_delete=models.CASCADE, blank=True, null=True)
    
-    #id_event = models.ManyToManyField(Evenement, blank=True)
 
     def __str__(self) -> str:
         return (str(self.idLieu )) 
@@ -94,35 +100,17 @@ class Evenement(models.Model):
 
    def __str__(self) -> str:
         return (str(self.idEvent))
-   
 
-#Relation de l'association entre Lieu et MoyenTransport
-class Transport(models.Model):
-   id_trans = models.AutoField(primary_key=True)
-   
-   typeTrans = models.CharField(max_length=100, blank=True, null=True)
-   
-   id_lieu = models.ForeignKey(Lieu, on_delete=models.CASCADE, blank=True)
 
-   def __str__(self) -> str:
-        return (str(self.id_trans))
-   
-   
-"""class Appreciation(models.Model):
-   idApprec = models.AutoField(primary_key=True)
-   commentaire = models.CharField(max_length=100)
-   id_lieu = models.ForeignKey(Lieu, on_delete=models.CASCADE)
-   id_user = models.ForeignKey(User, on_delete=models.CASCADE)
-   #+ feedback with stars ça dépend li yimplementih
-   def __str__(self) -> str:
-        return (str(self.idApprec))
+class Photo(models.Model):
+    photoId = models.AutoField(primary_key=True)
+    image = models.ImageField(upload_to='static/images', default = '')
+    lieuId= models.ForeignKey(Lieu, on_delete=models.CASCADE , null=True, related_name='photos', blank=True)
+    eventId = models.ForeignKey(Evenement, on_delete=models.CASCADE , null=True, related_name='images')
 
-class Notification(models.Model):
-   idNotif = models.AutoField(primary_key=True)
-   contenu = models.CharField(max_length=100)
-   emetteur = models.ForeignKey(User, on_delete=models.CASCADE)
-   destinataire = models.ForeignKey(User, on_delete=models.CASCADE)
-   #+ ça dépend li yimplementih
-   def __str__(self) -> str:
-        return (str(self.idNotif))
-"""
+    def __str__(self) -> str:
+          return (str(self.image))
+  
+   
+   
+   

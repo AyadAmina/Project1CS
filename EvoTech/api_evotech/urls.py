@@ -20,6 +20,7 @@ urlpatterns = [
     
     path('login/admin/AdminRegionalPage/<int:user_id>/AddTransport', views.add_transport, name='add_transport'),
 
-   
+    path('save-photos/', views.save_photos, name='save_photos'),
+    #path('add-photos/', views.add_photos, name='add_photos'),
   
 ]

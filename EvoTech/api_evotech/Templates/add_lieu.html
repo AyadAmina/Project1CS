@@ -14,6 +14,7 @@
 
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
     <link rel="stylesheet" href="{% static 'styles/map.css' %}"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'styles/add_photos.css' %}">
     
 
 </head>
@@ -220,7 +221,7 @@
                             <div class="card-body">
                                 <div class="basic-form">
                                     
-                                    <form method="POST">
+                                    <form method="POST"  id="upload-form" enctype="multipart/form-data" >
                                         {% csrf_token %}
                                         <div class="card">
                                             <div class="card-header">
@@ -228,11 +229,9 @@
                                             </div>
                                             <div class="card-body">
                                                 <div class="basic-form">
-                                                   
-                                                        <div class="form-group">
-                                                            <input type="text" class="form-control input-rounded" placeholder="Entrer le nom du lieu" name="nomLieu">
-                                                        </div>
-                                                    
+                                                    <div class="form-group">
+                                                        <input type="text" class="form-control input-rounded" placeholder="Entrer le nom du lieu" name="nomLieu">
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -242,13 +241,45 @@
                                             </div>
                                             <div class="card-body">
                                                 <div class="basic-form">
-                                                   
-                                                    
-                                                        <div class="form-group">
-                                                            <textarea class="form-control" rows="4" id="comment" name="descripLieu"></textarea>
-                                                          
+                                                    <div class="form-group">
+                                                        <textarea class="form-control" rows="4" id="comment" name="descripLieu"></textarea>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="card">
+                                            <div class="card-header">
+                                                <h4 class="card-title">Categorie</h4>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="basic-form">
+                                                        <div class="form-row align-items-center">
+                                                            <div class="col-auto my-1">
+                                                                <select class="custom-select mr-sm-2" id="inlineFormCustomSelect" name="categorie">
+                                                                    {% for categorie in categories %}
+                                                                        <option value="{{ categorie.idCategorie }}">{{ categorie.labelC }}</option>
+                                                                    {% endfor %}
+                                                                </select>
+                                                            </div>
                                                         </div>
-                                                   
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="card">
+                                            <div class="card-header">
+                                                <h4 class="card-title">Theme</h4>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="basic-form">
+                                                        <div class="form-row align-items-center">
+                                                            <div class="col-auto my-1">
+                                                                <select class="custom-select mr-sm-2" id="inlineFormCustomSelect" name="theme">
+                                                                    {% for theme in themes %}
+                                                                    <option value="{{ theme.idTheme }}">{{ theme.labelT }}</option>
+                                                                    {% endfor %}
+                                                                </select>
+                                                            </div>
+                                                        </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -258,18 +289,17 @@
                                             </div>
                                             <div class="card-body">
                                                 <div class="basic-form">
-                                                        <div class="form-row align-items-center">
-                                                            <div class="col-auto my-1">
-                                                                <select class="custom-select mr-sm-2" id="inlineFormCustomSelect" name="commune">
-                                                                    {% for option in form.commune.field.choices %}
-                                                                        <option value="{{ option.0 }}" {% if form.commune.value == option.0 %} selected {% endif %}>{{ option.1 }}</option>
-                                                                    {% endfor %}
-                                                                </select>
-                                                            </div>
+                                                    <div class="form-row align-items-center">
+                                                        <div class="col-auto my-1">
+                                                            <select class="custom-select mr-sm-2" id="inlineFormCustomSelect" name="commune">
+                                                                {% for option in form.commune.field.choices %}
+                                                                <option value="{{ option.0 }}" {% if form.commune.value == option.0 %} selected {% endif %}>{{ option.1 }}</option>
+                                                                {% endfor %}
+                                                            </select>
                                                         </div>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
                                         </div>
                                         <div class="card">
                                             <div class="card-header">
@@ -277,12 +307,9 @@
                                             </div>
                                             <div class="card-body">
                                                 <div class="basic-form">
-                                                   
-                                                    
-                                                        <div class="form-group">
-                                                            <input type="text" class="form-control input-rounded" placeholder="Entrer les exigences de ce lieu" name="exigence">
-                                                        </div>
-                                                    
+                                                    <div class="form-group">
+                                                        <input type="text" class="form-control input-rounded" placeholder="Entrer les exigences de ce lieu" name="exigence">
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -292,12 +319,9 @@
                                             </div>
                                             <div class="card-body">
                                                 <div class="basic-form">
-                                                    
-                                                        
-                                                        <div class="form-group">
-                                                            <textarea class="form-control" rows="4" id="comment" name="faitHisto" ></textarea>
-                                                        </div>
-                                                    
+                                                    <div class="form-group">
+                                                        <textarea class="form-control" rows="4" id="comment" name="faitHisto" ></textarea>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -307,9 +331,9 @@
                                             </div>
                                             <div class="card-body">
                                                 <div class="basic-form">
-                                                        <div class="form-group">          
-                                                            <input type="text" class="form-control input-rounded" placeholder="Entrer les produitArtis" name="produitArtis">
-                                                        </div> 
+                                                    <div class="form-group">
+                                                        <input type="text" class="form-control input-rounded" placeholder="Entrer les produitArtis" name="produitArtis">
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -319,15 +343,12 @@
                                             </div>
                                             <div class="card-body">
                                                 <div class="basic-form">
-                                           
-                                                        <div class="form-group">            
-                                                            <input type="text" class="form-control input-rounded" placeholder="Entrer les expressCourantes" name="expressCourantes">
-                                                        </div>
-                                                    
+                                                    <div class="form-group">
+                                                        <input type="text" class="form-control input-rounded" placeholder="Entrer les expressCourantes" name="expressCourantes">
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        
                                         <div class="card">
                                             <div class="card-header">
                                                 <h4 class="card-title">Spécifier le lieu sur le map :</h4>
@@ -336,40 +357,52 @@
                                                 <div class="basic-form">
                                                     <input type="text" class="form-control input-rounded" id="latitude" placeholder="latitude" name="longitude">
                                                     <input type="text" class="form-control input-rounded" id="longitude" placeholder="longitude" name="latitude">
-                                 
-                                                    <div id="map"></div>
-                                                    
+                                                    <div id="map" style="z-index: 0;"></div>
                                                 </div>
                                             </div>
                                         </div>
-                                        
-                                       
+                                        <div class="card">
+                                            <div class="card-header">
+                                                <h4 class="card-title">Moyens de transport :</h4>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="basic-form">
+                                                    {% for transport in transports %}
+                                                    <div class="form-check mb-2">
+                                                        <input class="form-check-input" type="checkbox" id="transport{{ transport.idTransport }}" name="transports" value="{{ transport.idTransport }}">
+                                                        <label class="form-check-label" for="transport{{ transport.idTransport }}">{{ transport.typeTrans }}</label>
+                                                    </div>
+                                                    {% endfor %}
+                                                </div>
+                                            </div>
+                                        </div>
                                         <div class="card">
                                             <div class="card-header">
                                                 <h4 class="card-title">Heure</h4>
                                             </div>
                                             <div class="card-body form-row">
-                                                
-                                                   
                                                 <div class="form-group col-md-6">
                                                     <label>Heure d'ouverture</label>
-                                                    <input type="time" class="form-control" name="H_ouverture" >
-                                                   
+                                                    <input type="time" class="form-control" name="H_ouverture">
                                                 </div>
-                                         
-                                            
-                                                
-                                            <div class="form-group col-md-6">
-                                                <label>Heure de fermeture</label>
-                                                <input type="time" class="form-control" name="H_fermeture">
-                                               
+                                                <div class="form-group col-md-6">
+                                                    <label>Heure de fermeture</label>
+                                                    <input type="time" class="form-control" name="H_fermeture">
+                                                </div>
                                             </div>
-                                        
+                                        </div>
+                                        <div class="container">
+                                            <input type="file" name="images" id="file-input" accept="image/png, image/jpeg" multiple />
+                                            <label for="file-input">Add Images</label>
+                                            <div id="images"></div>
                                         </div>
                                         
-                                        <button type="submit" class="btn btn-primary" href="{% url 'AdminRegionalPage' user_id %}">Add </button>
+                                        <button type="submit" class="btn btn-primary" href="{% url 'add_lieu' user_id %}">Add</button>
                                     </form>
+                                    
+                    
                                 </div>
+                                
                             </div>
                         </div>
                        
@@ -397,6 +430,7 @@
     
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="{% static 'js/map.js' %}"></script>
+    <script src="{% static 'js/add_photos.js' %}"></script>
 
 
 </body>

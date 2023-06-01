@@ -22,11 +22,13 @@ class LieuForm(ModelForm):
         super().__init__(*args, **kwargs)
         if communes is not None:
             self.fields['commune'].queryset = communes
+    
+    
 
     class Meta:
         model = Lieu
         fields = '__all__'
-        exclude = ['adminRegion']
+      
 
    
 
@@ -46,10 +48,6 @@ class EvenementForm(forms.ModelForm):
 
 
 class TransportForm(forms.ModelForm):
-    def __init__(self, *args, lieux=None, **kwargs):
-        super().__init__(*args, **kwargs)
-        if lieux is not None:
-            self.fields['id_lieu'].queryset = lieux
              
     class Meta:
         model = Transport

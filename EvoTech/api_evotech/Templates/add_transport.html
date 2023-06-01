@@ -250,7 +250,6 @@
                                 <ul aria-expanded="false">
                                     <li><a href="{% url 'add_lieu' user_id=user_id %}">Ajouter Lieu</a></li>
                                     <li><a href="{% url 'add_evenement' user_id=user_id %}">Ajouter événement</a></li>
-                                    
                                     <li><a href="{% url 'add_transport' user_id=user_id %}">Ajouter un transport</a></li>
                                 </ul>
                     </li>
@@ -312,34 +311,12 @@
                     <div class="col-xl-6 col-xxl-12">
                         <div class="card">
                             <div class="card-header">
-                                <h4 class="card-title">Ajouter un transport</h4>
+                                <h4 class="card-title">Ajouter un moyen de transport</h4>
                             </div>
                             <div class="card-body">
                                 <div class="basic-form">
-                                    <form method="POST" >
+                                    <form method="POST">
                                         {% csrf_token %}
-                                        
-                                        <div class="card">
-                                            <div class="card-header">
-                                                <h4 class="card-title">Lieu</h4>
-                                            </div>
-                                            <div class="card-body">
-                                                <div class="basic-form">
-                                               
-                                                        <div class="form-row align-items-center">
-                                                            <div class="col-auto my-1">
-                                                                <select class="custom-select mr-sm-2" id="inlineFormCustomSelect" name="id_lieu">
-                                                                    <!-- <option value="0">Choisir</option> -->
-                                                                    {% for option in form.id_lieu.field.choices %}
-                                                                        <option value="{{ option.0 }}" {% if form.id_lieu.value == option.0 %} selected {% endif %}>{{ option.1 }}</option>
-                                                                    {% endfor %}
-                                                                </select>
-                                                            </div>
-                                                        </div>
-                                                
-                                                </div>
-                                            </div>
-                                        </div>
                                         <div class="card">
                                             <div class="card-header">
                                                 <h4 class="card-title">Type </h4>
@@ -352,10 +329,8 @@
                                               
                                                 </div>
                                             </div>
-                                        </div>      
-                                     
-                                    
-                                        <button type="submit" class="btn btn-primary" href="{% url 'AdminRegionalPage' user_id %}">add</button>
+                                        </div>                        
+                                        <button type="submit" class="btn btn-primary" href="{% url 'AdminRegionalPage' user_id %}">Add</button>
                                     </form>
                                 </div>
                             </div>

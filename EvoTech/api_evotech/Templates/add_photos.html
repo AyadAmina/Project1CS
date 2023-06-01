@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+{% load static %}
+<head>
+  <title>Add Photos to Lieu</title>
+  <link rel="stylesheet" type="text/css" href="{% static 'styles/add_photos.css' %}">
+</head>
+<body>
+
+  <!-- Your HTML content here -->
+ 
+  <div class="container">
+    <form id="upload-form" method="POST" action="/save-photos/" enctype="multipart/form-data">
+        {% csrf_token %}
+        <input type="file" name="images" id="file-input" accept="image/png, image/jpeg" multiple />
+        <label for="file-input">add images</label>
+        <div id="images"></div>
+        <button type="submit">Save Images</button>
+    </form>
+  </div>
+
+ 
+
+  <script src="{% static 'js/add_photos.js' %}"></script>
+
+</body>
+</html>
+
+
+
+

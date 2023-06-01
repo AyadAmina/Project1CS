@@ -4,7 +4,11 @@ from django.template import loader
 from .models import *
 from .forms import *
 
-"""import secrets
+from django.shortcuts import render
+
+
+
+import secrets
 from faker import Faker
 
 def create_admin_regional(number_regions):
@@ -32,7 +36,7 @@ def link_region_adminregional(number_regions):
     region.adminRegion = User.objects.get(username=f"admin_user{i}")
     region.save()
     
-"""
+
 # Create your views here.
 def index(request):
   template = loader.get_template('index.html')
@@ -113,6 +117,29 @@ def userpage(request, user_id):
 
   return render(request, "userpage.html" ,{'user': user})
 
+import os
+
+def save_photos(request, lieu ,event):
+    if request.method == 'POST' and request.FILES.getlist('images'):
+        images = request.FILES.getlist('images')
+
+        for image in images:
+            photo = Photo(image=image, lieuId_id=lieu ,eventId=event )
+            photo.save()
+
+            # Get the file extension
+            _, file_extension = os.path.splitext(image.name)
+            # Generate a unique filename using the photoId
+            filename = f'photo_{photo.photoId}{file_extension}'
+
+            # Update the image field with the new filename
+            photo.image.name = filename
+            photo.save()
+
+            # Save the image to the desired location
+            with open(os.path.join('static/images', filename), 'wb+') as destination:
+                for chunk in image.chunks():
+                    destination.write(chunk)
 
 
 
@@ -121,33 +148,40 @@ def add_lieu(request, user_id):
     admin_region = User.objects.get(idUser=user_id)
     region = Region.objects.get(adminRegion= admin_region)
     communes = Commune.objects.filter(regionC=region)
+    transports = Transport.objects.all()
     
     if request.method == 'POST':
         form = LieuForm(request.POST, communes=communes)
+        
         if form.is_valid():
           lieu = form.save(commit=False)
-          
-          lieu.adminRegion = admin_region
-        
-          # still lieu.climat 
+          lieu.region = region
+       
+          lieu.save()
+          selected_transports = request.POST.getlist('transports')
+          lieu.transport.set(selected_transports)
+
           lieu.save()
 
-          return redirect('AdminRegionalPage',user_id)
+          save_photos(request,lieu.idLieu,None)
+          return redirect('add_lieu',user_id)
         
         else : 
-          error_message = 'Invalid form , whould you try again ?'
-          return render(request, 'page-register.html', {'error_message': error_message})  
+          
+          return render(request, 'page-register.html')  
     else:
         form = LieuForm(communes=communes)
-
 
     communes_choices = [(commune.idCommune, commune.nomCommune) for commune in communes]
     form.fields['commune'].choices = communes_choices
 
     context = {
        'form': form , 
-       'user_id' : user_id
-       }
+       'user_id' : user_id ,
+       'transports' : transports,
+       'categories' : Categorie.objects.all() ,
+       'themes' : Theme.objects.all()
+    }
     
     return render(request, 'add_lieu.html', context)
 
@@ -156,13 +190,17 @@ def add_lieu(request, user_id):
 
 def add_evenement(request, user_id):
     admin_region = User.objects.get(idUser=user_id)
-    lieux = Lieu.objects.filter(adminRegion=admin_region)
+    region = Region.objects.get(adminRegion= admin_region)
+    lieux = Lieu.objects.filter(region=region)
 
     if request.method == 'POST':
         form = EvenementForm(request.POST, lieux=lieux)
         if form.is_valid():
-            form.save()
-            return redirect('AdminRegionalPage',user_id)
+            event = form.save()
+  
+            save_photos(request,event.lieu.idLieu,event)
+
+            return redirect('add_evenement',user_id)
     else:
         form = EvenementForm(lieux=lieux)
     
@@ -172,6 +210,8 @@ def add_evenement(request, user_id):
     context = {
        'form': form ,
        'user_id' : user_id
+       
+
        }
     
     return render(request, 'add_evenement.html', context)
@@ -180,20 +220,14 @@ def add_evenement(request, user_id):
 
 
 def add_transport(request, user_id):
-    admin_region = User.objects.get(idUser=user_id)
-    lieux = Lieu.objects.filter(adminRegion=admin_region)
-
     if request.method == 'POST':
-        form = TransportForm(request.POST, lieux=lieux)
+        form = TransportForm(request.POST)
        
         if form.is_valid():
             form.save()
-            return redirect('AdminRegionalPage', user_id)
+            return redirect('add_transport', user_id)
     else:
-        form = TransportForm( lieux=lieux)
-      
-    lieux_choices = [(lieu.idLieu, lieu.nomLieu) for lieu in lieux]
-    form.fields['id_lieu'].choices = lieux_choices
+        form = TransportForm( )
 
 
     context = {

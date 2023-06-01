@@ -8,6 +8,11 @@ class MeteoAdmin(admin.ModelAdmin):
     admin.site.register(Meteo)
 
 
+class PhotoAdmin(admin.ModelAdmin):
+    list_display = ('photoId', 'image', 'lieuId', 'eventId')
+
+    admin.site.register(Photo)
+
 class ThemeAdmin(admin.ModelAdmin):
     list = ('idTheme', 'labelT')
 

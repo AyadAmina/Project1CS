@@ -10,6 +10,7 @@
     <link rel="icon" type="image/png" sizes="16x16" href="{% static 'images/favicon.png' %}">
     <!-- Custom Stylesheet -->
     <link href="{% static 'styles/style.css' %}" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{% static 'styles/add_photos.css' %}">
 
 </head>
 
@@ -316,7 +317,7 @@
                             </div>
                             <div class="card-body">
                                 <div class="basic-form">
-                                    <form method="POST">
+                                    <form method="POST"  id="upload-form" enctype="multipart/form-data" >
                                         {% csrf_token %}
                                         <div class="card">
                                             <div class="card-header">
@@ -363,6 +364,8 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        
+
                                         <div class="card">
                                             <div class="card-header">
                                                 <h4 class="card-title">Date</h4>
@@ -391,9 +394,14 @@
                                                     <input type="time" class="form-control" name="H_fin" >
                                                 </div>
                                             </div>
+                                            <div class="container">
+                                                <input type="file" name="images" id="file-input" accept="image/png, image/jpeg" multiple />
+                                                <label for="file-input">Add Images</label>
+                                                <div id="images"></div>
+                                            </div>
                                         </div>
                                         
-                                        <button type="submit" class="btn btn-primary" href="{% url 'AdminRegionalPage' user_id %}">Add</button>
+                                        <button type="submit" class="btn btn-primary" href="{% url 'add_evenement' user_id %}">Add</button>
                                     </form>
                                 </div>
                             </div>
@@ -442,6 +450,8 @@
     <script src="{% static 'vendor/global/global.min.js' %}" ></script>
     <script src="{% static 'js/quixnav-init.js' %}"></script>
     <script src="{% static 'js/custom.min.js' %}"></script>
+
+    <script src="{% static 'js/add_photos.js' %}"></script>
     
 </body>
 
