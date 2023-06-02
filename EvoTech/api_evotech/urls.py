@@ -9,7 +9,7 @@ urlpatterns = [
     path('testing', views.Test, name='Test'),
     path('Preferable/<int:id_user>/<int:id_lieu>/', views.favorite, name='favorite'),
     path('Notification/<int:id_event>/', views.notification, name='notificaion'),
-    path('notifications/',view=view_notifications,name='all notifications')
+    path('all_notifications/',view=view_notifications,name='all_notifications')
 ]
 
 

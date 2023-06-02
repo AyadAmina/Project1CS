@@ -55,6 +55,11 @@ class EvenementAdmin(admin.ModelAdmin):
 
     admin.site.register(Evenement)
 
+class NotificationAdmin(admin.ModelAdmin):
+    list = ('idNotif', 'user', 'event', 'seen', 'created_at')
+
+    admin.site.register(Notification)
+
 """class LocalEventAdmin(admin.ModelAdmin):
     list = ('id_localEvent', 'id_event', 'id_lieu')
 

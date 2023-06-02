@@ -93,20 +93,20 @@
                                                <!-- start notification-->
                                                <div class="dropdown-menu dropdown-menu-right">
                                                 <ul class="list-unstyled">
-                                                    {% for notification in notifications %}
+                                                    
                                                     <li class="media dropdown-item">
                                                         <!-- Display the notification details -->
                                                         <span class="success"><i class="ti-user"></i></span>
                                                         <div class="media-body">
                                                             <a href="#">
-                                                                <p><strong>{{ notification.idNotif }}</strong> has been added in<strong>{{ notification.event }}</strong> </p>
+                                                                <p><strong>{{event.nomEvent}}</strong>in<strong>{{lieu.nomLieu}}</strong> </p>
                                                             </a>
                                                         </div>
-                                                        <span class="notify-time">{{ notification.created_at }}</span>
+                                                        <span class="notify-time">{{ event.created_at }}</span>
                                                     </li>
-                                                    {% endfor %}
+                                                 
                                                 </ul>
-                                                <a class="all-notification" href="#">See all notifications <i class="ti-arrow-right"></i></a>
+                                                <a class="all-notification" href="{% url 'all_notifications' %}">See all notifications <i class="ti-arrow-right"></i></a>
                                                </div>
                                             
 
@@ -906,6 +906,34 @@
 
 
     <script src="../../static/js/dashboard/dashboard-1.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#load-more-link').on('click', function(e) {
+            e.preventDefault();
+            loadMoreNotifications();
+        });
+
+        function loadMoreNotifications() {
+            $.ajax({
+                url: '{% url "all_notifications" %}',
+                type: 'GET',
+                success: function(response) {
+                    // Append the new notifications to the container
+                    $('#notification-container ul').append(response.notifications);
+                    // Update the "See all notifications" link if needed
+                    if (!response.has_more) {
+                        $('#load-more-link').hide();
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.log(error);
+                }
+            });
+        }
+    });
+</script>
+
 
 </body>
 
