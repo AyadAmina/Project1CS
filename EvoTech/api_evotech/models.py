@@ -76,7 +76,8 @@ class Lieu(models.Model):
     
     def __str__(self) -> str:
         return self.nomLieu   
-    
+    def get_admin_id(self):
+        return self.adminRegion.idUser
 
 class Evenement(models.Model):
    idEvent = models.AutoField(primary_key=True)

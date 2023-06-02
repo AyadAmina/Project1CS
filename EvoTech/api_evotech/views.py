@@ -5,9 +5,9 @@ from django.template import loader
 from channels.generic.websocket import AsyncWebsocketConsumer
 import json
 from channels.db import database_sync_to_async
-
 from django.http import JsonResponse
-
+from django.shortcuts import get_object_or_404
+from django.contrib.auth.decorators import login_required
 
 class CommentConsumer(AsyncWebsocketConsumer):
     async def connect(self):
@@ -43,10 +43,10 @@ class CommentConsumer(AsyncWebsocketConsumer):
             text=comment
         )
         # Create a notification for the admin
-        lieu = Lieu.objects.get(pk=self.lieu_id)
-        admin_id = lieu.get_admin_id()
-        admin = User.objects.get(idUser=admin_id)
-        notification = Notification.objects.create(adminreg=admin, lieu=lieu.nomLieu,author=author)
+        lieu = await database_sync_to_async(Lieu.objects.get)(pk=self.lieu_id)
+        admin_id = await database_sync_to_async(lieu.get_admin_id)()
+        admin = await database_sync_to_async(User.objects.get)(idUser=admin_id)
+        notification =await database_sync_to_async( Notification.objects.create)(adminreg=admin, lieu=lieu.nomLieu,author=author)
 
         # Send the comment to the lieu group
         await self.channel_layer.group_send(
@@ -121,9 +121,7 @@ class AdminNotificationConsumer(AsyncWebsocketConsumer):
 
 
 
-from django.shortcuts import get_object_or_404
 
-from django.contrib.auth.decorators import login_required
 
 @login_required  # Restrict access to authenticated users
 def update_feedback(request):
@@ -164,7 +162,7 @@ def update_feedback(request):
 
 
 def retrieve_feedback(request):
-    print('hiiiiiiiiiiiiiiiiiiiiii')
+    
     if request.method == 'POST':
         lieu_id = request.POST.get('lieu_id')
         feedback = Feedback.objects.filter(lieu_id=lieu_id)
@@ -177,8 +175,7 @@ def retrieve_feedback(request):
             user_feedback = feedback.filter(user=request.user.id)
             if user_feedback.exists():
                 user_rating = user_feedback.first().rating
-        print('hiiiiiiiiiiiiiiiiiiiiiiiiii')
-        print(user_rating)
+
         return JsonResponse({
             'feedback': total_rating,
             'num_feedback': num_feedback,
