@@ -120,6 +120,14 @@ class Notification(models.Model):
 
     def __str__(self):
         return self.author
+class Feedback(models.Model):
+    user = models.CharField(max_length=100)
+    lieu = models.ForeignKey(Lieu, on_delete=models.CASCADE, related_name='feedbacks')
+    rating = models.IntegerField()
+ 
+
+    def __str__(self):
+        return f"Feedback: User - {self.user}, Lieu - {self.lieu.nomLieu}"
 
    
    

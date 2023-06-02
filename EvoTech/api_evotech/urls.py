@@ -4,7 +4,7 @@ from .views import CommentConsumer
 from django.urls import re_path
 
 websocket_urlpatterns = [
-    re_path(r'ws/lieu/(?P<event_id>\d+)/comments/$', CommentConsumer.as_asgi()),
+    re_path(r'ws/lieu/(?P<lieu_id>\d+)/comments/$', CommentConsumer.as_asgi()),
 ]
 
 urlpatterns = [
@@ -14,6 +14,7 @@ urlpatterns = [
     
     path('<int:lieu_id>/', views.lieu, name='lieu_detail'),
     path('update-feedback/', views.update_feedback, name='update_feedback'),
+    path('retrieve-feedback/', views.retrieve_feedback, name='retrieve_feedback'),
 
     
 ]

@@ -62,7 +62,12 @@ class CommentAdmin(admin.ModelAdmin):
 class NotificationAdmin(admin.ModelAdmin):
     list = ('adminreg', 'author', 'lieu', 'created_at','is_read')
 
-    admin.site.register(Notification)    
+    admin.site.register(Notification)   
+
+class FeedbackAdmin(admin.ModelAdmin):
+    list = ('user', 'lieu', 'rating', )
+
+    admin.site.register(Feedback) 
 
 """class LocalEventAdmin(admin.ModelAdmin):
     list = ('id_localEvent', 'id_event', 'id_lieu')

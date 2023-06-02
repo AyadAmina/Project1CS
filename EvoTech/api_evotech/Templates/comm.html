@@ -268,13 +268,39 @@ $('#customers-testimonials').trigger('add.owl.carousel', [commentElement]).trigg
     });
 </script>
 <script>
+  var lieuId = "{{ lieu.idLieu }}";  // Get the lieu ID from the template context
+
+  // Retrieve the user's feedback for the current lieu
+  $.ajax({
+    url: '/retrieve-feedback/',  // Replace with your Django URL for retrieving feedback
+    type: 'POST',
+    data: {
+      'lieu_id': lieuId
+    },
+    beforeSend: function(xhr, settings) {
+      xhr.setRequestHeader('X-CSRFToken', '{{ csrf_token }}');  // Include the CSRF token in the request headers
+    },
+    success: function(response) {
+      var feedback = response.feedback;
+      var numFeedback = response.num_feedback;
+      var userRating = response.user_rating;  // Use the user's rating from the response
+      $('.ratiing input').prop('checked', false);  // Uncheck all stars
+      if (userRating > 0) {
+        $('#star' + userRating).prop('checked', true);  // Check the star corresponding to the user's rating
+      }
+    },
+    error: function(error) {
+      // Handle the error if needed
+      console.log('Error retrieving feedback:', error);
+    }
+  });
+
   var ratingInputs = document.querySelectorAll('.ratiing input');
   ratingInputs.forEach(function(input) {
     input.addEventListener('change', function() {
       // Perform any necessary action upon rating selection
       var selectedRating = this.value;
       console.log('Selected rating:', selectedRating);
-      console.log('heloooooooooooooooooooooooooo*************');
       var lieuId = this.getAttribute('data-lieu-id');
       update_feedback(lieuId, selectedRating);
     });
@@ -307,6 +333,29 @@ $('#customers-testimonials').trigger('add.owl.carousel', [commentElement]).trigg
         for (var i = 1; i <= updatedStars; i++) {
           $('#star' + i).prop('checked', true);  // Check stars up to the updated rating
         }
+        $.ajax({
+          url: '/retrieve-feedback/',  // Replace with your Django URL for retrieving feedback
+          type: 'POST',
+          data: {
+            'lieu_id': lieuId
+          },
+          beforeSend: function(xhr, settings) {
+            xhr.setRequestHeader('X-CSRFToken', '{{ csrf_token }}');  // Include the CSRF token in the request headers
+          },
+          success: function(response) {
+            var feedback = response.feedback;
+            var numFeedback = response.num_feedback;
+            var userRating = response.user_rating;  // Use the user's rating from the response
+            $('.ratiing input').prop('checked', false);  // Uncheck all stars
+            if (userRating > 0) {
+              $('#star' + userRating).prop('checked', true);  // Check the star corresponding to the user's rating
+            }
+          },
+          error: function(error) {
+            // Handle the error if needed
+            console.log('Error retrieving feedback:', error);
+          }
+        });
       },
       error: function(error) {
         // Handle the error if needed
