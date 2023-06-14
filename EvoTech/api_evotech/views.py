@@ -53,6 +53,7 @@ def notification(request, id_event):
     return HttpResponse('Invalid request method.')
 
 #Afficher toutes les notifications 
+#how to send the object without rendering the page ?
 def view_notifications(request):
    # notifications = Notification.objects.filter(pk=request.user.id)
     notifications = Notification.objects.all()
