@@ -870,6 +870,7 @@ header .slider{
   .features-fav li .col-lg-2 .room_image img {
 	width: 90px;
 	height: 90px;
+	padding: 10px;
   }
   .delete-button {
 	position: absolute;
@@ -922,11 +923,11 @@ header .slider{
 	transform: scale(0.98);
 }
 .row .form{
-	margin-left: 5%;
+	margin-left: 10%;
 }
 .row .form .column{
 	display: flex;
-	column-gap: 15px;
+	column-gap: 150px;
 
 }
 .form .input-box {

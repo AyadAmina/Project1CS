@@ -39,15 +39,16 @@ def index(request):
 
 
 
+    
 def profile(request, id):
     user = User.objects.get(idUser=id)
     lieuxFavoris = Favoris.objects.filter(idUser=id)
-    
     
     if request.method == 'POST':
         nom = request.POST.get('nom')
         prenom = request.POST.get('prenom')
         nom_utilisateur = request.POST.get('nom_utilisateur')
+        password = request.POST.get('password')  # Add this line to get the password value
         
         if nom:
             user.nomUser = nom
@@ -55,13 +56,14 @@ def profile(request, id):
             user.prenomUser = prenom
         if nom_utilisateur:
             user.username = nom_utilisateur
+        if password:
+            user.password = password  # Update the user's password with the new value
         
         user.save()
-        # Optionally, you can redirect the user to a success page
+ 
         return redirect('profile', id=id)
     
     return render(request, 'my_profile.html', {'user': user, 'lieuxFavoris': lieuxFavoris})
-
 
 
 def delete_favoris(request, favoris_id):

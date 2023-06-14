@@ -191,10 +191,17 @@
 								<input type="text" name="prenom" placeholder="Votre Prénom" />
 							  </div>
 							</div>
-							<div class="input-box middle">
-							  <label>Nom D'utilisateur</label>
-							  <br>
-							  <input type="text" name="nom_utilisateur" placeholder="Votre Nom D'utilisateur"/>
+							<div class="column">
+								<div class="input-box middle">
+								  <label>Nom D'utilisateur</label>
+								  <br>
+								  <input type="text" name="nom_utilisateur" placeholder="Votre Nom D'utilisateur"/>
+								</div>
+								<div class="input-box middle">
+									<label>Mot de Passe</label>
+									<br>
+									<input type="password" name="password" placeholder="Votre Mot de Passe" />
+								</div>
 							</div>
 							<button type="submit">CONFIRMER</button>
 						  </form>
@@ -254,7 +261,7 @@
 									<span>
 										<a href="{% url 'index' %}">
 											<h3>{{ lieuFavoris.id_lieu.nomLieu }}</h3>
-											<p>{{ lieuFavoris.id_lieu.descripLieu }}</p>
+											<p>{{ lieuFavoris.id_lieu.region }}</p>
 										</a>
 									</span>
 									<a href="#" class="delete-button" onclick="deleteItem('{{ lieuxFavoris.id_favoris }}')"><i class="fas fa-trash-alt"></i></a>
