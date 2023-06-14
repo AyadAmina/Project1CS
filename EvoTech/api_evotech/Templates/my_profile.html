@@ -1,4 +1,4 @@
-{%load static%}
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,13 +8,15 @@
 <meta name="description" content="Travelix Project">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
-<link rel="stylesheet" type="text/css" href="../../static/styles/bootstrap4/bootstrap.min.css">
-<link href="../../static/plugins/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-<link rel="stylesheet" type="text/css" href="../../static/plugins/OwlCarousel2-2.2.1/owl.carousel.css">
-<link rel="stylesheet" type="text/css" href="../../static/plugins/OwlCarousel2-2.2.1/owl.theme.default.css">
-<link rel="stylesheet" type="text/css" href="../../static/plugins/OwlCarousel2-2.2.1/animate.css">
-<link rel="stylesheet" type="text/css" href="../../static/styles/profile_styles.css">
-<link rel="stylesheet" type="text/css" href="../../static/styles/profile_responsive.css">
+<link rel="stylesheet" type="text/css" href="{% static 'styles/bootstrap4/bootstrap.min.css' %}">
+<link href="{% static 'plugins/font-awesome-4.7.0/css/font-awesome.min.css' %}" rel="stylesheet" type="text/css">
+<link rel="stylesheet" type="text/css" href="{% static 'plugins/OwlCarousel2-2.2.1/owl.carousel.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'plugins/OwlCarousel2-2.2.1/owl.theme.default.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'plugins/OwlCarousel2-2.2.1/animate.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'styles/profile_styles.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'styles/profile_responsive.css' %}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
 </head>
 
 <body>
@@ -161,14 +163,16 @@
 				<label for="tab-1" class="tab-1">MODIFICATIONS</label>
 				<label for="tab-2" class="tab-2">PROFILE</label>
 				<label for="tab-3" class="tab-3">FAVORIS</label>
+				
 				<div class="slider">
-					
+					<!--the slider that helps moving from section to another 
+					(Modification, mon profile, favoris) the code is in the css file-->
 				</div>
 			</header>
 			<div class="cards-area">
 				<div class="cards">
 					<div class="row row-1">
-						<div class="pricing-details"> <!--MODIFICATIONS-->
+						<div class="card-content"> <!--MODIFICATIONS-->
 							<span >Mise à jour</span>
 							<p>Des informations</p>
 						</div>
@@ -205,7 +209,7 @@
 						
 					</div>
 					<div class="row ">
-						<div class="pricing-details">
+						<div class="card-content">
 							<span >Mon Profile</span>
 							<br>
 							<img src="../../static/images/user image.png" alt="">
@@ -221,45 +225,52 @@
 						
 					</div>
 					<div class="row ">
-						<div class="pricing-details">
-							<span >49</span>
-							<p>For Team collaboration</p>
+						<div class="card-content">
+							<span >Mes Lieux Favoris</span>
+							<p>Lieux Touristiques</p>
 						</div>
-						<ul class="features">
-							<!-- event -->
-							<div class="room">
-								{% for event in events %}
-								   <div class="col-lg-2">
-									   {% if event.images.all %}
-										   {% with first_image=event.images.first %}
-												<div class="room_image"><img src="{{first_image.image.url}}" alt="Photo"></div>
-										   {% endwith %} 
-										   {% else %}
-												  <div class="offers_image_background">
-												  </br>
-													  <span style="font-size: larger;"><i class="fas fa-image" style="color: black;"></i> Pas De photos</span>
-												 </div>
-									 
-									   {% endif %}    
-								   </div>
-								   <div class="col-lg-7">
-									 </br>
-									   <div class="room_content">
-										   <div class="room_title">{{event.nomEvent}}</div>
-										   <div class="room_text">{{event.id_lieu}}</div>
-										   
-									   </div>
-								   </div>
-								   <div class="col-lg-3 text-lg-right">
-									   <div class="room_button">
-										   <div class="button book_button trans_200"><a href="{% url 'EventDetail' event.nomEvent event.idEvent %}">À propos<span></span><span></span><span></span></a></div>
-									   </div>
-								   </div>
-								 
-								{% endfor %}
-								 
+						<div class="outer-card">
+							<div class="inner-card">
+							  <div class="scrollable-content">
+								<ul class="features-fav">
+								  <!-- event -->
+								  {% for lieuFavoris in lieuxFavoris %}
+								  <li> 
+									<div class="col-lg-2">
+										{% if lieuFavoris.id_lieu.photos.all %}
+										  {% with first_image=lieuFavoris.id_lieu.photos.first %}
+											<div class="room_image">
+											  <img class="image-size" src="{{ first_image.image.url }}" alt="Photo">
+											</div>
+										  {% endwith %}
+										{% else %}
+										  <div class="offers_image_background">
+											</br>
+											<span style="font-size: larger;"><i class="fas fa-image" style="color: #264653;"></i></span>
+										  </div>
+										{% endif %}
+									  </div>
+									  
+									<span>
+										<a href="{% url 'index' %}">
+											<h3>{{ lieuFavoris.id_lieu.nomLieu }}</h3>
+											<p>{{ lieuFavoris.id_lieu.descripLieu }}</p>
+										</a>
+									</span>
+									<a href="#" class="delete-button" onclick="deleteItem('{{ lieuxFavoris.id_favoris }}')"><i class="fas fa-trash-alt"></i></a>
+									<div id="notification"></div>
+								  </li>
+								  {% empty %}
+								  <li>
+									<p>Votre liste de lieux favoris est vide.</p>
+								  </li>
+								  {% endfor %}
+								</ul>
+							  </div>
 							</div>
-						</ul>
+						  </div>
+						  
+						  
 					</div>
 				</div>
 			  </div>
@@ -422,12 +433,42 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 
 </div>
 
+ <script>
+	function deleteItem(favorisId) {
+	// Make an AJAX request to delete the item
+	fetch(`/delete-favoris/${favorisId}`, {
+		method: 'DELETE',
+		headers: {
+		'Content-Type': 'application/json',
+		'X-CSRFToken': '{{ csrf_token }}'
+		},
+	})
+	.then(response => {
+		if (response.ok) {
+		// Remove the deleted item from the DOM
+		const listItem = document.getElementById(`favoris-${favorisId}`);
+		if (listItem) {
+			listItem.remove();
+			alert('suppression réussite');
+		}
+		
+		}
+	})
+	.catch(error => {
+		console.error('Error:', error);
+	});
+	location.reload();
+	
+	}
+	
+</script>
 <script src="../../static/js/jquery-3.2.1.min.js"></script>
 <script src="../../static/styles/bootstrap4/popper.js"></script>
 <script src="../../static/styles/bootstrap4/bootstrap.min.js"></script>
 <script src="../../static/plugins/OwlCarousel2-2.2.1/owl.carousel.js"></script>
 <script src="../../static/plugins/easing/easing.js"></script>
 <script src="../../static/js/custom.js"></script>
+
 
 </body>
 

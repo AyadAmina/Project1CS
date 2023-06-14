@@ -60,6 +60,11 @@ class FavorisAdmin(admin.ModelAdmin):
 
     admin.site.register(Favoris)
 
+class PhotoAdmin(admin.ModelAdmin):
+    list = ('photoId', 'image', 'lieuId', 'eventId')
+
+    admin.site.register(Photo)
+
 """class LocalEventAdmin(admin.ModelAdmin):
     list = ('id_localEvent', 'id_event', 'id_lieu')
 

@@ -107,55 +107,9 @@
 
 					
 					</div>
-					<style>
-						.pagination {
-						  display: flex;
-						  justify-content: center;
-						  align-items: center;
-						  background-color: #FFFFFF; 
-						  padding: 10px 0;
-						  color: #2a9d8f; 
-						
-						}
-						.pagination .page-item {
-						  font-size: 20px; 
-						  margin: 0 5px;
-						  color: #2a9d8f; 
-						}
-						
-						.pagination .page-item.active .page-link {
-						  background-color: #fa9e1b; 
-						  border-color: #fa9e1b; 
-						  color: #2a9d8f;
-						}
-					  </style>
+					
 					  
-					{% if is_paginated %}
-					<nav class="pagination">
-					  <ul class="pagination">
-						{% if page_obj.has_previous %}
-						<li class="page-item">
-						  <a class="page-link" tabindex="-1" aria-disabled="true" style="color: #2a9d8f;"
-							href="/liste_event/?page={{ page_obj.previous_page_number }}">Précédente</a>
-						</li>
-						{% endif %}
-						{% for i in paginator.page_range %}
-						{% if i == page_obj.number%}
-						<li class="page-item active" aria-current="page">
-						  <a class="page-link" href="/liste_event/?page={{i}}" span class="visually-hidden" style="color: #2a9d8f;">{{i}}</span></a>
-						</li>
-						{% else %}
-						<li class="page-item"><a class="page-link" href="/liste_event/?page={{i}}" style="color: #2a9d8f;">{{i}}</a></li>
-						{% endif %}
-						{% endfor %}
-						{% if page_obj.has_next %}
-						<li class="page-item">
-						  <a class="page-link" tabindex="-1" href="/liste_event/?page={{ page_obj.next_page_number }}" style="color: #2a9d8f;">Suivante</a>
-						</li>
-						{% endif %}
-					  </ul>
-					</nav>
-					{% endif %}
+					
 				</div>
 				
 			</div>

@@ -2,9 +2,35 @@ from django.shortcuts import redirect, render
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.template import loader
-from EvoTech.api_evotech.models import Favoris
 
-from api_evotech.models import User
+from api_evotech.models import User,Favoris
+
+from django.shortcuts import render
+from django.shortcuts import render
+from django.http import HttpResponse, JsonResponse
+from django.template import loader
+from .models import *
+from .serializers import *
+from rest_framework import viewsets
+
+from django.shortcuts import get_object_or_404
+
+
+
+
+#serializers:
+class UserViewSet(viewsets.ModelViewSet):
+    serializer_class = UserSerializer
+    queryset = User.objects.all()
+
+class LieuViewSet(viewsets.ModelViewSet):
+    serializer_class = LieuSerializer
+    queryset = Lieu.objects.all()
+    
+class PhotoViewSet(viewsets.ModelViewSet):
+    serializer_class = PhotoSerializer
+    queryset = Photo.objects.all()
+
 
 # Create your views here.
 def index(request):
@@ -15,7 +41,8 @@ def index(request):
 
 def profile(request, id):
     user = User.objects.get(idUser=id)
-    lieuxFavoris = Favoris.objects.filter(user=user)
+    lieuxFavoris = Favoris.objects.filter(idUser=id)
+    
     
     if request.method == 'POST':
         nom = request.POST.get('nom')
@@ -33,8 +60,14 @@ def profile(request, id):
         # Optionally, you can redirect the user to a success page
         return redirect('profile', id=id)
     
-    return render(request, 'my_profile.html', {'user': user, 'lieuxFavoris': lieuxFavoris })
+    return render(request, 'my_profile.html', {'user': user, 'lieuxFavoris': lieuxFavoris})
 
-    
+
+
+def delete_favoris(request, favoris_id):
+    favoris = get_object_or_404(Favoris, id_favoris=favoris_id)
+    favoris.delete()
+    return HttpResponse(status=204)
+
 
 

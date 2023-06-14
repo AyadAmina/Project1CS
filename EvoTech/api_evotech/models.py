@@ -103,6 +103,16 @@ class Favoris(models.Model):
         return (str(self.id_favoris))
      
 
+class Photo(models.Model):
+    photoId = models.AutoField(primary_key=True)
+    image = models.ImageField(upload_to='static/images', default = '')
+    lieuId= models.ForeignKey(Lieu, on_delete=models.CASCADE , null=True, related_name='photos', blank=True)
+    eventId = models.ForeignKey(Evenement, on_delete=models.CASCADE , null=True, related_name='images')
+
+    def __str__(self) -> str:
+          return (str(self.image))
+
+
 """class Appreciation(models.Model):
    idApprec = models.AutoField(primary_key=True)
    commentaire = models.CharField(max_length=100)
