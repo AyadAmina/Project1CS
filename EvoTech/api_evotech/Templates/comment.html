@@ -12,32 +12,6 @@
 <link href="../../static/plugins/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 <link rel="stylesheet" type="text/css" href="../../static/styles/contact_responsive.css">
 <link rel="stylesheet" type="text/css" href="../../static/styles/main_styles.css">
-<style>
-  .ratesection{
-      display:flex;
-  justify-content: center; 
-  flex-wrap: wrap;
-  }
-.ratiing {
-  display: inline-block;
-}
-.ratiing input {
-  display: none;
-}
-.ratiing label {
-  float: right;
-  color:rgba(255, 255,255, 0.8);
-  margin-right: 25px;
-}
-.ratiing label:before {
-  content: "\2605";
-  font-size: 40px;
-}
-
-.ratiing input:checked ~ label {
-  color:#ef910a;
-}
-</style>
     <title>Document</title>
 </head>
 <body>
@@ -139,6 +113,7 @@
       </div>
     </section>
     <!-- END OF TESTIMONIALS -->
+    <!-- <-----------------------------------------------> 
     <h2>Rate us</h2>
     <section class="ratesection">
     <div class="ratiing">
@@ -154,6 +129,8 @@
       <label for="star1"></label>
     </div>
   </section>
+    <!-- <-----------------------------------------------> 
+
      <div class="contact_form_section">
 		<div class="container">
 			<div class="row">
@@ -202,6 +179,8 @@
         });
     });
 </script>
+    <!-- <-----------------------------------------------> 
+
 <script>
 var ratingInputs = document.querySelectorAll('.ratiing input');
   ratingInputs.forEach(function(input) {
@@ -211,6 +190,8 @@ var ratingInputs = document.querySelectorAll('.ratiing input');
       console.log('Selected rating:', selectedRating);
     });
   });</script>
+    <!-- <-----------------------------------------------> 
+
 
 </body>
 </html>
