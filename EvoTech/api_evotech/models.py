@@ -30,7 +30,7 @@ class User(models.Model):
    prenomUser = models.CharField(max_length=100)
    username = models.CharField(max_length=100)
    motdepasse = models.CharField(max_length=100)
-   profile = models.CharField(max_length=100)#capable ytbdl ça dépend la fonctionnalitée kifch ttkhdam
+   profile = models.CharField(max_length=100)
 
    def __str__(self) -> str:
         return (self.username)
@@ -92,8 +92,14 @@ class Photo(models.Model):
     photoId = models.AutoField(primary_key=True)
     image = models.ImageField(upload_to='static/images', default = '')
     lieuId= models.ForeignKey(Lieu, on_delete=models.CASCADE , null=True, related_name='photos', blank=True)
-    eventId = models.ForeignKey(Evenement, on_delete=models.CASCADE , null=True, related_name='images')
+    eventId = models.ForeignKey(Evenement, on_delete=models.CASCADE , null=True, related_name='images',blank=True)
 
     def __str__(self) -> str:
           return (str(self.image))
 
+class Favoris(models.Model):
+   id_favoris = models.AutoField(primary_key=True)
+   idUser = models.ForeignKey(User, on_delete=models.CASCADE)
+   id_lieu = models.ForeignKey(Lieu, on_delete=models.CASCADE)
+   def __str__(self) -> str:
+        return (str(self.id_favoris))

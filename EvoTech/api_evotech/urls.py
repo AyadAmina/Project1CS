@@ -44,6 +44,8 @@ urlpatterns = [
     path('login/admin/AdminRegionalPage/<int:user_id>/AddTransport', views.add_transport, name='add_transport'),
 
     path('save-photos/', views.save_photos, name='save_photos'),
+    path('my_profile/<int:id>', views.profile, name='profile'),
+    path('delete-favoris/<int:favoris_id>', views.delete_favoris, name='delete_favoris'),
     
 ]  
 if settings.DEBUG:

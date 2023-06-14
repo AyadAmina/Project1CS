@@ -55,3 +55,8 @@ class PhotoAdmin(admin.ModelAdmin):
     list = ('photoId', 'image', 'lieuId', 'eventId')
 
     admin.site.register(Photo)
+
+class FavorisAdmin(admin.ModelAdmin):
+    list = (' id_favoris', 'idUser', 'id_lieu')
+
+    admin.site.register(Favoris)

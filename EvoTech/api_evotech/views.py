@@ -6,6 +6,7 @@ from .serializers import *
 from rest_framework import viewsets
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from .forms import *
+from django.shortcuts import get_object_or_404
 
 import os
 
@@ -213,7 +214,7 @@ def EventDetail(request, slug, id):
     }
  return render(request, 'détail_event.html', context)
 
-
+#Account treatment
 import secrets
 from faker import Faker
 
@@ -439,3 +440,34 @@ def add_transport(request, user_id):
     return render(request, 'add_transport.html', context)
 
 
+#Profile treatment
+def profile(request, id):
+    user = User.objects.get(idUser=id)
+    lieuxFavoris = Favoris.objects.filter(idUser=id)
+    
+    if request.method == 'POST':
+        nom = request.POST.get('nom')
+        prenom = request.POST.get('prenom')
+        nom_utilisateur = request.POST.get('nom_utilisateur')
+        password = request.POST.get('password')  # Add this line to get the password value
+        
+        if nom:
+            user.nomUser = nom
+        if prenom:
+            user.prenomUser = prenom
+        if nom_utilisateur:
+            user.username = nom_utilisateur
+        if password:
+            user.password = password  # Update the user's password with the new value
+        
+        user.save()
+ 
+        return redirect('profile', id=id)
+    
+    return render(request, 'my_profile.html', {'user': user, 'lieuxFavoris': lieuxFavoris})
+
+#suppression
+def delete_favoris(request, favoris_id):
+    favoris = get_object_or_404(Favoris, id_favoris=favoris_id)
+    favoris.delete()
+    return HttpResponse(status=204)
