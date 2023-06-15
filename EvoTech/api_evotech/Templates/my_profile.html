@@ -239,7 +239,7 @@
 						<div class="outer-card">
 							<div class="inner-card">
 							  <div class="scrollable-content">
-								<ul class="features-fav">
+								<ul class="features-fav" >
 								  <!-- event -->
 								  {% for lieuFavoris in lieuxFavoris %}
 								  <li> 
@@ -264,7 +264,7 @@
 											<p>{{ lieuFavoris.id_lieu.region }}</p>
 										</a>
 									</span>
-									<a href="#" class="delete-button" onclick="deleteItem('{{ lieuxFavoris.id_favoris }}')"><i class="fas fa-trash-alt"></i></a>
+									<a href="#" class="delete-button" onclick="deleteItem('{{ lieuFavoris.id_favoris }}')"><i class="fas fa-trash-alt"></i></a>
 									<div id="notification"></div>
 								  </li>
 								  {% empty %}

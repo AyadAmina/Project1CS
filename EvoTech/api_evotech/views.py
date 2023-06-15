@@ -71,5 +71,3 @@ def delete_favoris(request, favoris_id):
     favoris.delete()
     return HttpResponse(status=204)
 
-
-
