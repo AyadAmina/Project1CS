@@ -14,6 +14,7 @@
 <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 </head>
 
+
 <body>
 
 <div class="super_container">
@@ -144,8 +145,8 @@
 						<div class="offers_sorting"style="margin-right: 30px;"  >
 							
 							<div class="form-group" style="margin-right: 30px;  width: 200px;" >
-
-							  <select class="form-control" style="color: black;" id="numRegion" name="region"  onchange="location=getSelectedRegion();">
+								<div class="search-label">Region</div>
+							  <select class="form-control" style="color: #929191; ; height:auto ;border-radius: 0;" id="numRegion" name="region"  onchange="location=getSelectedRegion();">
 								        <option value="" id="region-placeholder"disabled selected hidden>Filtrer Par Region</option>
 										<option value="">Tous</option>
 										{% for region in regions %}
@@ -162,8 +163,8 @@
 						<div class="offers_sorting" style="margin-right: 30px;"  >
 							
 							<div class="form-group"style="margin-right: 30px;  width: 200px;"  >
-
-							  <select class="form-control" style="color: black;" id="idCategorie" name="categorie"  onchange="location=getSelectedCatg();">
+								<div class="search-label">Catégorie</div>
+							  <select class="form-control" style="color: #929191; ; height:auto ;border-radius: 0;" id="idCategorie" name="categorie"  onchange="location=getSelectedCatg();">
 								        <option value="" id="catg-placeholder"disabled selected hidden>Filtrer Par Catégorie</option>
 										<option value="">Tous</option>
 										{% for categorie in categories %}
@@ -179,9 +180,9 @@
 						<div class="offers_sorting" style="margin-right: 30px;"  >
 							
 							<div class="form-group"style="margin-right: 30px; width: 200px;"  >
-
-							  <select class="form-control" style="color: black;" id="idTheme" name="theme"  onchange="location=getSelectedThm();">
-								        <option value="" id="thm-placeholder"disabled selected hidden>Filtrer Par Thème</option>
+								<div class="search-label">Théme</div>
+							  <select class="form-control" style="color: #929191; height:auto ;border-radius: 0; " id="idTheme" name="theme"  onchange="location=getSelectedThm();">
+								        <option value="" id="thm-placeholder"disabled selected hidden >Filtrer Par Thème</option>
 										<option value="">Tous</option>
 										{% for theme in themes %}
 										<option id="{{theme.idTheme}}"value="{{theme.idTheme}}">{{theme.labelT}}</option>
@@ -192,22 +193,22 @@
 							</div>
 						  
 						</div>
-							
+						<div>
+							<div class="search-label" style="margin-top: -18px;">Nom du lieu</div>
 						<form method="get" action="/liste_lieux/" class="d-flex" style="margin-left: 30px;" >
-						  <div style="display: flex; align-items: center;">
-                           <input class="form-control" style="height: 38px; width: 250px;" name="search" id="search" type="search" placeholder="Rechercher Par Nom Du Lieu"
+							<div style="display: flex; align-items: center;">	
+                           <input class="form-control" style=" height:auto ;border-radius: 0;width: 250px;margin-left: -44px;" name="search" id="search" type="search" placeholder="Rechercher Par Nom Du Lieu"
 						       aria-label="Search" required>
-						   
-                            <button class="btn button book_button" style="background-color: #fa9e1b;display: flex; align-items: center;"  type="submit"><i class="fas fa-search"></i></button>
-						 </div>
-						 
+						   <button class="btn button book_button" style=" background-color: #fa9e1b;border-radius: 50%;margin-top: -9px;margin-left: 26px;width: 45px;height: 45px;"  type="submit"><i class="fas fa-search"></i></button>
+						 </div>	 
 						</form>
+					</div>	
 
 				
 					</div>
 				</div>
 				
-				<div class="col-lg-12">
+				<div class="col-lg-12 mx-5">
 					<!-- Offers Grid -->
 
 					<div class="offers_grid" >
@@ -215,7 +216,7 @@
 						<!-- Offers Item -->
                        {% for lieu in lieux %}
 						<div class="offers_item rating_4">
-							<div class="row">
+							<div class="row " style="width:95%">
 								<div class="col-lg-1 temp_col"></div>
 								<div class="col-lg-3 col-1680-4">
 								
