@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -16,6 +17,22 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 <link rel="stylesheet" type="text/css" href="../../static/styles/single_listing_responsive.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/material-design-icons@3.0.1/iconfont/material-icons.css">
+<link rel="icon" type="image/png" sizes="16x16" href="{% static 'images/favicon.png' %}">
+<link href="{% static 'styles/style.css' %}" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.1.1/assets/owl.carousel.min.css" rel="stylesheet" />
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+<link rel="stylesheet" href="../../static/styles/comment.css">
+<link rel="stylesheet" type="text/css" href="../../static/styles/contact_responsive.css">
+<link rel="stylesheet" type="text/css" href="../../static/styles/main_styles.css">
+<style>
+.rating_1 {color: #ffeb8d;}
+.rating_2 {color: #fed46b;}
+.rating_3{color: #fbb53d;}
+.rating_4 {color: #fa9e1b;}
+.rating_5 {color: #ef910a;}
+</style>
+
 
 </head>
 
@@ -152,13 +169,65 @@
 							<div class="hotel_title_container d-flex flex-lg-row flex-column">
 								<div class="hotel_title_content">
 									<h1 class="hotel_title">{{lieu.nomLieu}}</h1>
-									<div class="rating_r rating_r_4 hotel_rating">
-										<i></i>
-										<i></i>
-										<i></i>
-										<i></i>
-										<i></i>
-									</div>
+									<div >
+										{% if lieu.feedback == 0 %}
+										  <div class="rating">
+											<i class="fa fa-star"></i>
+											<i class="fa fa-star"></i>
+											<i class="fa fa-star"></i>
+											<i class="fa fa-star"></i>
+											<i class="fa fa-star"></i>
+										  </div>
+										{% elif lieu.feedback < 1 %}
+										  <div class="rating">
+											<i class="fa fa-star"></i>
+											<i class="fa fa-star"></i>
+											<i class="fa fa-star"></i>
+											<i class="fa fa-star"></i>
+											<i class="fa fa-star"></i>
+										  </div>
+										{% elif lieu.feedback < 2 %}
+										  <div class="rating">
+											<i class="fa fa-star rating_1"></i>
+											<i class="fa fa-star"></i>
+											<i class="fa fa-star"></i>
+											<i class="fa fa-star"></i>
+											<i class="fa fa-star"></i>
+										  </div>
+										{% elif lieu.feedback < 3 %}
+										  <div class="rating">
+											<i class="fa fa-star rating_1"></i>
+											<i class="fa fa-star rating_2"></i>
+											<i class="fa fa-star"></i>
+											<i class="fa fa-star"></i>
+											<i class="fa fa-star"></i>
+										  </div>
+										{% elif lieu.feedback < 4 %}
+										  <div class="rating">
+											<i class="fa fa-star rating_1"></i>
+											<i class="fa fa-star rating_2"></i>
+											<i class="fa fa-star rating_3"></i>
+											<i class="fa fa-star"></i>
+											<i class="fa fa-star"></i>
+										  </div>
+										{% elif lieu.feedback < 5 %}
+										  <div class="rating">
+											<i class="fa fa-star rating_1"></i>
+											<i class="fa fa-star rating_2"></i>
+											<i class="fa fa-star rating_3"></i>
+											<i class="fa fa-star rating_4"></i>
+											<i class="fa fa-star"></i>
+										  </div>
+										{% else %}
+										  <div class="rating">
+											<i class="fa fa-star rating_1"></i>
+											<i class="fa fa-star rating_2"></i>
+											<i class="fa fa-star rating_3"></i>
+											<i class="fa fa-star rating_4"></i>
+											<i class="fa fa-star rating_5"></i>
+										  </div>
+										{% endif %}
+								   </div>
 									<div class="hotel_location">{{lieu.region}} , {{lieu.commune}}</div>
 								    </br>
 									<li class="hotel_icons_item" ><i class="fas fa-clock fa-2x" style="color:#fa9e1b;"></i></li>
@@ -189,10 +258,16 @@
 								<div class="hotel_review_container d-flex flex-column align-items-center justify-content-center">
 									<div class="hotel_review">
 										<div class="hotel_review_content">
+											{% if lieu.feedback >= 4 %}
 											<div class="hotel_review_title">very good</div>
-											<div class="hotel_review_subtitle">100 reviews</div>
+											{% elif lieu.feedback >= 3%}
+											<div class="hotel_review_title">good</div>
+											{% else %}
+											<div class="hotel_review_title">bad</div>
+											{%endif%}
+											<div class="hotel_review_subtitle">{{lieu.nmb_feedback}} reviews</div>
 										</div>
-										<div class="hotel_review_rating text-center">8.1</div>
+										<div class="hotel_review_rating text-center">{{lieu.feedback}}</div>
 									</div>
 								</div>
                                 {% endwith %}
@@ -272,6 +347,7 @@
 						</div>
 					    </br>
 				 		<div class="mb-4"></div>
+					  
 						<!-- Events -->
                         <div class="col-lg-12">
                             <div class="card">
@@ -318,6 +394,7 @@
                            
                         </div>
                         <div class="mb-4"></div>
+					 </br></br></br></br></br></br></br></br></br></br></br></br></br></br></br></br>
 					 <div class="row">
 						<!--Infos-->
 						<div class="col-md-6 mr-4 ">
@@ -345,7 +422,7 @@
 												<div class="pt-4">
 													
 													<p>{{lieu.faitHisto}}</p>
-													{% if lieu.faiHisto|length == 0 %}
+													{% if lieu.faitHisto|length == 0 %}
 													  <p>Pas de faits historiques</p>
 													{% endif %}
 												</div>
@@ -422,60 +499,75 @@
 						<!-- Reviews -->
 
 						<div class="reviews">
-							<div class="reviews_title">reviews</div>
-							<div class="reviews_container">
+							<div class="reviews_title" style="text-align: center;" >Commentaires</div>
+							
 
-								<!-- Review -->
-								<div class="review">
+							 <!-- End Stars -->
+								<!-- TESTIMONIALS -->
+								<section class="testimonials">
+									<div class="container">
+
 									<div class="row">
-										<div class="col-lg-1">
-											<div class="review_image">
-												<img src="../../static/images/review_1.jpg" alt="https://unsplash.com/@saaout">
+										<div class="col-sm-12">
+										<div id="customers-testimonials" class="owl-carousel">
+
+											<!--TESTIMONIAL 1 -->
+
+											{% for comment in lieu.comments.all %}
+											<div class="item">
+											<div class="shadow-effect">
+												<p>{{ comment.text }}.</p>
 											</div>
+											<div class="testimonial-name">{{ comment.author }}</div>
+											</div>
+											{% endfor %}
+
+
 										</div>
-										<div class="col-lg-11">
-											<div class="review_content">
-												<div class="review_title_container">
-													<div class="review_title">"We loved the services"</div>
-													<div class="review_rating">9.5</div>
-												</div>
-												<div class="review_text">
-													<p>Tetur adipiscing elit. Nullam eu convallis tortor. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus quis vulputate eros, iaculis consequat nisl. Nunc et suscipit urna. Integer elementum orci eu vehicula pretium. Donec bibendum tristique condimentum.</p>
-												</div>
-												<div class="review_name">Christinne Smith</div>
-												<div class="review_date">12 November 2017</div>
-											</div>
 										</div>
 									</div>
-								</div>
-
-								<!-- Review -->
-								<div class="review">
-									<div class="row">
-										<div class="col-lg-1">
-											<div class="review_image">
-												<img src="../../static/images/review_2.jpg" alt="Image by Andrew Robles">
-											</div>
-										</div>
-										<div class="col-lg-11">
-											<div class="review_content">
-												<div class="review_title_container">
-													<div class="review_title">"Nice staff and great location"</div>
-													<div class="review_rating">9.5</div>
-												</div>
-												<div class="review_text">
-													<p>Tetur adipiscing elit. Nullam eu convallis tortor. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus quis vulputate eros, iaculis consequat nisl. Nunc et suscipit urna. Integer elementum orci eu vehicula pretium. Donec bibendum tristique condimentum.</p>
-												</div>
-												<div class="review_name">Christinne Smith</div>
-												<div class="review_date">12 November 2017</div>
-											</div>
-										</div>
 									</div>
-								</div>
+								</section>
+									<!-- END OF TESTIMONIALS -->
 
-							</div>
-						</div>
-
+				        </div>
+				  <div class="reviews_title" style="text-align: center; ">Évaluez nous</div>
+				  <section class="ratesection">
+				  <div class="ratiing">
+					
+					<input type="radio" id="star5" name="ratiing" value="5" data-lieu-id="{{ lieu.idLieu }}">
+					<label for="star5"></label>
+					<input type="radio" id="star4" name="ratiing" value="4" data-lieu-id="{{ lieu.idLieu }}">
+					<label for="star4"></label>
+					<input type="radio" id="star3" name="ratiing" value="3" data-lieu-id="{{ lieu.idLieu }}">
+					<label for="star3"></label>
+					<input type="radio" id="star2" name="ratiing" value="2" data-lieu-id="{{ lieu.idLieu }}">
+					<label for="star2"></label>
+					<input type="radio" id="star1" name="ratiing" value="1" data-lieu-id="{{ lieu.idLieu }}">
+					<label for="star1"></label>
+				  </div>
+				</section>
+			  
+				   <div class="contact_form_section">
+					  <div class="container">
+						  <div class="row">
+							  <div class="col">
+								  <!-- Contact Form -->
+								  <div class="contact_form_container">
+									  <div class="contact_title" >Que pensez-vous ?</div>
+									  <form action="#" id="contact_form" class="contact_form text-center">
+							 {% csrf_token %}  
+										  <textarea id="contact_form_message" class="text_field contact_form_message" name="message" rows="4" placeholder="Message" required="required" data-error="Please, write us a message."></textarea>
+										  <button type="submit" id="form_submit_button" class="form_submit_button button trans_200">Ajouter <span></span><span></span><span></span></button>
+									  </form>
+									    
+								 </div>
+			  
+							  </div>
+							   
+						  </div>
+					  </div>
+				  </div>
 						
 					</div>
 				</div>
@@ -635,6 +727,215 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 <script src="../../static/plugins/OwlCarousel2-2.2.1/owl.carousel.js"></script>
 <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&key=AIzaSyCIwF204lFZg1y4kPSIhKaHEXMLYxxuMhA"></script>
 <script src="../../static/js/single_listing_custom.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        var lieu_id = "{{ lieu.idLieu }}";
+        var name="{{name}}"
+        var wsPath = 'ws://' + window.location.host + '/ws/lieu/' + lieu_id + '/comments/';
+        var socket = new WebSocket(wsPath);
+
+        // When the WebSocket connection is open
+        socket.onopen = function (lieu) {
+            console.log('WebSocket connection opened.');
+        };
+ 
+        // When a new comment is received
+        socket.onmessage = function (lieu) {
+            var commentData = JSON.parse(lieu.data);
+            var comment = commentData.comment;
+            var author = commentData.author;
+
+// Update the comment section in your HTML template
+
+var commentElement = document.createElement('div');
+commentElement.className = 'item';
+
+var shadowEffect = document.createElement('div');
+shadowEffect.className = 'shadow-effect';
+var commentText = document.createElement('p');
+commentText.textContent = comment;
+shadowEffect.appendChild(commentText);
+
+var testimonialName = document.createElement('div');
+testimonialName.className = 'testimonial-name';
+testimonialName.textContent = author;
+
+commentElement.appendChild(shadowEffect);
+commentElement.appendChild(testimonialName);
+
+// Append the new comment to the comment section
+$('#customers-testimonials').trigger('add.owl.carousel', [commentElement]).trigger('refresh.owl.carousel');
+
+        };
+
+        // When the WebSocket connection is closed
+        socket.onclose = function (lieu) {
+            console.log('WebSocket connection closed.');
+        };
+
+        // When the comment form is submitted
+        $('#contact_form').submit(function (lieu) {
+            lieu.preventDefault();
+            var comment = $('#contact_form_message').val();
+            var author = $('#comment-author').val();
+            var commentData = {
+                'comment': comment,
+                'author': name
+            };
+            console.log(commentData);
+            // Send the comment data to the WebSocket
+            socket.send(JSON.stringify(commentData));
+
+            // Clear the comment form
+            $('#contact_form_message').val('');
+            
+        });
+    });
+</script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.1.1/owl.carousel.min.js"></script>
+    <script>
+    jQuery(document).ready(function($) {
+        "use strict";
+        //  TESTIMONIALS CAROUSEL HOOK
+        $('#customers-testimonials').owlCarousel({
+            loop: true,
+            center: true,
+            items: 3,
+            margin: 0,
+            autoplay: true,
+            dots:true,
+            autoplayTimeout: 8500,
+            smartSpeed: 450,
+            responsive: {
+              0: {
+                items: 1
+              },
+              768: {
+                items: 2
+              },
+              1170: {
+                items: 3
+              }
+            }
+        });
+    });
+</script>
+<script>
+  var lieuId = "{{ lieu.idLieu }}";  // Get the lieu ID from the template context
+
+  // Retrieve the user's feedback for the current lieu
+  $.ajax({
+    url: '/retrieve-feedback/',  // Replace with your Django URL for retrieving feedback
+    type: 'POST',
+    data: {
+      'lieu_id': lieuId
+    },
+    beforeSend: function(xhr, settings) {
+      xhr.setRequestHeader('X-CSRFToken', '{{ csrf_token }}');  // Include the CSRF token in the request headers
+    },
+    success: function(response) {
+      var feedback = response.feedback;
+      var numFeedback = response.num_feedback;
+      var userRating = response.user_rating;  // Use the user's rating from the response
+      $('.ratiing input').prop('checked', false);  // Uncheck all stars
+      if (userRating > 0) {
+        $('#star' + userRating).prop('checked', true);  // Check the star corresponding to the user's rating
+      }
+    },
+    error: function(error) {
+      // Handle the error if needed
+      console.log('Error retrieving feedback:', error);
+    }
+  });
+
+  var ratingInputs = document.querySelectorAll('.ratiing input');
+  ratingInputs.forEach(function(input) {
+    input.addEventListener('change', function() {
+      // Perform any necessary action upon rating selection
+      var selectedRating = this.value;
+      console.log('Selected rating:', selectedRating);
+      var lieuId = this.getAttribute('data-lieu-id');
+      update_feedback(lieuId, selectedRating);
+    });
+  });
+
+  function update_feedback(lieuId, rating) {
+    var csrftoken = getCookie('csrftoken');
+    // AJAX request to update the feedback value
+    $.ajax({
+      url: '/update-feedback/',  // Replace with your Django URL for updating feedback
+      type: 'POST',
+      data: {
+        'lieu_id': lieuId,
+        'rating': rating
+      },
+      beforeSend: function(xhr, settings) {
+        // Add CSRF token to the request headers
+        xhr.setRequestHeader('X-CSRFToken', csrftoken);
+      },
+      success: function(response) {
+        // Handle the response if needed
+        console.log('Feedback updated successfully');
+
+        // Calculate the new feedback value and update the displayed stars
+        var feedback = response.feedback;
+        var numFeedback = response.num_feedback;
+        var updatedFeedback = (feedback * numFeedback + parseInt(rating)) / (numFeedback + 1);
+        var updatedStars = Math.round(updatedFeedback);
+        $('.ratiing input').prop('checked', false);  // Uncheck all stars
+        for (var i = 1; i <= updatedStars; i++) {
+          $('#star' + i).prop('checked', true);  // Check stars up to the updated rating
+        }
+        $.ajax({
+          url: '/retrieve-feedback/',  // Replace with your Django URL for retrieving feedback
+          type: 'POST',
+          data: {
+            'lieu_id': lieuId
+          },
+          beforeSend: function(xhr, settings) {
+            xhr.setRequestHeader('X-CSRFToken', '{{ csrf_token }}');  // Include the CSRF token in the request headers
+          },
+          success: function(response) {
+            var feedback = response.feedback;
+            var numFeedback = response.num_feedback;
+            var userRating = response.user_rating;  // Use the user's rating from the response
+            $('.ratiing input').prop('checked', false);  // Uncheck all stars
+            if (userRating > 0) {
+              $('#star' + userRating).prop('checked', true);  // Check the star corresponding to the user's rating
+            }
+          },
+          error: function(error) {
+            // Handle the error if needed
+            console.log('Error retrieving feedback:', error);
+          }
+        });
+      },
+      error: function(error) {
+        // Handle the error if needed
+        console.log('Error updating feedback:', error);
+      }
+    });
+    console.log('Updating feedback for lieu:', lieuId, 'with rating:', rating);
+  }
+
+  function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+      var cookies = document.cookie.split(';');
+      for (var i = 0; i < cookies.length; i++) {
+        var cookie = cookies[i].trim();
+        // Extract the CSRF token value
+        if (cookie.substring(0, name.length + 1) === (name + '=')) {
+          cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+          break;
+        }
+      }
+    }
+    return cookieValue;
+  }
+</script>
 
 </body>
 

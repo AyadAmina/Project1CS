@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import path, re_path
 from . import views
 from .views import *
 from rest_framework import routers
@@ -19,6 +19,9 @@ router.register(r'lieus', views.LieuViewSet, basename='lieu')
 router.register(r'transports', views.TransportViewSet, basename='transport')
 router.register(r'photos', views.PhotoViewSet, basename='photo')
 
+websocket_urlpatterns = [
+    re_path(r'ws/lieu/(?P<lieu_id>\d+)/comments/$', CommentConsumer.as_asgi()),
+]
 urlpatterns = [
     path('', views.index, name='index'),
     path('liste_lieux/', views.ListeDesLieux, name='ListeDesLieux'),
@@ -46,7 +49,14 @@ urlpatterns = [
     path('save-photos/', views.save_photos, name='save_photos'),
     path('my_profile/<int:id>', views.profile, name='profile'),
     path('delete-favoris/<int:favoris_id>', views.delete_favoris, name='delete_favoris'),
+
+    path('adm', views.adminnot, name='adm'),
+    path('comm/', views.comm, name='comm'),
     
+    path('<int:lieu_id>/', views.lieu, name='lieu_detail'),
+    path('update-feedback/', views.update_feedback, name='update_feedback'),
+    path('retrieve-feedback/', views.retrieve_feedback, name='retrieve_feedback'),
+   
 ]  
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)

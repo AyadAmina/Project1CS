@@ -36,7 +36,7 @@ class CommuneAdmin(admin.ModelAdmin):
 class LieuAdmin(admin.ModelAdmin):
     list = ('idLieu', 'nomLieu', 'descripLieu', 'exigence', 'faitHisto', 'produitArtis',
             'expressCourantes', 'longitude', 'latitude', 'H_ouverture', 'H_fermeture', 'climat','region',
-             'commune','categorie','theme','transport' )
+             'commune','categorie','theme','transport','feedback' ,'nmb_feedback' )
 
     admin.site.register(Lieu)
 
@@ -60,3 +60,19 @@ class FavorisAdmin(admin.ModelAdmin):
     list = (' id_favoris', 'idUser', 'id_lieu')
 
     admin.site.register(Favoris)
+
+class CommentAdmin(admin.ModelAdmin):
+    list = ('lieu', 'author', 'text', 'created_at')
+
+    admin.site.register(Comment)
+
+class NotificationAdmin(admin.ModelAdmin):
+    list = ('adminreg', 'author', 'lieu', 'created_at','is_read')
+
+    admin.site.register(Notification)   
+
+class FeedbackAdmin(admin.ModelAdmin):
+    list = ('user', 'lieu', 'rating', )
+
+    admin.site.register(Feedback) 
+

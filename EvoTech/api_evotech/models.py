@@ -74,8 +74,12 @@ class Lieu(models.Model):
     categorie = models.ForeignKey(Categorie, on_delete=models.CASCADE,null=True, blank=True)
     theme = models.ForeignKey(Theme, on_delete=models.CASCADE, null=True, blank=True)
     transport = models.ManyToManyField(Transport, null=True, blank=True)
+    feedback=models.FloatField(default=0)
+    nmb_feedback=models.IntegerField(default=0)
     def __str__(self) -> str:
-        return self.nomLieu   
+        return self.nomLieu  
+    def get_admin_id(self):
+        return self.region.adminRegion.idUser
     
 class Evenement(models.Model):
    idEvent = models.AutoField(primary_key=True)
@@ -87,6 +91,8 @@ class Evenement(models.Model):
    id_lieu = models.ForeignKey(Lieu, on_delete=models.CASCADE, null=True, blank=True)
    def __str__(self) -> str:
         return (str(self.nomEvent))
+   def get_admin_id(self):
+        return self.id_lieu.region.adminRegion
 
 class Photo(models.Model):
     photoId = models.AutoField(primary_key=True)
@@ -103,3 +109,25 @@ class Favoris(models.Model):
    id_lieu = models.ForeignKey(Lieu, on_delete=models.CASCADE)
    def __str__(self) -> str:
         return (str(self.id_favoris))
+   
+class Comment(models.Model):
+    lieu = models.ForeignKey(Lieu, on_delete=models.CASCADE, related_name='comments')
+    author = models.CharField(max_length=100)
+    text = models.CharField(max_length=1000)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.text
+class Notification(models.Model):
+    adminreg = models.ForeignKey(User, on_delete=models.CASCADE)
+    lieu =models.CharField(max_length=1000,default='')
+    author=models.CharField(max_length=100,default='')
+    created_at = models.DateTimeField(auto_now_add=True)
+    is_read = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.author
+class Feedback(models.Model):
+    user = models.CharField(max_length=100)
+    lieu = models.ForeignKey(Lieu, on_delete=models.CASCADE, related_name='feedbacks')
+    rating = models.IntegerField()
