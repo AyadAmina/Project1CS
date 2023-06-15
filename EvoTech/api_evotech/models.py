@@ -131,3 +131,41 @@ class Favoris(models.Model):
    
     def __str__(self) -> str:
         return (str(self.idFav))
+
+
+class HistoryEvent(models.Model):
+    idHis = models.AutoField(primary_key=True)
+    Iduser = models.ForeignKey(User, on_delete=models.CASCADE)
+    timestamp = models.DateTimeField(auto_now_add=True)
+    Idevent = models.ForeignKey(Evenement, on_delete=models.CASCADE)
+    STATUS_CHOICES = (
+      ('Ajout Evenemen', 'Ajout Evenement'),
+      ('Modification Evenement', 'Modification Evenement'),
+      ('Suppression Evenement', 'Suppression Evenement'),
+      ('Ajout lieu', 'Ajout lieu'),
+      ('Modification lieu', 'Modification lieu'),
+      ('Suppression lieu', 'Suppression lieu'),
+        )
+    Type_Action = models.CharField(max_length=100, choices=STATUS_CHOICES)
+
+   
+    def __str__(self) -> str:
+        return (str(self.idHis))
+
+class HistoryLieu(models.Model):
+    idHis = models.AutoField(primary_key=True)
+    Iduser = models.ForeignKey(User, on_delete=models.CASCADE)
+    timestamp = models.DateTimeField(auto_now_add=True)
+    Idlieu = models.ForeignKey(Lieu, on_delete=models.CASCADE)
+    STATUS_CHOICES = (
+      ('Ajout lieu', 'Ajout lieu'),
+      ('Modification lieu', 'Modification lieu'),
+      ('Suppression lieu', 'Suppression lieu'),
+        )
+    Type_Action = models.CharField(max_length=100, choices=STATUS_CHOICES)
+
+   
+    def __str__(self) -> str:
+        return (str(self.idHis))
+
+

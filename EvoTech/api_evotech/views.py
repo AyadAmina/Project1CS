@@ -6,7 +6,7 @@ from django.contrib import messages
 from django.core.mail import send_mail
 from django.conf import settings
 from django.http import JsonResponse
-from .models import Favoris, Lieu, User, Evenement, Notification 
+from .models import Favoris, Lieu, User, Evenement, Notification, HistoryEvent, HistoryLieu
 from django.shortcuts import get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
 
@@ -53,9 +53,71 @@ def notification(request, id_event):
     return HttpResponse('Invalid request method.')
 
 #Afficher toutes les notifications 
-#how to send the object without rendering the page ?
+#how to send theobject without rendering the page ?
 def view_notifications(request):
   
    # notifications = Notification.objects.filter(pk=request.user.id)
     notifications = Notification.objects.all()
     return render(request, 'notifications.html', {'notifications': notifications})
+
+#---------------------------- Historique des evenments -------------------------------#
+#Notifier AdminCentral Ajout Event
+def History_Ajout_Event(request, id_event):
+ if request.method == 'POST':
+    #current_user_id = request.user.id
+    event = get_object_or_404(Evenement, pk=id_event)
+    user = get_object_or_404(User, pk=1)
+    history= HistoryEvent(Iduser=user, Idevent=event, Type_Action="Ajout Evenement")
+    history.save()
+    return JsonResponse({"message": " added Historyuccessfully."})
+
+#Notifier AdminCentral  Modifier Event
+def History_Modifier_Event(request, id_event):
+ if request.method == 'POST':
+    #current_user_id = request.user.id
+    event = get_object_or_404(Evenement, pk=id_event)
+    user = get_object_or_404(User, pk=1)
+    history= HistoryEvent(Iduser=user, Idevent=event, Type_Action="Modification Evenement")
+    history.save()
+    return JsonResponse({"message": " added Historyuccessfully."})
+
+#Notifier AdminCentral  Supprimer Event
+def History_Supprimer_Event(request, id_event):
+ if request.method == 'POST':
+    #current_user_id = request.user.id
+    event = get_object_or_404(Evenement, pk=id_event)
+    user = get_object_or_404(User, pk=1)
+    history= HistoryEvent(Iduser=user, Idevent=event, Type_Action="Suppression Evenement")
+    history.save()
+    return JsonResponse({"message": " added Historyuccessfully."})
+
+#-------------------------------- Historique Lieu ------------------------------------------------------#
+#Notifier AdminCentral Ajout Lieu
+def History_Ajout_Lieu(request, id_lieu):
+ if request.method == 'POST':
+    #current_user_id = request.user.id
+    lieu = get_object_or_404(Lieu, pk=id_lieu)
+    user = get_object_or_404(User, pk=1)
+    history= HistoryLieu(Iduser=user, Idlieu=lieu, Type_Action="Ajout lieu")
+    history.save()
+    return JsonResponse({"message": " added Historyuccessfully."})
+
+#Notifier AdminCentral  Modifier Lieu
+def History_Modifier_Lieu(request, id_lieu):
+ if request.method == 'POST':
+    #current_user_id = request.user.id
+    lieu = get_object_or_404(Lieu, pk=id_lieu)
+    user = get_object_or_404(User, pk=1)
+    history= HistoryLieu(Iduser=user, Idlieu=lieu, Type_Action="Modification lieu")
+    history.save()
+    return JsonResponse({"message": " added Historyuccessfully."})
+
+#Notifier AdminCentral  Supprimer Lieu
+def History_Supprimer_Lieu(request, id_lieu):
+ if request.method == 'POST':
+    #current_user_id = request.user.id
+    lieu = get_object_or_404(Lieu, pk=id_lieu)
+    user = get_object_or_404(User, pk=1)
+    history=HistoryLieu(Iduser=user, Idlieu=lieu, Type_Action="Suppression lieu")
+    history.save()
+    return JsonResponse({"message": " added Historyuccessfully."})
