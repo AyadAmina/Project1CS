@@ -51,14 +51,24 @@ def notification(request, id_event):
         
     
     return HttpResponse('Invalid request method.')
-
-#Afficher toutes les notifications 
-#how to send theobject without rendering the page ?
-def view_notifications(request):
   
-   # notifications = Notification.objects.filter(pk=request.user.id)
+   #Afficher toutes les notifications
+def view_notifications(request):
     notifications = Notification.objects.all()
-    return render(request, 'notifications.html', {'notifications': notifications})
+    # notifications = Notification.objects.filter(pk=request.user.id)
+    notifications_data = []
+
+    for notification in notifications:
+        event = get_object_or_404(Evenement, pk=notification.event_id)
+        lieu = get_object_or_404(Lieu, pk=event.lieu_id)
+        notification_data = {
+            'nomEvent': event.nomEvent,
+            'nomLieu': lieu.nomLieu,
+        }
+        notifications_data.append(notification_data)
+    print(notification_data)
+    return render(request, 'notifications.html', {'notifications': notifications_data})
+
 
 #---------------------------- Historique des evenments -------------------------------#
 #Notifier AdminCentral Ajout Event
