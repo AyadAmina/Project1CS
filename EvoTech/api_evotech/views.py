@@ -36,19 +36,26 @@ def favorite(request, id_user, id_lieu):
 
 #Envoyer notification 
 def notification(request, id_event):
-    if request.method == 'POST':
+    if request.method == 'GET':
         event = get_object_or_404(Evenement, pk=id_event)
+        lieu = get_object_or_404(Lieu, pk=event.lieu.idLieu)
+        print(lieu) 
         users = User.objects.all()
         for user in users:
             existing_notification = Notification.objects.filter(user=user, event=event, seen=True).exists()
             if not existing_notification:
                 notification = Notification.objects.create(user=user, event=event)
         
-        return HttpResponse('Notifications created successfully.')
+       
+        return render(request, 'notifications.html', {'event':event, 'lieu':lieu})
+        
     
     return HttpResponse('Invalid request method.')
 
 #Afficher toutes les notifications 
+#how to send the object without rendering the page ?
 def view_notifications(request):
+  
+   # notifications = Notification.objects.filter(pk=request.user.id)
     notifications = Notification.objects.all()
     return render(request, 'notifications.html', {'notifications': notifications})
