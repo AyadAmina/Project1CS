@@ -49,21 +49,12 @@ def notification(request, id_event):
                 notification = Notification.objects.create(user=user, event=event)
         
        
-        return render(request, 'notifications.html', {'created_at':notification.created_at,'event':event, 'lieu':lieu})
+        return render(request, 'notifications.html', {'event':event, 'lieu':lieu})
         
     
     return HttpResponse('Invalid request method.')
 
-#Afficher toutes les notifications 
-#how to send the object without rendering the page ?
-# def view_notifications(request):
-  
-#    # notifications = Notification.objects.filter(pk=request.user.id)
-#     notifications = Notification.objects.all()
-#     return render(request, 'notifications.html', {'notifications': notifications})
-
-
-########################
+#Afficher toutes les notifications
 def view_notifications(request):
     notifications = Notification.objects.all()
     notifications_data = []
@@ -79,10 +70,3 @@ def view_notifications(request):
     print(notification_data)
     return render(request, 'notifications.html', {'notifications': notifications_data})
 
-   # return JsonResponse({'notifications': notifications_data})
-    # notifications = Notification.objects.all()
-    # for notification in notifications:
-    #   event = get_object_or_404(Evenement, pk=notification.event)
-    #   lieu = get_object_or_404(Lieu, pk=event.lieu.idLieu)
-    # notifications_json = serialize('json', notifications)
-    # return JsonResponse({'notifications': notifications_json})
