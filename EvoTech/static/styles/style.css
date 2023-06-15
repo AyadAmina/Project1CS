@@ -12861,14 +12861,16 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
     min-height: 250px;
     width: 100%; }
   .photo-content .profile-photo {
-    bottom: -75px;
-    left: 100px;
+    bottom: -68px;
+    left: 30px;
     max-width: 150px;
     position: absolute; }
 
-.profile-info {
-  padding: 30px 20px;
-  background: #F7FAFC; }
+    .profile-info {
+      padding: 30px 20px;
+      background: #F7FAFC;
+      margin-left: 100PX;
+  }
   .profile-info h4 {
     color: #464a53 !important; }
   .profile-info h4.text-primary {
@@ -19403,4 +19405,11 @@ html[dir="rtl"] [direction="rtl"][data-sidebar-style="compact"]:not([data-layout
     [data-theme-version="dark"] .footer .copyright p {
       color: #fff; }
 
-/*# sourceMappingURL=style.css.map */
+.user-icon{
+  color:#2A9D8F;
+  font-size: 50px;
+}
+.profil-card{
+  width:1100px;
+  margin-left: -60px;
+}
