@@ -1240,10 +1240,7 @@ section
 	-o-transform: translateX(-50%);
 	transform: translateX(-50%);
 }
-.intro_center
-{
 
-}
 .intro_center h1
 {
 	font-size: 59px;
@@ -1314,10 +1311,6 @@ section
 8.1 CTA Slider
 *********************************/
 
-.cta_slider_container
-{
-
-}
 .cta_item
 {
 	padding-top: 75px;
@@ -1417,10 +1410,7 @@ section
 {
 	margin-bottom: 83px;
 }
-.offers_item
-{
 
-}
 .offers_image_container
 {
 	width: 100%;
@@ -1457,10 +1447,7 @@ section
 	line-height: 35px;
 	padding-left: 22px;
 }
-.offers_content
-{
-	
-}
+
 .offers_price
 {
 	display: inline-block;
@@ -1476,10 +1463,7 @@ section
 	color: #929191;
 	margin-left: 12px;
 }
-.offers_rating
-{
 
-}
 .offers_rating i::before
 {
 	font-size: 13px;
@@ -2121,10 +2105,7 @@ section
 {
 	height: 52px;
 }
-.footer_nav
-{
-	
-}
+
 .footer_nav_list
 {
 	font-size: 0px;
