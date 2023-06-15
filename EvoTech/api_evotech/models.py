@@ -131,6 +131,3 @@ class Favoris(models.Model):
    
     def __str__(self) -> str:
         return (str(self.idFav))
-
-
-       
