@@ -37,9 +37,33 @@ def link_region_adminregional(number_regions):
     region.save()
     
 
+def set_region_side():
+  regions = {
+    "Nord-Ouest": [13, 46, 31, 27, 22, 20, 29, 48, 2, 38, 14],
+    "Nord-Milieu": [42, 44, 26, 17, 51, 9, 16, 35, 15, 6, 34, 10, 28],
+    "Nord-Est": [18, 25, 21, 23, 36, 41, 24, 4, 19, 5, 40, 12, 7, 57, 43],
+    "Sud-Est": [39, 30, 33, 55, 56],
+    "Sud-Ouest": [45, 8, 38, 32, 37, 52],
+    "Sud-Milieu": [3, 32, 47, 11, 1, 53, 54, 50, 49, 58]
+  }
+ 
+  for i in range(1,59 ):
+    region = Region.objects.get(numRegion=i)
+    for cote, values in regions.items():
+        if i in values:
+            region.coteRegion = cote
+            break
+    region.save()
+  
+     
+  
+
+
+
 # Create your views here.
 def index(request):
   template = loader.get_template('index.html')
+
   return HttpResponse(template.render())
 
 
@@ -104,18 +128,64 @@ def register_touriste(request):
 
 
 def adminCentral_view(request): 
-     
-  return render(request, "admin_central_page.html")
+  user = User.objects.get( profile="Admin central")
+
+  if request.method == 'POST':
+        # Update the user information 
+        user.nomUser = request.POST.get('nomUser')
+        user.prenomUser = request.POST.get('prenomUser')
+        user.username = request.POST.get('username')
+
+        motdepasse = request.POST.get('motdepasse')
+        if motdepasse:
+            user.motdepasse = motdepasse
+
+        user.save()
+
+  context = {
+        'user': user,
+  }
+
+  return render(request, "admin_central_page.html",context)
+
 
 def adminRegional_view(request, user_id):
   user = User.objects.get( idUser=user_id)
+  region = Region.objects.get(adminRegion=user)
 
-  return render(request, "admin_regional_page.html",{'user': user})
+  if request.method == 'POST':
+        # Update the user information 
+        user.nomUser = request.POST.get('nomUser')
+        user.prenomUser = request.POST.get('prenomUser')
+        user.username = request.POST.get('username')
+
+        motdepasse = request.POST.get('motdepasse')
+        if motdepasse:
+            user.motdepasse = motdepasse
+
+        user.save()
+
+  context = {
+        'user': user,
+        'region' : region,
+  }
+
+  return render(request, "admin_regional_page.html",context)
+
+
+
 
 def userpage(request, user_id):
   user = User.objects.get( idUser=user_id)
+  context = {
+        'user': user,
+  }
+    
+  return render(request, "userpage.html" ,context)
 
-  return render(request, "userpage.html" ,{'user': user})
+
+
+
 
 import os
 

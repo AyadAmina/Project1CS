@@ -43,6 +43,8 @@ class Region(models.Model):
    nomRegion = models.CharField(max_length=100)
    adminRegion = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True)
 
+   coteRegion = models.CharField(max_length=100, blank=True, null=True)
+
    def __str__(self) -> str:
         return (self.nomRegion)
 
