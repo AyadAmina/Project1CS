@@ -45,6 +45,11 @@ class TransportAdmin(admin.ModelAdmin):
 
     admin.site.register(Transport)
 
+class ProduitsArtisAdmin(admin.ModelAdmin):
+    list = ('idProduit', 'nomProduit', 'prix', 'origine')
+
+    admin.site.register(ProduitsArtis)
+
 
 class EvenementAdmin(admin.ModelAdmin):
     list = ('idEvent', 'nomEvent', 'descripEvent', 'dateEvent', 'H_debut', 'H_fin','id_lieu')

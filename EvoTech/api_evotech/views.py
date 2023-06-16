@@ -1,6 +1,8 @@
 from django.shortcuts import render , redirect
 from django.http import HttpResponse, JsonResponse
 from django.template import loader
+
+from .admin import ProduitsArtisAdmin
 from .models import *
 from .serializers import *
 from rest_framework import viewsets
@@ -72,6 +74,7 @@ def ListeDesLieux(request):
   regions = Region.objects.all()
   categories = Categorie.objects.all()
   themes = Theme.objects.all()
+
 
   selected_region = request.GET.get('region', "")   
   selected_catg = request.GET.get('categorie', "")   
@@ -146,6 +149,7 @@ def LieuDetail(request, slug, id):
   events = Evenement.objects.filter(id_lieu=lieu)
   photos = Photo.objects.all()
   transports = lieu.transport.all()
+  produits = lieu.produits_artis.all()
   name=request.user.username
   transport_icons = {
         'Métro': 'fa-subway',
@@ -166,7 +170,8 @@ def LieuDetail(request, slug, id):
       'photos': photos,
       'events': events,
       'transports_with_icons': transports_with_icons,
-      'name': name
+      'name': name,
+      'produits': produits
   }
   return render(request, 'détail_lieu.html', context)
 
@@ -354,31 +359,34 @@ def save_photos(request, lieu ,event):
 
 def add_lieu(request, user_id):
     admin_region = User.objects.get(idUser=user_id)
-    region = Region.objects.get(adminRegion= admin_region)
+    region = Region.objects.get(adminRegion=admin_region)
     communes = Commune.objects.filter(regionC=region)
     transports = Transport.objects.all()
-    notification= Notification.objects.filter(adminreg=user_id)
-    
+    produits_artis = ProduitsArtis.objects.all()
+    notification = Notification.objects.filter(adminreg=user_id)
+
     if request.method == 'POST':
         form = LieuForm(request.POST, communes=communes)
-       
+
         if form.is_valid():
-          
-          lieu = form.save(commit=False)
-          lieu.region = region
-       
-          lieu.save()
-          selected_transports = request.POST.getlist('transport')
-          lieu.transport.set(selected_transports)
+            lieu = form.save(commit=False)
+            lieu.region = region
+            lieu.save()
+            
+            selected_transports = request.POST.getlist('transport')
+            lieu.transport.set(selected_transports)
 
-          lieu.save()
+           
+            selected_produits = request.POST.getlist('produits_artis')
+            lieu.produits_artis.set(selected_produits)
 
-          save_photos(request,lieu.idLieu,None)
-          return redirect('add_lieu',user_id)
+            lieu.save()
+
+            save_photos(request, lieu.idLieu, None)
+            return redirect('add_lieu', user_id)
         else:
-          print(form.errors)
-        
-         
+            print(form.errors)
+
     else:
         form = LieuForm(communes=communes)
 
@@ -386,15 +394,17 @@ def add_lieu(request, user_id):
     form.fields['commune'].choices = communes_choices
 
     context = {
-       'form': form , 
-       'user_id' : user_id ,
-       'transports' : transports,
-       'categories' : Categorie.objects.all() ,
-       'themes' : Theme.objects.all(),
-       'notification': notification
+        'form': form,
+        'user_id': user_id,
+        'transports': transports,
+        'categories': Categorie.objects.all(),
+        'themes': Theme.objects.all(),
+        'notification': notification,
+        'produits_artis':produits_artis
     }
-    
+
     return render(request, 'add_lieu.html', context)
+
 
 
 
@@ -447,6 +457,24 @@ def add_transport(request, user_id):
        }
     
     return render(request, 'add_transport.html', context)
+
+def add_produit(request, user_id):
+    if request.method == 'POST':
+        form = ProduitsArtisForm(request.POST)
+       
+        if form.is_valid():
+            form.save()
+            return redirect('add_produit', user_id)
+    else:
+        form = ProduitsArtisForm( )
+
+
+    context = {
+       'form': form , 
+       'user_id' : user_id
+       }
+    
+    return render(request, 'add_produit.html', context)
 
 
 #Profile treatment
@@ -658,3 +686,153 @@ def retrieve_feedback(request):
     else:
         return JsonResponse({'error': 'Invalid request method'})
 
+#lieux admin
+def ListeLieuxAdmin(request, user_id):
+   adminR = User.objects.get(idUser=user_id)
+   regionR = Region.objects.get(adminRegion=adminR)
+   lieux= Lieu.objects.filter(region=regionR)
+   context ={
+        'lieux': lieux,
+        'user_id': user_id
+     }
+   return render(request, 'meslieux.html', context)
+
+def update_lieu(request, user_id, lieu_id):
+    admin_region = User.objects.get(idUser=user_id)
+    region = Region.objects.get(adminRegion=admin_region)
+    communes = Commune.objects.filter(regionC=region)
+    transports = Transport.objects.all()
+    notification = Notification.objects.filter(adminreg=user_id)
+    produits_artis = ProduitsArtis.objects.all()
+
+    lieu = Lieu.objects.get(idLieu=lieu_id)  # Get the existing lieu object
+
+    if request.method == 'POST':
+        form = LieuForm(request.POST, instance=lieu, communes=communes)
+
+        if form.is_valid():
+            lieu = form.save(commit=False)
+            lieu.region = region
+            selected_transports = request.POST.getlist('transport')
+            lieu.transport.set(selected_transports)
+            selected_produits = request.POST.getlist('produits_artis')
+            lieu.produits_artis.set(selected_produits)
+            lieu.save()
+            save_photos(request, lieu.idLieu, None)
+           
+            return redirect('update_lieu', user_id, lieu_id)
+        else:
+            print(form.errors)
+    else:
+        form = LieuForm(instance=lieu, communes=communes)
+
+    communes_choices = [(commune.idComm, commune.nomComm) for commune in communes]
+    form.fields['commune'].choices = communes_choices
+
+    context = {
+        'form': form,
+        'user_id': user_id,
+        'lieu_id': lieu_id,  # Pass the lieu_id to the template
+        'transports': transports,
+        'categories': Categorie.objects.all(),
+        'themes': Theme.objects.all(),
+        'notification': notification,
+        'lieu': lieu,
+        'produits_artis': produits_artis
+    }
+
+    return render(request, 'modifier_lieu.html', context)
+
+def delete_lieu(request, lieu_id):
+    lieu = get_object_or_404(Lieu, idLieu=lieu_id)
+    lieu.delete()
+    return HttpResponse(status=204)
+
+#evenements admin
+def ListeEventsAdmin(request, user_id):
+   adminR = User.objects.get(idUser=user_id)
+   regionR = Region.objects.get(adminRegion=adminR)
+   lieux= Lieu.objects.filter(region=regionR)
+   events= Evenement.objects.filter(id_lieu__in=lieux)
+   context ={
+        'lieux': lieux,
+        'user_id': user_id,
+        'events': events
+     }
+   return render(request, 'mesevents.html', context)
+
+def update_event(request, user_id, event_id):
+ 
+    admin_region = User.objects.get(idUser=user_id)
+    region = Region.objects.get(adminRegion= admin_region)
+    lieux = Lieu.objects.filter(region=region)
+    event = Evenement.objects.get(idEvent=event_id)  # Get the existing event object
+    print("objet:",event)
+    if request.method == 'POST':
+        form = EvenementForm(request.POST, lieux=lieux, instance=event)
+        if form.is_valid():
+            event = form.save()
+            save_photos(request,event.id_lieu.idLieu,event)
+
+            return redirect('update_event',user_id, event_id)
+    else:
+        form = EvenementForm(lieux=lieux, instance=event)
+    
+    lieux_choices = [(lieu.idLieu, lieu.nomLieu) for lieu in lieux]
+    form.fields['id_lieu'].choices = lieux_choices
+    
+    context = {
+       'form': form ,
+       'user_id' : user_id,
+       'event_id': event_id,
+       'event': event
+       
+
+       }
+    
+    return render(request, 'modifier_event.html', context)
+
+def delete_event(request, event_id):
+    event = get_object_or_404(Evenement, idEvent=event_id)
+    event.delete()
+    return HttpResponse(status=204)
+
+#produits admin
+def ListeProduitsAdmin(request, user_id):
+   adminR = User.objects.get(idUser=user_id)
+   regionR = Region.objects.get(adminRegion=adminR)
+   lieux= Lieu.objects.filter(region=regionR)
+   produits = ProduitsArtis.objects.filter(lieu__in=lieux)
+   context ={
+        'lieux': lieux,
+        'user_id': user_id,
+        'produits': produits
+        
+     }
+   return render(request, 'mesproduits.html', context)
+
+def update_produit(request, user_id, produit_id):
+    produit = ProduitsArtis.objects.get(idProduit=produit_id)  # Get the existing produit object
+
+    if request.method == 'POST':
+        form = ProduitsArtisForm(request.POST, instance=produit)
+        if form.is_valid():
+            form.save()
+            return redirect('update_produit', user_id, produit_id)
+    else:
+        form = ProduitsArtisForm(instance=produit)
+
+    context = {
+        'form': form,
+        'user_id': user_id,
+        'produit_id': produit_id,
+        'produit': produit
+    }
+
+    return render(request, 'modifier_produit.html', context)
+
+
+def delete_produit(request, produit_id):
+    produit = get_object_or_404(ProduitsArtis, idProduit=produit_id)
+    produit.delete()
+    return HttpResponse(status=204)

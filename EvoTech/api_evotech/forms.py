@@ -53,6 +53,12 @@ class TransportForm(forms.ModelForm):
         model = Transport
         fields = '__all__'
 
+class ProduitsArtisForm(forms.ModelForm):
+             
+    class Meta:
+        model = ProduitsArtis
+        fields = '__all__'
+
 
 
 

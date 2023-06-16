@@ -54,6 +54,13 @@ class Transport(models.Model):
    typeTrans = models.CharField(max_length=100, default="")
    def __str__(self) -> str:
         return (str(self.typeTrans))
+class ProduitsArtis(models.Model):
+   idProduit = models.AutoField(primary_key=True)
+   nomProduit = models.CharField(max_length=100, default="")
+   prix = models.FloatField()
+   origine = models.CharField(max_length=1000, blank=True)
+   def __str__(self) -> str:
+        return (str(self.nomProduit))
 
 
    
@@ -64,6 +71,7 @@ class Lieu(models.Model):
     exigence = models.CharField(max_length=1000, blank=True)
     faitHisto = models.CharField(max_length=1000, blank=True)
     produitArtis = models.CharField(max_length=1000, default="", blank=True)
+    produits_artis = models.ManyToManyField(ProduitsArtis, null=True, blank=True)
     expressCourantes = models.CharField(max_length=1000, blank=True)
     longitude = models.FloatField()
     latitude = models.FloatField()
@@ -74,8 +82,8 @@ class Lieu(models.Model):
     categorie = models.ForeignKey(Categorie, on_delete=models.CASCADE,null=True, blank=True)
     theme = models.ForeignKey(Theme, on_delete=models.CASCADE, null=True, blank=True)
     transport = models.ManyToManyField(Transport, null=True, blank=True)
-    feedback=models.FloatField(default=0)
-    nmb_feedback=models.IntegerField(default=0)
+    feedback=models.FloatField(default=0, blank=True)
+    nmb_feedback=models.IntegerField(default=0, blank=True)
     def __str__(self) -> str:
         return self.nomLieu  
     def get_admin_id(self):
@@ -99,6 +107,7 @@ class Photo(models.Model):
     image = models.ImageField(upload_to='static/images', default = '')
     lieuId= models.ForeignKey(Lieu, on_delete=models.CASCADE , null=True, related_name='photos', blank=True)
     eventId = models.ForeignKey(Evenement, on_delete=models.CASCADE , null=True, related_name='images',blank=True)
+    produitId = models.ForeignKey(ProduitsArtis, on_delete=models.CASCADE , null=True, related_name='pictures',blank=True)
 
     def __str__(self) -> str:
           return (str(self.image))

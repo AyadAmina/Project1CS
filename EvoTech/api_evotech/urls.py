@@ -45,6 +45,7 @@ urlpatterns = [
     path('login/admin/AdminRegionalPage/<int:user_id>/AddEvenement', views.add_evenement, name='add_evenement'),
     
     path('login/admin/AdminRegionalPage/<int:user_id>/AddTransport', views.add_transport, name='add_transport'),
+    path('login/admin/AdminRegionalPage/<int:user_id>/AddProduit', views.add_produit, name='add_produit'),
 
     path('save-photos/', views.save_photos, name='save_photos'),
     path('my_profile/<int:id>', views.profile, name='profile'),
@@ -56,7 +57,16 @@ urlpatterns = [
     path('<int:lieu_id>/', views.lieu, name='lieu_detail'),
     path('update-feedback/', views.update_feedback, name='update_feedback'),
     path('retrieve-feedback/', views.retrieve_feedback, name='retrieve_feedback'),
-   
+
+    path('login/admin/AdminRegionalPage/<int:user_id>/meslieux/', views.ListeLieuxAdmin, name='ListeLieuxAdmin'),
+    path('login/admin/AdminRegionalPage/<int:user_id>/modifier_lieu/<int:lieu_id>', views.update_lieu, name='update_lieu'),
+    path('delete-lieu/<int:lieu_id>', views.delete_lieu, name='delete_lieu'),
+    path('login/admin/AdminRegionalPage/<int:user_id>/mesevents/', views.ListeEventsAdmin, name='ListeEventsAdmin'),
+    path('login/admin/AdminRegionalPage/<int:user_id>/modifier_event/<int:event_id>', views.update_event, name='update_event'),
+    path('delete-event/<int:event_id>', views.delete_event, name='delete_event'),
+    path('login/admin/AdminRegionalPage/<int:user_id>/mesproduits/', views.ListeProduitsAdmin, name='ListeProduitsAdmin'),
+    path('login/admin/AdminRegionalPage/<int:user_id>/modifier_produit/<int:produit_id>', views.update_produit, name='update_produit'),
+    path('delete-produit/<int:produit_id>', views.delete_produit, name='delete_produit'),
 ]  
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
