@@ -2016,10 +2016,10 @@ fieldset:disabled a.btn {
   border-color: #2a9d8f ; }
   .btn-primary:hover {
     color: #fff;
-    background-color: #4425cb;
-    border-color: #4123c0; }
+    background-color:rgba(38, 70, 83);
+    border-color:rgba(38, 70, 83); }
   .btn-primary:focus, .btn-primary.focus {
-    box-shadow: 0 0 0 0.2rem rgba(114, 88, 224, 0.5); }
+    box-shadow: 0 0 0 0.2rem rgba(38, 70, 83); }
   .btn-primary.disabled, .btn-primary:disabled {
     color: #fff;
     background-color: #2a9d8f ;
@@ -19231,3 +19231,19 @@ html[dir="rtl"] [direction="rtl"][data-sidebar-style="compact"]:not([data-layout
   flex:0 0 50%
   
 }
+
+/* LIST COMMENT  */
+.box{
+  color:black;
+  font-family: inherit;
+  font-size: inherit;
+}
+.box-title span{
+  color:#2a9d8f;
+  font-weight: 500;
+}
+.box-content{
+  border:1.9px solid #2a9d8f;
+  border-radius: 5px;
+}
+
