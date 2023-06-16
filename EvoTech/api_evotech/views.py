@@ -102,6 +102,7 @@ def Hist(request):
     print(History_data)
     return render(request, 'Historique.html', {'Histories': History_data})
 
+
 #---------------------------- Historique des evenments -------------------------------#
 #Notifier AdminCentral Ajout Event
 def History_Ajout_Event(request, id_event):

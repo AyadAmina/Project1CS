@@ -7,6 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>notification</title>
+    <title>notification</title>
     <!-- Favicon icon -->
     <link rel="icon" type="image/png" sizes="16x16" href="../../static/images/favicon.png">
     <link href="../../static/styles/style.css" rel="stylesheet">
@@ -55,6 +56,8 @@
 
 
 
+
+
         <div class="header">
             <div class="header-content">
                 <nav class="navbar navbar-expand">
@@ -69,6 +72,8 @@
                                                <div class="dropdown-menu dropdown-menu-right">
                                                 <ul class="list-unstyled" id="notificationList">
                                                   {% for notification in notifications %}
+                                                <ul class="list-unstyled" id="notificationList">
+                                                  {% for notification in notifications %}
                                                     <li class="media dropdown-item">
                                                         <span class="success"><i class="ti-user"></i></span>
                                                         <div class="media-body">
@@ -78,6 +83,8 @@
                                                         </div>
                                                        
                                                     </li>
+                                                    {% endfor %}
+                                                </ul>
                                                     {% endfor %}
                                                 </ul>
                                                     </div>
