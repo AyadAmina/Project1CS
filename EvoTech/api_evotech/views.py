@@ -12,7 +12,7 @@ from django.contrib.auth.decorators import login_required
 from channels.db import database_sync_to_async
 from channels.generic.websocket import AsyncWebsocketConsumer
 
-from django.db.models import Max
+from django.db.models import Max, Count
 
 import os
 
@@ -273,7 +273,7 @@ def set_region_side():
 
 
 def login(request):
-  
+  Top_10_lieu()
   form = LoginForm()
   
   if request.method == 'POST': 
@@ -508,7 +508,9 @@ def add_transport(request, user_id):
 
 
 
-def bestfeedback(request):
+def adminCentral_stats(request):
+
+    #bestfeedback cotés 
     labels = ['Nord-Ouest', 'Nord-Milieu', 'Nord-Est', 'Sud-Ouest', 'Sud-Milieu', 'Sud-Est']
 
     regions = []
@@ -527,24 +529,53 @@ def bestfeedback(request):
         max_feedback = lieux.aggregate(Max('feedback'))['feedback__max']
         max_feedback_by_cote[cote] = max_feedback
 
-    values = [value for value in max_feedback_by_cote.values() if value is not None]
+    cotes = labels
+    cote_feedback = [value for value in max_feedback_by_cote.values() if value is not None]
+    
+    # top 10 lieus 
+    top_10_lieux = Lieu.objects.order_by('-feedback')[:10].values('nomLieu', 'feedback')
+
+    lieu_names = []
+    feedback_values = []
+
+    for lieu in top_10_lieux:
+        lieu_names.append(lieu['nomLieu'])
+        feedback_values.append(lieu['feedback'])  
+
+    # Les 5 regions ayant max nombre d'event 
+    regions_with_events = Region.objects.annotate(num_events=Count('lieu__evenement')).order_by('-num_events')[:5]
+
+    region_names = [region.nomRegion for region in regions_with_events]
+    event_counts = [region.num_events for region in regions_with_events]
+
+
+    # Les 5 lieus choisit comme favoris  
+    top_lieux_with_favorites = Lieu.objects.annotate(num_favorites=Count('favoris')).order_by('-num_favorites')[:10]
+
+    lieu_favoris = [lieu.nomLieu for lieu in top_lieux_with_favorites]
+    favorites_counts = [lieu.num_favorites for lieu in top_lieux_with_favorites]   
 
 
     # Pass the data to the template 
 
     data = {
-        'labels': labels,
-        'values': values
+        'cotes': cotes,
+        'cote_feedback': cote_feedback, 
+
+        'lieu_names' : lieu_names,
+        'feedback_values' : feedback_values,
+        
+        'region_names' : region_names,
+        'event_counts' : event_counts,
+
+        'lieu_favoris' : lieu_favoris,
+        'favorites_counts' : favorites_counts
     }
+
     data_json = json.dumps(data)
 
-    return render(request, 'chart-chartjs.html', {'data_json': data_json})
+    return render(request, 'statistiques.html', {'data_json': data_json})
     
-
-def Top_10_lieu(request):
-
-    pass 
-
 
 
 

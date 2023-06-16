@@ -54,7 +54,7 @@ urlpatterns = [
          views.add_transport, name='add_transport'),
 
     path('save-photos/', views.save_photos, name='save_photos'),
-    path('chart1/', views.bestfeedback, name='chart'), 
+    path('statistiques/', views.adminCentral_stats, name='chart'), 
 
 
     path('my_profile/<int:id>', views.profile, name='profile'),
