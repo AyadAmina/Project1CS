@@ -7,7 +7,7 @@ urlpatterns = [
     path('', views.index, name='index'),
     # path('/api', include('CBVapp.urls')),
     path('testing', views.Test, name='Test'),
-    path('Hist/',view=views.Hist,name="Hist"),
+    path('History/',view=views.History,name="Hist"),
     path('Preferable/<int:id_user>/<int:id_lieu>/', views.favorite, name='favorite'),
     path('Notification/<int:id_event>/', views.notification, name='notificaion'),
     path('all_notifications/',view=views.view_notifications,name='all_notifications'),

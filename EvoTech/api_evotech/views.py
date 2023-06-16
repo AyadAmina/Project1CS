@@ -56,6 +56,7 @@ def notification(request, id_event):
 
 #Afficher toutes les notifications
 def view_notifications(request):
+ if request.method == 'GET':
     notifications = Notification.objects.all()
     notifications_data = []
 
@@ -69,8 +70,10 @@ def view_notifications(request):
         notifications_data.append(notification_data)
     print(notification_data)
     return render(request, 'notifications.html', {'notifications': notifications_data})
-
-def Hist(request):
+ 
+ return HttpResponse('Invalid request method.')
+def History(request):
+ if request.method == 'GET':
     HistEvent = HistoryEvent.objects.all()
     HistLieu = HistoryLieu.objects.all()
     History_data = []
@@ -116,7 +119,7 @@ def History_Ajout_Event(request, id_event):
 
 #Notifier AdminCentral  Modifier Event
 def History_Modifier_Event(request, id_event):
- if request.method == 'GET':
+ if request.method == 'POST':
     #current_user_id = request.user.id
     event = get_object_or_404(Evenement, pk=id_event)
     user = get_object_or_404(User, pk=1)
