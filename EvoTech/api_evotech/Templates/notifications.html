@@ -76,7 +76,7 @@
                                                                 <p><strong>{{notification.nomEvent}}</strong>has been added in<strong>{{notification.nomLieu}}</strong> </p>
                                                             </a>
                                                         </div>
-                                                        <!-- <span class="notify-time">{{created_at }}</span> -->
+                                                       
                                                     </li>
                                                     {% endfor %}
                                                 </ul>
@@ -110,38 +110,7 @@
 
 
 
-<script>
-function loadAllNotifications() {
-// Make an AJAX request to fetch all notifications
-fetch("{% url 'all_notifications' %}")
-.then(response => response.json())
-.then(data => {
-    print(data);
-// Process the received JSON data and update the notification list
-const notifications = data.notifications;
-const notificationList = document.getElementById("notificationList");
-// notificationList.innerHTML = ""; // Clear existing notifications
 
-notifications.forEach(notification => {
-const listItem = document.createElement("li");
-listItem.className = "media dropdown-item";
-listItem.innerHTML = `
-<span class="success"><i class="ti-user"></i></span>
-<div class="media-body">
-    <a href="#">
-    <p><strong>{{nomEvent}}</strong>added in<strong>{{nomLieu}}</strong> </p>
-    </a>
-</div>
-<span class="notify-time">{{ created_at }}</span>
-`;
-notificationList.appendChild(listItem);
-});
-})
-.catch(error => {
-console.log("Error fetching notifications:", error);
-});
-}
-</script>
 
 
 </body>
