@@ -72,21 +72,18 @@
                                                <div class="dropdown-menu dropdown-menu-right">
                                                 <ul class="list-unstyled" id="notificationList">
                                                   {% for notification in notifications %}
-                                                <ul class="list-unstyled" id="notificationList">
-                                                  {% for notification in notifications %}
                                                     <li class="media dropdown-item">
                                                         <span class="success"><i class="ti-user"></i></span>
                                                         <div class="media-body">
                                                             <a href="#">
-                                                                <p><strong>{{notification.nomEvent}}</strong>has been added in<strong>{{notification.nomLieu}}</strong> </p>
+                                                                <p><strong>{{notification.nomEvent}}</strong>has been added in <strong>{{notification.nomLieu}}</strong> </p>
                                                             </a>
                                                         </div>
                                                        
                                                     </li>
                                                     {% endfor %}
                                                 </ul>
-                                                    {% endfor %}
-                                                </ul>
+                                                   
                                                     </div>
                                                     <!-- end notification -->
 
