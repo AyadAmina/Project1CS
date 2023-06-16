@@ -9,9 +9,9 @@ function createPieChart(chartData) {
           labels: chartData.cotes,
           datasets: [{
               data: chartData.cote_feedback,
-              backgroundColor: ['#ff6384', '#36a2eb', '#ffce56', 'rgba(0, 171, 197, .9)',
-                  'rgba(0, 171, 197, .7)',
-                  'rgba(0, 171, 197, .5)'] // Sample colors
+              backgroundColor: ['rgba(38, 70, 83, 0.3)','rgba(38, 70, 83, 0.6)', 'rgba(38, 70, 83, 0.9)', 'rgba(233, 196, 106,.4)', 'rgba(233, 196, 106,.6)', 'rgba(233, 196, 106,.9)',
+                  
+                 ] // Sample colors
           }]
       }, 
       options: {
@@ -35,7 +35,7 @@ function createBarChart(chartData) {
         datasets: [{
           label: 'Feedback',
           data: chartData.feedback_values,
-          backgroundColor: ['#ff6384', '#36a2eb', '#ffce56', '#cc65fe', '#ff9800']
+          backgroundColor: ['#2a9d8f', 'rgb(233, 196, 106)', 'rgba(38, 70, 83, 0.9)', 'rgba(38, 70, 83, 0.5)', 'rgba(42, 157, 143,.6)']
         }]
       },
       options: {
@@ -69,7 +69,7 @@ function createPolarChart(chartData) {
         labels: chartData.region_names,
         datasets: [{
           data: chartData.event_counts,
-          backgroundColor: ['#ff6384', '#36a2eb', '#ffce56', '#cc65fe', '#ff9800']
+          backgroundColor: ['#2a9d8f', 'rgb(233, 196, 106)', 'rgba(38, 70, 83, 0.9)', 'rgba(38, 70, 83, 0.5)', 'rgba(42, 157, 143,.6)']
         }]
       },
       options: {
@@ -92,7 +92,7 @@ function createPolarChart(chartData) {
         datasets: [{
           label: 'Feedback',
           data: chartData.favorites_counts,
-          backgroundColor: ['#ff6384', '#36a2eb', '#ffce56', '#cc65fe', '#ff9800']
+          backgroundColor: ['#2a9d8f', 'rgb(233, 196, 106)', 'rgba(38, 70, 83, 0.9)', 'rgba(38, 70, 83, 0.5)', 'rgba(42, 157, 143,.6)']
         }]
       },
       options: {
