@@ -2016,10 +2016,10 @@ fieldset:disabled a.btn {
   border-color: #2a9d8f ; }
   .btn-primary:hover {
     color: #fff;
-    background-color: #4425cb;
-    border-color: #4123c0; }
+    background-color: rgba(38, 70, 83);
+    border-color: rgba(38, 70, 83) }
   .btn-primary:focus, .btn-primary.focus {
-    box-shadow: 0 0 0 0.2rem rgba(114, 88, 224, 0.5); }
+    box-shadow: 0 0 0 0.2rem rgba(38, 70, 83); }
   .btn-primary.disabled, .btn-primary:disabled {
     color: #fff;
     background-color: #2a9d8f ;
@@ -15377,6 +15377,13 @@ button {
     color: #454545;
     text-transform: capitalize;
     letter-spacing: 0.05em; }
+    .card-title-half {
+      font-size: 16px;
+      font-weight: 500;
+      color: #454545;
+      text-transform: capitalize;
+      letter-spacing: 0.05em; 
+      margin-bottom: 2px;}
     .card-title--large {
       font-size: 1.5rem; }
     .card-title--medium {

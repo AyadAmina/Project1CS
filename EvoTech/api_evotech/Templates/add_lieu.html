@@ -102,7 +102,7 @@
         <div class="quixnav">
             <div class="quixnav-scroll">
                 <ul class="metismenu" id="menu">
-                    <li class="nav-label first">Main Menu</li>
+                    <li class="nav-label first">Menu Principale</li>
 
                     <li class="nav-label">Formulaire</li>
                     <li><a class="has-arrow" href="javascript:void()" aria-expanded="false"><i
@@ -135,13 +135,13 @@
                                         {% csrf_token %}
                                         <div class="d-flex justify-content-center mb-5">
                                         <div class="d-flex align-items-center justify-content-between " style="width:50%">
-                                              <h4 class="card-title">Nom</h4>
+                                              <h4 class="card-title-half">Nom</h4>
                                             <input type="text"  class="form-control input-rounded mx-2" placeholder="Entrer le nom du lieu" name="nomLieu">
                                         </div>
                                       </div>
-                                      <div class="d-flex justify-content-center mb-5 flex-wrap">
+                                      <div class="d-flex justify-content-center  flex-wrap">
                                         <div class="d-flex align-items-center mr-5 " style="width:40%">
-                                    <h4 class="card-title mr-3">Commune</h4>
+                                    <h4 class="card-title-half mr-3">Commune</h4>
                                     <select class="custom-select mr-sm-2" id="inlineFormCustomSelect" name="commune">
                         
                                         {% for option in form.commune.field.choices %}
@@ -149,18 +149,21 @@
                                         {% endfor %}
                                     </select>
                                 </div>
-                                <div class="d-flex align-items-center  ml-5 " style="width:40%" >
-                                    <h4 class="card-title mr-3">Images</h4>
+                                <div class="d-flex align-items-center  " style="width:40%" >
+                                    <h4 class="card-title-half mr-3">Images</h4>
                                     <input type="file" name="images" id="file-input" accept="image/png, image/jpeg" multiple />
-                                    <label for="file-input" id="add_images">Choisir images</label>
-                                    <div id="images"></div>
+                                    <div class="=input-rounded form-control image-box d-flex align-items-center">
+                                    <label type="image" id="add_images" for='file-input' > Choisir Images </label>
+                                     </div>
+                                   
                                 </div>
-                                       </div>
-                                               <h4 class="card-title ">Description</h4>
+ </div>
+ <div id="images"></div>
+                                               <h4 class="card-title mt-4">Description</h4>
                                             <textarea class="form-control mb-4" rows="4" id="comment" name="descripLieu"></textarea>
                                             <div class="d-flex justify-content-center mb-5 flex-wrap">
                                                 <div class="d-flex align-items-center mr-5 " style="width:40%">
-                                                    <h4 class="card-title mr-3">Categorie</h4>
+                                                    <h4 class="card-title-half mr-3">Categorie</h4>
                                                     <select class="custom-select mr-sm-2" id="inlineFormCustomSelect" name="categorie">
                                                                            {% for categorie in categories %}
                                                                                <option value="{{ categorie.idCategorie }}">{{ categorie.labelC }}</option>
@@ -169,7 +172,7 @@
                                               
                                         </div>
                                         <div class="d-flex align-items-center  ml-5 " style="width:40%" >
-                                            <h4 class="card-title mr-3">Théme</h4>
+                                            <h4 class="card-title-half mr-3">Théme</h4>
                                                                 <select class="custom-select mr-sm-2" id="inlineFormCustomSelect" name="theme">
                                                                     {% for theme in themes %}
                                                                     <option value="{{ theme.idTheme }}">{{ theme.labelT }}</option>

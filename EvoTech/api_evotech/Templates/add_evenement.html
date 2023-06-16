@@ -195,7 +195,7 @@
                                         {% csrf_token %}
                                         <div class="d-flex justify-content-center mb-5">
                                             <div class="d-flex align-items-center justify-content-between " style="width:50%">
-                                                  <h4 class="card-title">Nom</h4>
+                                                  <h4 class="card-title-half">Nom</h4>
                                                 <input type="text"  class="form-control input-rounded mx-2"placeholder="Entrer le nom de l'événement" name="nomEvent">
                                             </div>
                                           </div>
@@ -203,7 +203,7 @@
                                 <textarea class="form-control mb-4" rows="4" id="comment" name="descripEvent"></textarea>
                                 <div class="d-flex justify-content-center mb-5 flex-wrap">
                                     <div class="d-flex align-items-center mr-5 " style="width:40%">
-                                        <h4 class="card-title mr-3">Lieu</h4>           
+                                        <h4 class="card-title-half mr-3">Lieu</h4>           
                                         <select class="custom-select mr-sm-2 " id="inlineFormCustomSelect" name="id_lieu">
                                             {% for option in form.id_lieu.field.choices %}
                                                 <option value="{{ option.0 }}" {% if form.id_lieu.value == option.0 %} selected {% endif %}>{{ option.1 }}</option>
@@ -212,7 +212,7 @@
                                   
                             </div>
                             <div class="d-flex align-items-center  ml-5 " style="width:40%" >
-                                <h4 class="card-title mr-3 ">Date</h4>
+                                <h4 class="card-title-half mr-3 ">Date</h4>
                                 <input type="date" class="form-control input-rounded " name="dateEvent">
                             </div>
                                    </div>
@@ -230,11 +230,14 @@
                                             <div class="d-flex align-items-center  " style="width:40%" >
                                                 <h4 class="card-title mr-3">Images</h4>
                                                 <input type="file" name="images" id="file-input" accept="image/png, image/jpeg" multiple />
-                                                <label for="file-input" id="add_images">Choisir images</label>
-                                                <div id="images"></div>
+                                                <div class="=input-rounded form-control image-box d-flex align-items-center">
+                                                <label type="image" id="add_images" for='file-input' > Choisir Images </label>
+                                                 </div>
+                                               
                                             </div>
                                         </div>
-                                        <div class="text-md-right mx-4 mb-4">
+                                        <div id="images"></div>
+                                        <div class="text-md-right mt-4 mx-4 mb-4">
                                             <button type="submit" class="btn btn-primary" href="{% url 'add_evenement' user_id %}">Ajouter</button>
                                         </div>
                                     </form>

@@ -12,19 +12,28 @@ input[type="file"] {
 #images {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: 17px;
+  
 }
 
 #images img {
   width: 150px;
   height: 150px;
   object-fit: cover;
+  border: 1px dashed #2a9d8f;
+  margin-top:10px;
 }
 
 #add_images {
-  background-color: #c7d4d1;
-  color: #151517 ;
-  padding: 10px 20px;
+  background-color: rgba(38, 70, 83);
+  color: white;
+  padding: 0px 20px;
   border-radius: 4px;
+  height: 34px;
+  display: flex;
   cursor: pointer;
+  align-items: center;
+}
+.image-box{
+  padding: 5px 2px 0 !important;
 }
