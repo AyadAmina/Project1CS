@@ -39,6 +39,9 @@ class Region(models.Model):
    numRegion = models.AutoField(primary_key=True)
    nomRegion = models.CharField(max_length=100)
    adminRegion = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
+
+   coteRegion = models.CharField(max_length=100, blank=True, null=True)
+
    def __str__(self) -> str:
         return (self.nomRegion)
 
@@ -118,6 +121,7 @@ class Comment(models.Model):
 
     def __str__(self):
         return self.text
+    
 class Notification(models.Model):
     adminreg = models.ForeignKey(User, on_delete=models.CASCADE)
     lieu =models.CharField(max_length=1000,default='')

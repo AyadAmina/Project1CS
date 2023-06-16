@@ -12,6 +12,7 @@ from django.contrib.auth.decorators import login_required
 from channels.db import database_sync_to_async
 from channels.generic.websocket import AsyncWebsocketConsumer
 
+from django.db.models import Max
 
 import os
 
@@ -63,6 +64,7 @@ class PhotoViewSet(viewsets.ModelViewSet):
 #home
 def index(request):
   template = loader.get_template('index.html')
+ 
   return HttpResponse(template.render())
 
 #liste des lieux
@@ -251,10 +253,27 @@ def link_region_adminregional(number_regions):
     region.save()
     
 
+def set_region_side():
+  regions = {
+    "Nord-Ouest": [13, 46, 31, 27, 22, 20, 29, 48, 2, 38, 14],
+    "Nord-Milieu": [42, 44, 26, 17, 51, 9, 16, 35, 15, 6, 34, 10, 28],
+    "Nord-Est": [18, 25, 21, 23, 36, 41, 24, 4, 19, 5, 40, 12, 7, 57, 43],
+    "Sud-Est": [39, 30, 33, 55, 56],
+    "Sud-Ouest": [45, 8, 38, 32, 37, 52],
+    "Sud-Milieu": [3, 32, 47, 11, 1, 53, 54, 50, 49, 58]
+  }
+ 
+  for i in range(1,59 ):
+    region = Region.objects.get(numRegion=i)
+    for cote, values in regions.items():
+        if i in values:
+            region.coteRegion = cote
+            break
+    region.save()
+
 
 def login(request):
   
-
   form = LoginForm()
   
   if request.method == 'POST': 
@@ -311,14 +330,53 @@ def register_touriste(request):
 
 # for tests only 
 
+
 def adminCentral_view(request): 
-     
-  return render(request, "admin_central_page.html")
+  user = User.objects.get( profile="Admin central")
+
+  if request.method == 'POST':
+        # Update the user information 
+        user.nomUser = request.POST.get('nomUser')
+        user.prenomUser = request.POST.get('prenomUser')
+        user.username = request.POST.get('username')
+
+        motdepasse = request.POST.get('motdepasse')
+        if motdepasse:
+            user.motdepasse = motdepasse
+
+        user.save()
+
+  context = {
+        'user': user,
+  }
+
+  return render(request, "admin_central_page.html",context)
+
 
 def adminRegional_view(request, user_id):
   user = User.objects.get( idUser=user_id)
+  region = Region.objects.get(adminRegion=user)
 
-  return render(request, "admin_regional_page.html",{'user': user})
+  if request.method == 'POST':
+        # Update the user information 
+        user.nomUser = request.POST.get('nomUser')
+        user.prenomUser = request.POST.get('prenomUser')
+        user.username = request.POST.get('username')
+
+        motdepasse = request.POST.get('motdepasse')
+        if motdepasse:
+            user.motdepasse = motdepasse
+
+        user.save()
+
+  context = {
+        'user': user,
+        'region' : region,
+  }
+
+  return render(request, "admin_regional_page.html",context)
+
+
 
 def userpage(request, user_id):
   user = User.objects.get( idUser=user_id)
@@ -447,6 +505,47 @@ def add_transport(request, user_id):
        }
     
     return render(request, 'add_transport.html', context)
+
+
+
+def bestfeedback(request):
+    labels = ['Nord-Ouest', 'Nord-Milieu', 'Nord-Est', 'Sud-Ouest', 'Sud-Milieu', 'Sud-Est']
+
+    regions = []
+    lieux_by_cote = {}
+
+    for label in labels:
+        regions.append(Region.objects.filter(coteRegion=label))
+
+    for i in range(len(labels)):
+        cote = labels[i]
+        lieux_by_cote[cote] = Lieu.objects.filter(region__in=regions[i])
+
+    max_feedback_by_cote = {}
+
+    for cote, lieux in lieux_by_cote.items():
+        max_feedback = lieux.aggregate(Max('feedback'))['feedback__max']
+        max_feedback_by_cote[cote] = max_feedback
+
+    values = [value for value in max_feedback_by_cote.values() if value is not None]
+
+
+    # Pass the data to the template 
+
+    data = {
+        'labels': labels,
+        'values': values
+    }
+    data_json = json.dumps(data)
+
+    return render(request, 'chart-chartjs.html', {'data_json': data_json})
+    
+
+def Top_10_lieu(request):
+
+    pass 
+
+
 
 
 #Profile treatment

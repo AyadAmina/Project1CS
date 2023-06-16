@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+<head>
+    <meta charset="utf-8">
+    <link href="{% static 'styles/chart.css' %}" rel="stylesheet">
+    
+</head>
+
+<body>
+    <div class="chart-container">
+        <canvas id="pie-chart"></canvas>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
+    <script src="{% static 'js/chart.js' %}"></script>
+
+    <script>
+        // Retrieve the data passed from the Django view
+        var data = JSON.parse('{{ data_json|escapejs }}');
+
+        // Call the function in the external JavaScript file to create the pie chart
+        createPieChart(data);
+    </script>
+
+   
+</body>
+
+</html>
