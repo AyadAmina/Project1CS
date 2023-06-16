@@ -34,6 +34,8 @@ class User(models.Model):
 
    def __str__(self) -> str:
         return (self.username)
+   
+
 
 class Region(models.Model):
    numRegion = models.AutoField(primary_key=True)

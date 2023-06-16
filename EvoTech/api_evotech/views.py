@@ -48,7 +48,7 @@ def profile(request, id):
         nom = request.POST.get('nom')
         prenom = request.POST.get('prenom')
         nom_utilisateur = request.POST.get('nom_utilisateur')
-        password = request.POST.get('password')  # Add this line to get the password value
+        password = request.POST.get('password')  
         
         if nom:
             user.nomUser = nom
@@ -57,7 +57,7 @@ def profile(request, id):
         if nom_utilisateur:
             user.username = nom_utilisateur
         if password:
-            user.password = password  # Update the user's password with the new value
+            user.password = password 
         
         user.save()
  
@@ -65,9 +65,33 @@ def profile(request, id):
     
     return render(request, 'my_profile.html', {'user': user, 'lieuxFavoris': lieuxFavoris})
 
-
+#delete a lieux from the list of lieuxFavoris
 def delete_favoris(request, favoris_id):
     favoris = get_object_or_404(Favoris, id_favoris=favoris_id)
     favoris.delete()
     return HttpResponse(status=204)
 
+
+def addUser(request):
+    user = None
+    if request.method == 'POST':
+        nom = request.POST.get('nom')
+        prenom = request.POST.get('prenom')
+        nom_utilisateur = request.POST.get('nom_utilisateur')
+        password =  nom_utilisateur + '2023' 
+        profile = 'adminregional'
+        
+        user = User(nomUser = nom, prenomUser = prenom, username = nom_utilisateur, motdepasse = password, profile = profile )
+        user.save()
+        return redirect('listComptes')
+
+    return render(request, 'add_user.html', {'user': user})
+
+def listComptes(request):
+    users = User.objects.filter(profile = 'adminregional')
+    return render(request, 'liste_comptes.html', {'users': users})
+
+def deleteUser(request, userId):
+    user = get_object_or_404(User, idUser=userId)
+    user.delete()
+    return HttpResponse(status=204)
