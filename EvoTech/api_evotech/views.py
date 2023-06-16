@@ -56,7 +56,7 @@ def notification(request, id_event):
 
 #Afficher toutes les notifications
 def view_notifications(request):
- if request.method == 'GET':
+    print("hello")
     notifications = Notification.objects.all()
     notifications_data = []
 
@@ -69,9 +69,8 @@ def view_notifications(request):
         }
         notifications_data.append(notification_data)
     print(notification_data)
-    return render(request, 'notifications.html', {'notifications': notifications_data})
+    return JsonResponse({'notifications': notifications_data})
  
- return HttpResponse('Invalid request method.')
 def History(request):
  if request.method == 'GET':
     HistEvent = HistoryEvent.objects.all()
