@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+<head>
+    <meta charset="utf-8">
+    <link href="{% static 'styles/chart.css' %}" rel="stylesheet">
+    
+</head>
+
+<body>
+    <div class="chart-container">
+        <canvas id="pie-chart"></canvas>
+    </div>
+    <div class="chart-container">
+        <canvas id="bar-chart"></canvas>
+    </div>
+    <div class="chart-container">
+        <canvas id="polar-chart"></canvas>
+    </div>
+    <div class="chart-container">
+        <canvas id="bar-chart2"></canvas>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script src="{% static 'js/chart.js' %}"></script>
+ 
+    <script>
+        // Retrieve the data passed from the Django view
+        var data = JSON.parse('{{ data_json|escapejs }}');
+
+        // Call the function in the external JavaScript file to create the charts
+        createPieChart(data); // bestfeedback 6 cotés 
+        createBarChart(data); // best 10 lieus 
+        createPolarChart(data); // Les 5 premiers regions qui ont le maximum nombre d'évenements 
+        createBarChart2(data);
+    </script>
+
+   
+</body>
+
+</html>
