@@ -60,6 +60,16 @@ class NotificationAdmin(admin.ModelAdmin):
 
     admin.site.register(Notification)
 
+class HistoryEventAdmin(admin.ModelAdmin):
+    list = ('idHis', 'Iduser', 'timestamp', 'Idevent','Type_Action' )
+
+    admin.site.register(HistoryEvent)
+
+class HistoryLieuAdmin(admin.ModelAdmin):
+        list = ('idHis', 'Iduser', 'timestamp', 'Idlieu','Type_Action' )
+
+        admin.site.register(HistoryLieu)
+
 """class LocalEventAdmin(admin.ModelAdmin):
     list = ('id_localEvent', 'id_event', 'id_lieu')
 
