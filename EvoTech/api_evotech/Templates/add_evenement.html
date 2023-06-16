@@ -64,16 +64,6 @@
                 <nav class="navbar navbar-expand">
                     <div class="collapse navbar-collapse justify-content-between">
                         <div class="header-left">
-                            <div class="search_bar dropdown">
-                                <span class="search_icon p-3 c-pointer" data-toggle="dropdown">
-                                    <i class="mdi mdi-magnify"></i>
-                                </span>
-                                <div class="dropdown-menu p-0 m-0">
-                                    <form>
-                                        <input class="form-control" type="search" placeholder="Search" aria-label="Search">
-                                    </form>
-                                </div>
-                            </div>
                         </div>
 
                         <ul class="navbar-nav header-right">
@@ -174,113 +164,15 @@
                     <li class="nav-label first">Main Menu</li>
                     <!-- <li><a href="index.html"><i class="icon icon-single-04"></i><span class="nav-text">Dashboard</span></a>
                     </li> -->
+                    <li class="nav-label">Formulaire</li>
                     <li><a class="has-arrow" href="javascript:void()" aria-expanded="false"><i
-                                class="icon icon-single-04"></i><span class="nav-text">Dashboard</span></a>
-                        <ul aria-expanded="false">
-                            <li><a href="./index.html">Dashboard 1</a></li>
-                            <li><a href="./index2.html">Dashboard 2</a></li></ul>
-                    </li>
-                    
-                    <li class="nav-label">Apps</li>
-                    <li><a class="has-arrow" href="javascript:void()" aria-expanded="false"><i
-                                class="icon icon-app-store"></i><span class="nav-text">Apps</span></a>
-                        <ul aria-expanded="false">
-                            <li><a href="./app-profile.html">Profile</a></li>
-                            <li><a class="has-arrow" href="javascript:void()" aria-expanded="false">Email</a>
-                                <ul aria-expanded="false">
-                                    <li><a href="./email-compose.html">Compose</a></li>
-                                    <li><a href="./email-inbox.html">Inbox</a></li>
-                                    <li><a href="./email-read.html">Read</a></li>
-                                </ul>
-                            </li>
-                            <li><a href="./app-calender.html">Calendar</a></li>
-                        </ul>
-                    </li>
-                    <li><a class="has-arrow" href="javascript:void()" aria-expanded="false"><i
-                                class="icon icon-chart-bar-33"></i><span class="nav-text">Charts</span></a>
-                        <ul aria-expanded="false">
-                            <li><a href="./chart-flot.html">Flot</a></li>
-                            <li><a href="./chart-morris.html">Morris</a></li>
-                            <li><a href="./chart-chartjs.html">Chartjs</a></li>
-                            <li><a href="./chart-chartist.html">Chartist</a></li>
-                            <li><a href="./chart-sparkline.html">Sparkline</a></li>
-                            <li><a href="./chart-peity.html">Peity</a></li>
-                        </ul>
-                    </li>
-                    <li class="nav-label">Components</li>
-                    <li><a class="has-arrow" href="javascript:void()" aria-expanded="false"><i
-                                class="icon icon-world-2"></i><span class="nav-text">Bootstrap</span></a>
-                        <ul aria-expanded="false">
-                            <li><a href="./ui-accordion.html">Accordion</a></li>
-                            <li><a href="./ui-alert.html">Alert</a></li>
-                            <li><a href="./ui-badge.html">Badge</a></li>
-                            <li><a href="./ui-button.html">Button</a></li>
-                            <li><a href="./ui-modal.html">Modal</a></li>
-                            <li><a href="./ui-button-group.html">Button Group</a></li>
-                            <li><a href="./ui-list-group.html">List Group</a></li>
-                            <li><a href="./ui-media-object.html">Media Object</a></li>
-                            <li><a href="./ui-card.html">Cards</a></li>
-                            <li><a href="./ui-carousel.html">Carousel</a></li>
-                            <li><a href="./ui-dropdown.html">Dropdown</a></li>
-                            <li><a href="./ui-popover.html">Popover</a></li>
-                            <li><a href="./ui-progressbar.html">Progressbar</a></li>
-                            <li><a href="./ui-tab.html">Tab</a></li>
-                            <li><a href="./ui-typography.html">Typography</a></li>
-                            <li><a href="./ui-pagination.html">Pagination</a></li>
-                            <li><a href="./ui-grid.html">Grid</a></li>
-
-                        </ul>
-                    </li>
-
-                    <li><a class="has-arrow" href="javascript:void()" aria-expanded="false"><i
-                                class="icon icon-plug"></i><span class="nav-text">Plugins</span></a>
-                        <ul aria-expanded="false">
-                            <li><a href="./uc-select2.html">Select 2</a></li>
-                            <li><a href="./uc-nestable.html">Nestedable</a></li>
-                            <li><a href="./uc-noui-slider.html">Noui Slider</a></li>
-                            <li><a href="./uc-sweetalert.html">Sweet Alert</a></li>
-                            <li><a href="./uc-toastr.html">Toastr</a></li>
-                            <li><a href="./map-jqvmap.html">Jqv Map</a></li>
-                        </ul>
-                    </li>
-                    <li><a href="widget-basic.html" aria-expanded="false"><i class="icon icon-globe-2"></i><span
-                                class="nav-text">Widget</span></a></li>
-                    <li class="nav-label">Forms</li>
-                    <li><a class="has-arrow" href="javascript:void()" aria-expanded="false"><i
-                                class="icon icon-form"></i><span class="nav-text">Forms</span></a>
+                                class="icon icon-form"></i><span class="nav-text">Formulaire</span></a>
                                 <ul aria-expanded="false">
                                     <li><a href="{% url 'add_lieu' user_id=user_id %}">Ajouter Lieu</a></li>
                                     <li><a href="{% url 'add_evenement' user_id=user_id %}">Ajouter événement</a></li>
                                   
                                     <li><a href="{% url 'add_transport' user_id=user_id %}">Ajouter un transport</a></li>
                                 </ul>
-                    </li>
-                    <li class="nav-label">Table</li>
-                    <li><a class="has-arrow" href="javascript:void()" aria-expanded="false"><i
-                                class="icon icon-layout-25"></i><span class="nav-text">Table</span></a>
-                        <ul aria-expanded="false">
-                            <li><a href="table-bootstrap-basic.html">Bootstrap</a></li>
-                            <li><a href="table-datatable-basic.html">Datatable</a></li>
-                        </ul>
-                    </li>
-
-                    <li class="nav-label">Extra</li>
-                    <li><a class="has-arrow" href="javascript:void()" aria-expanded="false"><i
-                                class="icon icon-single-copy-06"></i><span class="nav-text">Pages</span></a>
-                        <ul aria-expanded="false">
-                            <li><a href="./page-register.html">Register</a></li>
-                            <li><a href="./page-login.html">Login</a></li>
-                            <li><a class="has-arrow" href="javascript:void()" aria-expanded="false">Error</a>
-                                <ul aria-expanded="false">
-                                    <li><a href="./page-error-400.html">Error 400</a></li>
-                                    <li><a href="./page-error-403.html">Error 403</a></li>
-                                    <li><a href="./page-error-404.html">Error 404</a></li>
-                                    <li><a href="./page-error-500.html">Error 500</a></li>
-                                    <li><a href="./page-error-503.html">Error 503</a></li>
-                                </ul>
-                            </li>
-                            <li><a href="./page-lock-screen.html">Lock Screen</a></li>
-                        </ul>
                     </li>
                 </ul>
             </div>
@@ -294,96 +186,37 @@
         ***********************************-->
         <div class="content-body">
             <div class="container-fluid">
-                <div class="row page-titles mx-0">
-                    <div class="col-sm-6 p-md-0">
-                        <div class="welcome-text">
-                            <h4>Hi, welcome back!</h4>
-                            <span class="ml-1">Element</span>
-                        </div>
-                    </div>
-                    <div class="col-sm-6 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
-                        <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="javascript:void(0)">Form</a></li>
-                            <li class="breadcrumb-item active"><a href="javascript:void(0)">Element</a></li>
-                        </ol>
-                    </div>
-                </div>
-                <!-- row -->
                 <div class="row">
                     <div class="col-xl-6 col-xxl-12">
                         <div class="card">
-                            <div class="card-header">
-                                <h4 class="card-title">Ajouter un  evenement</h4>
-                            </div>
                             <div class="card-body">
                                 <div class="basic-form">
                                     <form method="POST"  id="upload-form" enctype="multipart/form-data" >
                                         {% csrf_token %}
-                                        <div class="card">
-                                            <div class="card-header">
-                                                <h4 class="card-title">Nom</h4>
+                                        <div class="d-flex justify-content-center mb-5">
+                                            <div class="d-flex align-items-center justify-content-between " style="width:50%">
+                                                  <h4 class="card-title">Nom</h4>
+                                                <input type="text"  class="form-control input-rounded mx-2"placeholder="Entrer le nom de l'événement" name="nomEvent">
                                             </div>
-                                            <div class="card-body">
-                                                <div class="basic-form">
-                                                        <div class="form-group">
-                                                            <input type="text" class="form-control input-rounded" placeholder="Entrer le nom de l'événement" name="nomEvent">
-                                                        </div>
-                                              
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="card">
-                                            <div class="card-header">
-                                                <h4 class="card-title">Description</h4>
-                                            </div>
-                                            <div class="card-body">
-                                                <div class="basic-form">
-                                          
-                                                        <div class="form-group">
-                                                            <textarea class="form-control" rows="4" id="comment" name="descripEvent"></textarea>
-                                                        </div>
-                                             
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="card">
-                                            <div class="card-header">
-                                                <h4 class="card-title">Lieu</h4>
-                                            </div>
-                                            <div class="card-body">
-                                                <div class="basic-form">
-                                                        <div class="form-row align-items-center">
-                                                            <div class="col-auto my-1">
-                                                                <select class="custom-select mr-sm-2" id="inlineFormCustomSelect" name="id_lieu">
-                                                                    {% for option in form.id_lieu.field.choices %}
-                                                                        <option value="{{ option.0 }}" {% if form.id_lieu.value == option.0 %} selected {% endif %}>{{ option.1 }}</option>
-                                                                    {% endfor %}
-                                                                </select>
-                                                            </div>
-                                                        </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        
-
-                                        <div class="card">
-                                            <div class="card-header">
-                                                <h4 class="card-title">Date</h4>
-                                            </div>
-                                            <div class="card-body">
-                                                <div class="basic-form">
-                                                
-                                                        <div class="form-group">
-                                                            <input type="date" class="form-control input-rounded" name="dateEvent">
-                                                        </div>
-                                                    
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="card">
-                                            <div class="card-header">
-                                                <h4 class="card-title">Heure</h4>
-                                            </div>
+                                          </div>
+                                <h4 class="card-title">Description</h4>
+                                <textarea class="form-control mb-4" rows="4" id="comment" name="descripEvent"></textarea>
+                                <div class="d-flex justify-content-center mb-5 flex-wrap">
+                                    <div class="d-flex align-items-center mr-5 " style="width:40%">
+                                        <h4 class="card-title mr-3">Lieu</h4>           
+                                        <select class="custom-select mr-sm-2 " id="inlineFormCustomSelect" name="id_lieu">
+                                            {% for option in form.id_lieu.field.choices %}
+                                                <option value="{{ option.0 }}" {% if form.id_lieu.value == option.0 %} selected {% endif %}>{{ option.1 }}</option>
+                                            {% endfor %}
+                                        </select>
+                                  
+                            </div>
+                            <div class="d-flex align-items-center  ml-5 " style="width:40%" >
+                                <h4 class="card-title mr-3 ">Date</h4>
+                                <input type="date" class="form-control input-rounded " name="dateEvent">
+                            </div>
+                                   </div>
+                                           <h4 class="card-title">Horaires</h4>
                                             <div class="card-body form-row">
                                                 <div class="form-group col-md-6">
                                                     <label>Heure début</label>
@@ -394,14 +227,16 @@
                                                     <input type="time" class="form-control" name="H_fin" >
                                                 </div>
                                             </div>
-                                            <div class="container">
+                                            <div class="d-flex align-items-center  " style="width:40%" >
+                                                <h4 class="card-title mr-3">Images</h4>
                                                 <input type="file" name="images" id="file-input" accept="image/png, image/jpeg" multiple />
                                                 <label for="file-input" id="add_images">Choisir images</label>
                                                 <div id="images"></div>
                                             </div>
                                         </div>
-                                        
-                                        <button type="submit" class="btn btn-primary" href="{% url 'add_evenement' user_id %}">Add</button>
+                                        <div class="text-md-right mx-4 mb-4">
+                                            <button type="submit" class="btn btn-primary" href="{% url 'add_evenement' user_id %}">Ajouter</button>
+                                        </div>
                                     </form>
                                 </div>
                             </div>
@@ -414,30 +249,7 @@
         </div>
         <!--**********************************
             Content body end
-        ***********************************-->
-
-
-        <!--**********************************
-            Footer start
-        ***********************************-->
-        <div class="footer">
-            <div class="copyright">
-                <p>Copyright © Designed &amp; Developed by <a href="#" target="_blank">Quixkit</a> 2019</p>
-            </div>
-        </div>
-        <!--**********************************
-            Footer end
-        ***********************************-->
-
-        <!--**********************************
-           Support ticket button start
-        ***********************************-->
-
-        <!--**********************************
-           Support ticket button end
-        ***********************************-->
-
-        
+        ***********************************-->  
     </div>
     <!--**********************************
         Main wrapper end
