@@ -45,11 +45,41 @@
 						</div>
 						<div class="main_nav_container ml-auto">
 							<ul class="main_nav_list">
-								<li class="main_nav_item"><a href="{% url 'index' %}">Acceuil</a></li>
-								<li class="main_nav_item"><a href="about.html">carte</a></li>
-								<li class="main_nav_item"><a href="offers.html">offers</a></li>
-								<li class="main_nav_item"><a href="blog.html">news</a></li>
-								<li class="main_nav_item"><a href="contact.html">contact</a></li>
+								<li class="main_nav_item"><a href="#">home</a></li>
+								<li class="main_nav_item"><a href="{% url 'map' user_id=user.idUser %}">Maps</a></li>
+								<li class="main_nav_item"><a href="{% url 'ListeDesLieux' user_id=user.idUser %}">Lieux</a></li>
+								<li class="main_nav_item"><a href="{% url 'ListeEvents' user_id=user.idUser %}">évenements</a></li>
+								<li class="main_nav_item"><a href="contact.html">À propos de nous </a></li>
+								<li class="main_nav_item"><a href="contact.html">Contactez-nous</a></li>
+								<li class="main_nav_item dropdown notification_dropdown">
+									<a class="nav-link" href="#" role="button" data-toggle="dropdown" id="notificationsLink">
+										<i class="mdi mdi-bell"></i>
+										<div class="pulse-css"></div>
+									  </a>
+									  
+												   <!-- start notification-->
+												    <div class="dropdown-menu dropdown-menu-right">
+													<ul class="list-unstyled" id="notificationList">
+													
+														  
+													  <!-- {% for notification in notifications %}
+														<li class="media dropdown-item">
+															<span class="success"><i class="ti-user"></i></span>
+															<div class="media-body">
+																<a href="#">
+																	<p><strong>{{notification.nomEvent}}</strong>has been added in <strong>{{notification.nomLieu}}</strong> </p>
+																</a>
+															</div>
+														   
+														</li>
+														{% endfor %} -->
+													</ul>
+													   
+														</div> 
+														<!-- end notification -->
+	
+	
+								</li>
 							</ul>
 						</div>
 

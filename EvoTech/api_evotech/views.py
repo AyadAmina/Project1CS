@@ -71,12 +71,13 @@ class PhotoViewSet(viewsets.ModelViewSet):
 def index(request):
   template = loader.get_template('index.html')
  
+ 
   return HttpResponse(template.render())
 
 #liste des lieux
 product_per_page = 4
 
-def ListeDesLieux(request):
+def ListeDesLieux(request,user_id):
  
   regions = Region.objects.all()
   categories = Categorie.objects.all()
@@ -134,7 +135,8 @@ def ListeDesLieux(request):
       'themes' : themes,
       'page_obj': lieux,
       'is_paginated': True,
-      'paginator': product_paginator
+      'paginator': product_paginator,
+      'user_id' : user_id
       }
    
   return render(request, 'liste_lieux.html', context)
@@ -155,7 +157,7 @@ def suggestionapi(request):
 
 #page détail d'un lieu
 
-def LieuDetail(request, slug, id):
+def LieuDetail(request, slug, id ,user_id ):
   lieu = Lieu.objects.get(idLieu=id)
   events = Evenement.objects.filter(id_lieu=lieu)
   photos = Photo.objects.all()
@@ -183,13 +185,14 @@ def LieuDetail(request, slug, id):
       'events': events,
       'transports_with_icons': transports_with_icons,
       'name': name,
-      'produits': produits
+      'produits': produits,
+      'user_id' : user_id
   }
   return render(request, 'détail_lieu.html', context)
 
 #page liste des événements
 
-def ListeEvents(request):
+def ListeEvents(request,user_id):
    
     search= request.GET.get('search', "")
     if search:
@@ -211,7 +214,8 @@ def ListeEvents(request):
       'events': events,
       'page_obj': events,
       'is_paginated': True,
-      'paginator': product_paginator
+      'paginator': product_paginator,
+      'user_id' :user_id
     }
     return render(request, 'liste_event.html', context)
 
@@ -229,7 +233,7 @@ def suggestionapi2(request):
 
 #page détail d'un événement
 
-def EventDetail(request, slug, id):
+def EventDetail(request,user_id,slug, id):
  event = Evenement.objects.get(idEvent=id)
  lieu = Lieu.objects.get(nomLieu=event.id_lieu)
  lieu_id=event.id_lieu_id
@@ -237,6 +241,7 @@ def EventDetail(request, slug, id):
       'event': event,
       'lieu': lieu,
       'id_lieu': lieu_id,
+      'user_id' :user_id
     }
  return render(request, 'détail_event.html', context)
 
@@ -290,7 +295,8 @@ def set_region_side():
 
 
 def login(request):
-  
+  set_region_side()
+
   form = LoginForm()
   
   if request.method == 'POST': 
@@ -378,6 +384,7 @@ def adminCentral_view(request, user_id):
 
   context = {
         'user': user,
+        'user_id':user.idUser
   }
 
   return render(request, "admin_central_page.html",context)
@@ -653,8 +660,9 @@ def adminCentral_stats(request):
     }
 
     data_json = json.dumps(data)
+    user = User.objects.get(profile='Admin central')
 
-    return render(request, 'statistiques.html', {'data_json': data_json})
+    return render(request, 'statistiques.html', {'data_json': data_json , 'user_id':user.idUser})
     
 
 
@@ -754,14 +762,21 @@ class CommentConsumer(AsyncWebsocketConsumer):
 def index(request):
     template = loader.get_template('index.html')
     return HttpResponse(template.render())
+
 def listcomment(request,admin_id):
     comments = Comment.get_comments_for_admin(admin_id)
+    notifications = Notification.objects.filter(adminreg=admin_id)
     template = loader.get_template('list-comment.html')
+
     context = {
-        'comments': comments
+        'comments': comments,
+        'idUser':admin_id,
+        'notifications':notifications,
+        
     }
     
     return HttpResponse(template.render(context,request))
+
 def admin(request):
     template = loader.get_template('indexadmin.html')
     return HttpResponse(template.render())
@@ -892,14 +907,17 @@ from django.http import JsonResponse
 
 # notifications evenements
 # Ajouter favorite  
-def favorite(request, id_user, id_lieu):
-    if request.method == 'POST':
-        lieu = get_object_or_404(Lieu, pk=id_lieu)
-        uuser = get_object_or_404(User, pk=id_user)
-        fav = Favoris(id_lieu=lieu, idUser=uuser)
-        fav.save()
+def favorite(request, user_id, id_lieu):
     
-        return render(request, 'liste_lieux.html')
+    lieu = get_object_or_404(Lieu, pk=id_lieu)
+    uuser = get_object_or_404(User, pk=user_id)
+    fav = Favoris(id_lieu=lieu, idUser=uuser)
+    fav.save()
+    
+    user = User.objects.get(idUser=user_id)
+    lieuxFavoris = Favoris.objects.filter(idUser=user_id)
+
+    return render(request, 'my_profile.html',{'user' : user , 'lieuxFavoris':lieuxFavoris})
 
 
 #Afficher toutes les notifications
@@ -1005,7 +1023,7 @@ def History_Supprimer_Lieu(request, id_lieu):
 
 #gestion de map
 
-def map(request):
+def map(request,user_id):
     form = SearchForm()
 
     # Create Map Object
@@ -1225,13 +1243,25 @@ def addUser(request):
         user.save()
         return redirect('listComptes')
 
-    return render(request, 'add_user.html', {'user': user})
+    user = User.objects.get(profile='Admin central')
+    return render(request, 'add_user.html', {'user': user,'user_id':user.idUser})
 
 def listComptes(request):
     users = User.objects.filter(profile = 'Admin régional')
-    return render(request, 'liste_comptes.html', {'users': users})
+    user = User.objects.get(profile='Admin central')
+    return render(request, 'liste_comptes.html', {'users': users,'user_id':user.idUser})
 
 def deleteUser(request, userId):
     user = get_object_or_404(User, idUser=userId)
     user.delete()
     return HttpResponse(status=204)
+
+def notification2(request, admin_id):
+    if request.method == 'GET':
+        notifications = Notification.objects.filter(adminreg=admin_id).values()
+        notifications_list = list(notifications)
+        return JsonResponse({
+            'notifications': notifications_list,
+        })
+    else:
+        return JsonResponse({'error': 'Invalid request method'})

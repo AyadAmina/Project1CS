@@ -89,15 +89,26 @@
         <div class="quixnav">
             <div class="quixnav-scroll">
                 <ul class="metismenu" id="menu">
-                    <br><br>
+                    <li class="nav-label first">Menu Principal</li>
+                    <!-- <li><a href="index.html"><i class="icon icon-single-04"></i><span class="nav-text">Dashboard</span></a>
+                    </li> -->
+                    <li><a class="has-arrow" href="javascript:void()" aria-expanded="false"><i
+                                class="icon icon-single-04"></i><span class="nav-text">Statistiques</span></a>
+                                <ul aria-expanded="false">
+                                    <li><a href="{% url 'chart' %}">Voir statistiques</a></li>
+                                </ul>
+                       
+                    </li>
                     
                     <li><a href="{% url 'listComptes' %}" aria-expanded="false"><i class="icon icon-globe-2"></i><span
-                                class="nav-text">Liste des comptes</span></a>
+                        class="nav-text">Liste des comptes</span></a>
+                    </li>
+                    
+                    <li><a href="{% url 'AdminCentralPage' user_id %}" aria-expanded="false"><i class="icon icon-globe-2"></i><span
+                        class="nav-text">Profile</span></a>
                     </li>
                     
 
-
-                   
                 </ul>
             </div>
         </div>

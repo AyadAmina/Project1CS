@@ -18,7 +18,7 @@
                     notificationsList += '<span class="success"><i class="ti-user"></i></span>';
                     notificationsList += '<div class="media-body">';
                     notificationsList += '<a href="#">';
-                    notificationsList += '<p><strong>' + notification.author + '</strong> has added a <strong>commentmer</strong> in<strong>' + notification.lieu + '</strong></p>';
+                    notificationsList += '<p><strong>' + notification.author + '</strong> has added a <strong>comment </strong>in <strong>' + notification.lieu + '</strong></p>';
                     notificationsList += '</a>';
                     notificationsList += '</div>';
                     notificationsList += '<span class="notify-time">' + notification.created_at + '</span>';
@@ -115,7 +115,7 @@
                                                         <span class="success"><i class="ti-user"></i></span>
                                                         <div class="media-body">
                                                             <a href="#">
-                                                                <p><strong>{{ notification.author }}</strong> has added a <strong>commentmer</strong> in<strong>{{ notification.event }}</strong> </p>
+                                                                <p><strong>{{ notification.author }}</strong> has added a <strong>comment</strong> in <strong>{{ notification.event }}</strong> </p>
                                                             </a>
                                                         </div>
                                                         <span class="notify-time">{{ notification.created_at }}</span>
@@ -162,16 +162,10 @@
         <div class="quixnav">
             <div class="quixnav-scroll">
                 <ul class="metismenu" id="menu">
-                    <li class="nav-label first">Menu Principal</li>
+                   
                     <!-- <li><a href="index.html"><i class="icon icon-single-04"></i><span class="nav-text">Dashboard</span></a>
                     </li> -->
-                    <li><a class="has-arrow" href="javascript:void()" aria-expanded="false"><i
-                                class="icon icon-single-04"></i><span class="nav-text">Statistiques</span></a>
-                                <ul aria-expanded="false">
-                                    <li><a href="{% url 'chart' %}">Voir statistiques</a></li>
-                                </ul>
-                       
-                    </li>
+                    
                     
                     <li class="nav-label">Configuration</li>
                     <li><a class="has-arrow" href="javascript:void()" aria-expanded="false"><i
@@ -192,7 +186,12 @@
                         <ul aria-expanded="false">
                             <li><a href="{% url 'ListeLieuxAdmin' user_id=user_id %}">Mes lieux</a></li>
                             <li><a href="{% url 'ListeEventsAdmin' user_id=user_id %}">Mes événements</a></li>
+                            <li><a href="{% url 'ListeProduitsAdmin' user_id=user_id %}">Mes produits</a></li>
                         </ul>
+                    </li>
+
+                    <li><a href="{% url 'AdminRegionalPage' user_id %}" aria-expanded="false"><i class="icon icon-globe-2"></i><span
+                        class="nav-text">Profile</span></a>
                     </li>
 
                 </ul>

@@ -3,7 +3,7 @@
 <script>
     function updateNotifications() {
         $.ajax({
-            url: '/api/notifications/{{user.idUser}}/',
+            url: '/api/notifications/{{idUser}}/',
             type: 'GET',
             dataType: 'json',
             success: function(response) {
@@ -35,7 +35,6 @@
 
     setInterval(updateNotifications, 10000);
 </script>
-
 <html lang="en">
 
 <head>
@@ -106,27 +105,27 @@
                                     <i class="mdi mdi-bell"></i>
                                     <div class="pulse-css"></div>
                                 </a>
-                                        <!-- start notification-->
-                                            <div class="dropdown-menu dropdown-menu-right">
-                                                <ul class="list-unstyled" id="notifications-list">
-                                                    {% for notification in notifications %}
-                                                    <li class="media dropdown-item">
-                                                        <!-- Display the notification details -->
-                                                        <span class="success"><i class="ti-user"></i></span>
-                                                        <div class="media-body">
-                                                            <a href="#">
-                                                                <p><strong>{{ notification.author }}</strong> has added a <strong>commentmer</strong> in<strong>{{ notification.event }}</strong> </p>
-                                                            </a>
-                                                        </div>
-                                                        <span class="notify-time">{{ notification.created_at }}</span>
-                                                    </li>
-                                                    {% endfor %}
-                                                </ul>
-                                                <a class="all-notification" href="/listcomment/{{user.idUser}}/">See all notifications <i class="ti-arrow-right"></i></a>
-                                            </div>
-                                            
+ <!-- start notification-->
+ <div class="dropdown-menu dropdown-menu-right">
+    <ul class="list-unstyled" id="notifications-list">
+        {% for notification in notifications %}
+        <li class="media dropdown-item">
+            <!-- Display the notification details -->
+            <span class="success"><i class="ti-user"></i></span>
+            <div class="media-body">
+                <a href="#">
+                    <p><strong>{{ notification.author }}</strong> has added a <strong>commentmer</strong> in<strong>{{ notification.event }}</strong> </p>
+                </a>
+            </div>
+            <span class="notify-time">{{ notification.created_at }}</span>
+        </li>
+        {% endfor %}
+    </ul>
+    <a class="all-notification" href="/listcomment/{{idUser}}/">See all notifications <i class="ti-arrow-right"></i></a>
+</div>
 
-                                      <!-- end notification -->
+
+<!-- end notification -->
                             </li>
                             <li class="nav-item dropdown header-profile">
                                 <a class="nav-link" href="#" role="button" data-toggle="dropdown">
@@ -162,122 +161,40 @@
         <div class="quixnav">
             <div class="quixnav-scroll">
                 <ul class="metismenu" id="menu">
-                    <li class="nav-label first">Main Menu</li>
+                   
                     <!-- <li><a href="index.html"><i class="icon icon-single-04"></i><span class="nav-text">Dashboard</span></a>
                     </li> -->
-                    <li><a class="has-arrow" href="javascript:void()" aria-expanded="false"><i
-                                class="icon icon-single-04"></i><span class="nav-text">Dashboard</span></a>
-                        <ul aria-expanded="false">
-                            <li><a href="./index.html">Dashboard 1</a></li>
-                            <li><a href="./index2.html">Dashboard 2</a></li></ul>
-                    </li>
                     
-                    <li class="nav-label">Apps</li>
+                    
+                    <li class="nav-label">Configuration</li>
                     <li><a class="has-arrow" href="javascript:void()" aria-expanded="false"><i
-                                class="icon icon-app-store"></i><span class="nav-text">Apps</span></a>
-                        <ul aria-expanded="false">
-                            <li><a href="./app-profile.html">Profile</a></li>
-                            <li><a class="has-arrow" href="javascript:void()" aria-expanded="false">Email</a>
+                                class="icon icon-form"></i><span class="nav-text">Mes ajouts</span></a>
                                 <ul aria-expanded="false">
-                                    <li><a href="./email-compose.html">Compose</a></li>
-                                    <li><a href="./email-inbox.html">Inbox</a></li>
-                                    <li><a href="./email-read.html">Read</a></li>
+                                    <li><a href="{% url 'add_lieu' user_id=idUser %}">Ajouter Lieu</a></li>
+                                    <li><a href="{% url 'add_evenement' user_id=idUser %}">Ajouter événement</a></li>
+                                    
+                                    <li><a href="{% url 'add_transport' user_id=idUser %}">Ajouter un transport</a></li>
+                                    <li><a href="{% url 'add_produit' user_id=idUser %}">Ajouter un produit artisanat</a></li>
+                                    
                                 </ul>
-                            </li>
-                            <li><a href="./app-calender.html">Calendar</a></li>
-                        </ul>
                     </li>
-                    <li><a class="has-arrow" href="javascript:void()" aria-expanded="false"><i
-                                class="icon icon-chart-bar-33"></i><span class="nav-text">Charts</span></a>
-                        <ul aria-expanded="false">
-                            <li><a href="./chart-flot.html">Flot</a></li>
-                            <li><a href="./chart-morris.html">Morris</a></li>
-                            <li><a href="./chart-chartjs.html">Chartjs</a></li>
-                            <li><a href="./chart-chartist.html">Chartist</a></li>
-                            <li><a href="./chart-sparkline.html">Sparkline</a></li>
-                            <li><a href="./chart-peity.html">Peity</a></li>
-                        </ul>
-                    </li>
-                    <li class="nav-label">Components</li>
-                    <li><a class="has-arrow" href="javascript:void()" aria-expanded="false"><i
-                                class="icon icon-world-2"></i><span class="nav-text">Bootstrap</span></a>
-                        <ul aria-expanded="false">
-                            <li><a href="./ui-accordion.html">Accordion</a></li>
-                            <li><a href="./ui-alert.html">Alert</a></li>
-                            <li><a href="./ui-badge.html">Badge</a></li>
-                            <li><a href="./ui-button.html">Button</a></li>
-                            <li><a href="./ui-modal.html">Modal</a></li>
-                            <li><a href="./ui-button-group.html">Button Group</a></li>
-                            <li><a href="./ui-list-group.html">List Group</a></li>
-                            <li><a href="./ui-media-object.html">Media Object</a></li>
-                            <li><a href="./ui-card.html">Cards</a></li>
-                            <li><a href="./ui-carousel.html">Carousel</a></li>
-                            <li><a href="./ui-dropdown.html">Dropdown</a></li>
-                            <li><a href="./ui-popover.html">Popover</a></li>
-                            <li><a href="./ui-progressbar.html">Progressbar</a></li>
-                            <li><a href="./ui-tab.html">Tab</a></li>
-                            <li><a href="./ui-typography.html">Typography</a></li>
-                            <li><a href="./ui-pagination.html">Pagination</a></li>
-                            <li><a href="./ui-grid.html">Grid</a></li>
 
+                    <li class="nav-label">Consultation</li>
+                    <li><a class="has-arrow" href="javascript:void()" aria-expanded="false"><i
+                                class="icon icon-layout-25"></i><span class="nav-text">Mes listes</span></a>
+                        <ul aria-expanded="false">
+                            <li><a href="{% url 'ListeLieuxAdmin' user_id=idUser %}">Mes lieux</a></li>
+                            <li><a href="{% url 'ListeEventsAdmin' user_id=idUser %}">Mes événements</a></li>
+                            <li><a href="{% url 'ListeProduitsAdmin' user_id=idUser %}">Mes produits</a></li>
                         </ul>
                     </li>
 
-                    <li><a class="has-arrow" href="javascript:void()" aria-expanded="false"><i
-                                class="icon icon-plug"></i><span class="nav-text">Plugins</span></a>
-                        <ul aria-expanded="false">
-                            <li><a href="./uc-select2.html">Select 2</a></li>
-                            <li><a href="./uc-nestable.html">Nestedable</a></li>
-                            <li><a href="./uc-noui-slider.html">Noui Slider</a></li>
-                            <li><a href="./uc-sweetalert.html">Sweet Alert</a></li>
-                            <li><a href="./uc-toastr.html">Toastr</a></li>
-                            <li><a href="./map-jqvmap.html">Jqv Map</a></li>
-                        </ul>
-                    </li>
-                    <li><a href="widget-basic.html" aria-expanded="false"><i class="icon icon-globe-2"></i><span
-                                class="nav-text">Widget</span></a></li>
-                    <li class="nav-label">Forms</li>
-                    <li><a class="has-arrow" href="javascript:void()" aria-expanded="false"><i
-                                class="icon icon-form"></i><span class="nav-text">Forms</span></a>
-                        <ul aria-expanded="false">
-                            <li><a href="./form-element.html">Form Elements</a></li>
-                            <li><a href="./form-wizard.html">Wizard</a></li>
-                            <li><a href="./form-editor-summernote.html">Summernote</a></li>
-                            <li><a href="form-pickers.html">Pickers</a></li>
-                            <li><a href="form-validation-jquery.html">Jquery Validate</a></li>
-                        </ul>
-                    </li>
-                    <li class="nav-label">Table</li>
-                    <li><a class="has-arrow" href="javascript:void()" aria-expanded="false"><i
-                                class="icon icon-layout-25"></i><span class="nav-text">Table</span></a>
-                        <ul aria-expanded="false">
-                            <li><a href="table-bootstrap-basic.html">Bootstrap</a></li>
-                            <li><a href="table-datatable-basic.html">Datatable</a></li>
-                        </ul>
+                    <li><a href="{% url 'AdminRegionalPage' idUser %}" aria-expanded="false"><i class="icon icon-globe-2"></i><span
+                        class="nav-text">Profile</span></a>
                     </li>
 
-                    <li class="nav-label">Extra</li>
-                    <li><a class="has-arrow" href="javascript:void()" aria-expanded="false"><i
-                                class="icon icon-single-copy-06"></i><span class="nav-text">Pages</span></a>
-                        <ul aria-expanded="false">
-                            <li><a href="./page-register.html">Register</a></li>
-                            <li><a href="./page-login.html">Login</a></li>
-                            <li><a class="has-arrow" href="javascript:void()" aria-expanded="false">Error</a>
-                                <ul aria-expanded="false">
-                                    <li><a href="./page-error-400.html">Error 400</a></li>
-                                    <li><a href="./page-error-403.html">Error 403</a></li>
-                                    <li><a href="./page-error-404.html">Error 404</a></li>
-                                    <li><a href="./page-error-500.html">Error 500</a></li>
-                                    <li><a href="./page-error-503.html">Error 503</a></li>
-                                </ul>
-                            </li>
-                            <li><a href="./page-lock-screen.html">Lock Screen</a></li>
-                        </ul>
-                    </li>
                 </ul>
             </div>
-
-
         </div>
         <!--**********************************
             Sidebar end
@@ -286,27 +203,85 @@
         <!--**********************************
             Content body start
         ***********************************-->
-        <div class="content-body">
-            <div class="container-fluid">
-                <h2>Commentaires</h2>
-                {% for comment in comments %}
-                <div class="box mt-5 mb-3 px-4">
-                    <div class="box-title mb-2"><span>{{ comment.author }}</span> a également commenté sur l'événement <span>{{ comment.lieu.name }}</span></div>
-                    <div class="box-content p-3">
-                        <div>
-                            {{ comment.text }}
-                        </div>
-                        <div class="text-right">
-                            <form action="{% url 'delete_comment' comment.id %}" method="post">
-                                {% csrf_token %}
-                                <button type="submit" class="btn btn-primary">Supprimer</button>
-                            </form>
-                        </div>
-                    </div>
+        <!-- Place this code wherever you want the success message to be displayed -->
+<!-- Place this code wherever you want the success message to be displayed -->
+<!-- Place this code wherever you want the success message to be displayed -->
+<!-- Place this code wherever you want the success message to be displayed -->
+<div id="success-message" class="success-message hidden">
+    <style>
+      .success-message {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: #5cb85c;
+        color: #fff;
+        padding: 10px 20px;
+        border-radius: 5px;
+        z-index: 9999;
+      }
+  
+      .hidden {
+        display: none;
+      }
+    </style>
+    Location added successfully!
+  </div>
+  
+
+<script>
+    function showSuccessMessage() {
+        var successMessage = document.getElementById('success-message');
+        successMessage.classList.remove('hidden');
+        setTimeout(function() {
+            successMessage.classList.add('hidden');
+        }, 5000); // Hide the message after 5 seconds
+    }
+
+    // Get all the forms with the class "delete-comment-form"
+    var forms = document.getElementsByClassName('delete-comment-form');
+    Array.from(forms).forEach(function(form) {
+        form.addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent the default form submission
+
+            // Make an AJAX request to delete the comment
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', form.action);
+            xhr.setRequestHeader('X-CSRFToken', '{{ csrf_token }}'); // Add CSRF token
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    showSuccessMessage(); // Display the success message
+                    // Additional code if needed
+                }
+            };
+            xhr.send(new FormData(form));
+        });
+    });
+</script>
+
+<div class="content-body">
+    <div class="container-fluid">
+        <h2>Commentaires</h2>
+        {% for comment in comments %}
+        <div class="box mt-5 mb-3 px-4">
+            <div class="box-title mb-2"><span>{{ comment.author }}</span> a également commenté sur l'événement <span>{{ comment.lieu.nomLieu }}</span></div>
+            <div class="box-content p-3">
+                <div>
+                    {{ comment.text }}
                 </div>
-                {% endfor %}
+                <div class="text-right">
+                    <form class="delete-comment-form" action="{% url 'delete_comment' comment.id %}" method="post">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-primary">Supprimer</button>
+                    </form>
+                </div>
             </div>
         </div>
+        {% endfor %}
+    </div>
+</div>
+
+
         
     </div>
         <!--**********************************

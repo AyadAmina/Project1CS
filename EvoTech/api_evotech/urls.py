@@ -25,11 +25,12 @@ websocket_urlpatterns = [
 ]
 urlpatterns = [
     path('', views.index, name='index'),
-    path('liste_lieux/', views.ListeDesLieux, name='ListeDesLieux'),
-    path('détail_lieu/<str:slug>/<int:id>',
+    path('liste_lieux/<int:user_id>/', views.ListeDesLieux, name='ListeDesLieux'),
+    path('détail_lieu/<str:slug>/<int:id>/<int:user_id>/',
          views.LieuDetail, name='LieuDetail'),
-    path('liste_event/', views.ListeEvents, name='ListeEvents'),
-    path('détail_event/<str:slug>/<int:id>',
+
+    path('liste_event/<int:user_id>/', views.ListeEvents, name='ListeEvents'),
+    path('détail_event/<int:user_id>/<str:slug>/<int:id>',
          views.EventDetail, name='EventDetail'),
     path('api/suggestionapi/', views.suggestionapi, name='suggestionapi'),
     path('api/suggestionapi2/', views.suggestionapi2, name='suggestionapi2'),
@@ -71,11 +72,11 @@ urlpatterns = [
     path('<int:lieu_id>/', views.lieu, name='lieu_detail'),
     path('update-feedback/', views.update_feedback, name='update_feedback'),
     path('retrieve-feedback/', views.retrieve_feedback, name='retrieve_feedback'),
-    path('api/notifications/<int:admin_id>/', views.notification, name='notification'),
+    path('api/notifications/<int:admin_id>/', views.notification2, name='notification'),
 
-    path('map/', views.map, name='map'),
+    path('map/<int:user_id>/', views.map, name='map'),
     path('History/', view=views.History, name="Hist"),
-    path('Preferable/<int:id_user>/<int:id_lieu>/', views.favorite, name='favorite'),
+    path('Preferable/<int:user_id>/<int:id_lieu>/', views.favorite, name='favorite'),
     path('Notification/<int:id_event>/', views.notification, name='notificaion'),
     path('all_notifications/',view=views.view_notifications,name='all_notifications'),
     path('Histories/Modify/<int:id_event>',views.History_Modifier_Event,name='History_Modifier_Event'),

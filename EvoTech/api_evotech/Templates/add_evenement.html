@@ -165,19 +165,38 @@
         <div class="quixnav">
             <div class="quixnav-scroll">
                 <ul class="metismenu" id="menu">
-                    <li class="nav-label first">Main Menu</li>
+                   
                     <!-- <li><a href="index.html"><i class="icon icon-single-04"></i><span class="nav-text">Dashboard</span></a>
                     </li> -->
-                    <li class="nav-label">Formulaire</li>
+                    
+                    
+                    <li class="nav-label">Configuration</li>
                     <li><a class="has-arrow" href="javascript:void()" aria-expanded="false"><i
-                                class="icon icon-form"></i><span class="nav-text">Formulaire</span></a>
+                                class="icon icon-form"></i><span class="nav-text">Mes ajouts</span></a>
                                 <ul aria-expanded="false">
                                     <li><a href="{% url 'add_lieu' user_id=user_id %}">Ajouter Lieu</a></li>
                                     <li><a href="{% url 'add_evenement' user_id=user_id %}">Ajouter événement</a></li>
-                                  
+                                    
                                     <li><a href="{% url 'add_transport' user_id=user_id %}">Ajouter un transport</a></li>
+                                    <li><a href="{% url 'add_produit' user_id=user_id %}">Ajouter un produit artisanat</a></li>
+                                    
                                 </ul>
                     </li>
+
+                    <li class="nav-label">Consultation</li>
+                    <li><a class="has-arrow" href="javascript:void()" aria-expanded="false"><i
+                                class="icon icon-layout-25"></i><span class="nav-text">Mes listes</span></a>
+                        <ul aria-expanded="false">
+                            <li><a href="{% url 'ListeLieuxAdmin' user_id=user_id %}">Mes lieux</a></li>
+                            <li><a href="{% url 'ListeEventsAdmin' user_id=user_id %}">Mes événements</a></li>
+                            <li><a href="{% url 'ListeProduitsAdmin' user_id=user_id %}">Mes produits</a></li>
+                        </ul>
+                    </li>
+
+                    <li><a href="{% url 'AdminRegionalPage' user_id %}" aria-expanded="false"><i class="icon icon-globe-2"></i><span
+                        class="nav-text">Profile</span></a>
+                    </li>
+
                 </ul>
             </div>
         </div>
