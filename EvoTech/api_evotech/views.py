@@ -161,6 +161,8 @@ def LieuDetail(request, slug, id):
   photos = Photo.objects.all()
   transports = lieu.transport.all()
   name=request.user.username
+  produits = lieu.produits_artis.all()
+
   transport_icons = {
         'Métro': 'fa-subway',
         'Bus': 'fa-bus',
@@ -172,7 +174,7 @@ def LieuDetail(request, slug, id):
   transports_with_icons = []
   for transport in transports:
         icon_class = transport_icons.get(transport.typeTrans, '')
-        print(icon_class)
+       
         transports_with_icons.append((transport, icon_class))
 
   context = {
@@ -180,7 +182,8 @@ def LieuDetail(request, slug, id):
       'photos': photos,
       'events': events,
       'transports_with_icons': transports_with_icons,
-      'name': name
+      'name': name,
+      'produits': produits
   }
   return render(request, 'détail_lieu.html', context)
 
@@ -302,7 +305,7 @@ def login(request):
           user.save()
 
           if user.profile=='Admin central' : 
-            return redirect('AdminCentralPage')
+            return redirect('AdminCentralPage',user_id=user_id)
           
           elif user.profile=='Admin régional' : 
             return redirect('AdminRegionalPage',user_id=user_id)
@@ -358,7 +361,7 @@ def logout(request,user_id):
 
 @custom_login_required
 @admin_required(role='Admin central')
-def adminCentral_view(request): 
+def adminCentral_view(request, user_id): 
   user = User.objects.get( profile="Admin central")
 
   if request.method == 'POST':
@@ -1207,4 +1210,28 @@ def update_produit(request, user_id, produit_id):
 def delete_produit(request, produit_id):
     produit = get_object_or_404(ProduitsArtis, idProduit=produit_id)
     produit.delete()
+    return HttpResponse(status=204)
+#gestion des comptes
+def addUser(request):
+    user = None
+    if request.method == 'POST':
+        nom = request.POST.get('nom')
+        prenom = request.POST.get('prenom')
+        nom_utilisateur = request.POST.get('nom_utilisateur')
+        password =  nom_utilisateur + '2023' 
+        profile = 'Admin régional'
+        
+        user = User(nomUser = nom, prenomUser = prenom, username = nom_utilisateur, motdepasse = password, profile = profile )
+        user.save()
+        return redirect('listComptes')
+
+    return render(request, 'add_user.html', {'user': user})
+
+def listComptes(request):
+    users = User.objects.filter(profile = 'Admin régional')
+    return render(request, 'liste_comptes.html', {'users': users})
+
+def deleteUser(request, userId):
+    user = get_object_or_404(User, idUser=userId)
+    user.delete()
     return HttpResponse(status=204)

@@ -36,7 +36,7 @@ urlpatterns = [
     path('api/', include(router.urls)),
 
     path('login/', views.login, name='login'),
-    path('login/admin/AdminCentralPage/',
+    path('login/admin/AdminCentralPage/<int:user_id>/',
          views.adminCentral_view, name='AdminCentralPage'),
 
     path('login/admin/AdminRegionalPage/<int:user_id>/',
@@ -60,7 +60,7 @@ urlpatterns = [
     path('statistiques/', views.adminCentral_stats, name='chart'), 
 
 
-    path('my_profile/<int:id>/', views.profile, name='profile'),
+    path('my_profile/<int:user_id>/', views.profile, name='profile'),
     path('delete-favoris/<int:favoris_id>',
          views.delete_favoris, name='delete_favoris'),
 
@@ -93,6 +93,9 @@ urlpatterns = [
     path('login/admin/AdminRegionalPage/<int:user_id>/mesproduits/', views.ListeProduitsAdmin, name='ListeProduitsAdmin'),
     path('login/admin/AdminRegionalPage/<int:user_id>/modifier_produit/<int:produit_id>', views.update_produit, name='update_produit'),
     path('delete-produit/<int:produit_id>', views.delete_produit, name='delete_produit'),
+    path('add_user/',views.addUser , name='addUser'),
+    path('liste_comptes/',views.listComptes , name='listComptes'),
+    path('delete-user/<int:userId>',views.deleteUser, name='deleteUser'),
     
 ]
 if settings.DEBUG:

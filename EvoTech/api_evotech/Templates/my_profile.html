@@ -200,9 +200,10 @@
 							
 								<li>{{ user.nomUser }} {{ user.prenomUser }}</li>
 								<li><span>{{ user.username }}</span></li>
-								<li><span class="type-profile">Bienvenue en Algérie cher {{ user.profile }}</span></li>
+								<li><span class="type-profile" >Bienvenue en Algérie cher {{ user.profile }}</span></li>
 							
 						</ul>
+				     	</br>
 						<a class="logout"  href="{% url 'logout' user_id=user.idUser %}" >LOGOUT</a> 
 
 						

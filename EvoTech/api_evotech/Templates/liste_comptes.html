@@ -1,0 +1,241 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Focus - Bootstrap Admin Dashboard </title>
+    <!-- Favicon icon -->
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static '../../static/images/favicon.png'%}">
+    <!-- Datatable -->
+    <link href="{% static 'vendor/datatables/css/jquery.dataTables.min.css'%}" rel="stylesheet">
+    <!-- Custom Stylesheet -->
+    <link href="{% static 'styles/style.css'%}" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
+
+</head>
+
+
+<body>
+
+    <!--*******************
+        Preloader start
+    ********************-->
+    <div id="preloader">
+        <div class="sk-three-bounce">
+            <div class="sk-child sk-bounce1"></div>
+            <div class="sk-child sk-bounce2"></div>
+            <div class="sk-child sk-bounce3"></div>
+        </div>
+    </div>
+    <!--*******************
+        Preloader end
+    ********************-->
+
+
+    <!--**********************************
+        Main wrapper start
+    ***********************************-->
+    <div id="main-wrapper">
+
+        <!--**********************************
+            Nav header start
+        ***********************************-->
+        <div class="nav-header">
+            <a href="index.html" class="brand-logo">
+                <img class="logo-abbr" src="{% static 'images/logo.png'%}" alt="">
+
+            </a>
+
+            <div class="nav-control">
+                <div class="hamburger">
+                    <span class="line"></span><span class="line"></span><span class="line"></span>
+                </div>
+            </div>
+        </div>
+        <!--**********************************
+            Nav header end
+        ***********************************-->
+
+        <!--**********************************
+            Header start
+        ***********************************-->
+        <div class="nav-header">
+            <a href="index.html" class="brand-logo">
+                <img class="logo-abbr" src="{% static 'images/logo.png'%}" alt="">
+
+            </a>
+
+            <div class="nav-control">
+                <div class="hamburger">
+                    <span class="line"></span><span class="line"></span><span class="line"></span>
+                </div>
+            </div>
+
+            
+        </div>
+        <!--**********************************
+            Nav header end
+        ***********************************-->
+
+     
+        <!--**********************************
+            Sidebar start
+        ***********************************-->
+        <div class="quixnav">
+            <div class="quixnav-scroll">
+                <ul class="metismenu" id="menu">
+                    <br><br>
+                    
+                    <li><a href="{% url 'listComptes' %}" aria-expanded="false"><i class="icon icon-globe-2"></i><span
+                                class="nav-text">Liste des comptes</span></a>
+                    </li>
+                    
+
+
+                   
+                </ul>
+            </div>
+        </div>
+        <!--**********************************
+            Sidebar end
+        ***********************************-->
+
+        <!--**********************************
+            Content body start
+        ***********************************-->
+        <div class="content-body">
+            <div class="btn-addAccount"><a href="{% url 'addUser' %}" >Ajouter un compte</a></div>
+            <br> <br>
+            <div class="container-fluid">
+                <div class="row page-titles mx-0">
+                    <div class="col-sm-6 p-md-0">
+                        <div class="welcome-text">
+                            <h4>Liste des comptes</h4>
+                           
+                        </div>
+                    </div>
+                    
+                </div>
+                <!-- row -->
+
+
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                           
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table id="example" class="display" style="min-width: 845px">
+                                        <thead>
+                                            <tr>
+                                                <th>Nom</th>
+                                                <th>Prénom</th>
+                                                <th>Nom d'utilisateur</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                       <tbody>
+                                        {% for user in users %}
+                                            <tr>
+                                                <td>{{ user.nomUser }}</td>
+                                                <td>{{ user.prenomUser }}</td>
+                                                <td>{{ user.username }}</td>
+                                                <td><a href="#" class="delete-button" onclick="deleteItem('{{ user.idUser }}')" style="color: red;"><i class="fas fa-trash-alt"></i></a></td>
+                                            </tr>
+                                        {% endfor %}
+                                       </tbody>
+                                        
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+        <!--**********************************
+            Content body end
+        ***********************************-->
+
+
+        <!--**********************************
+            Footer start
+        ***********************************-->
+        <div class="footer">
+            <div class="copyright">
+                <p>Copyright © Designed &amp; Developed by <a href="#" target="_blank">EvoTech</a> 2023</p>
+            </div>
+        </div>
+        <!--**********************************
+            Footer end
+        ***********************************-->
+
+        <!--**********************************
+           Support ticket button start
+        ***********************************-->
+
+        <!--**********************************
+           Support ticket button end
+        ***********************************-->
+
+        
+    </div>
+    <!--**********************************
+        Main wrapper end
+    ***********************************-->
+
+    <!--**********************************
+        Scripts
+    ***********************************-->
+
+    <!-- the delete button-->
+    <script>
+        function deleteItem(userId) {
+        // Make an AJAX request to delete the item
+        fetch(`/delete-user/${userId}`, {
+            method: 'DELETE',
+            headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': '{{ csrf_token }}'
+            },
+        })
+        .then(response => {
+            if (response.ok) {
+            // Remove the deleted item from the DOM
+            const listItem = document.getElementById(`user-${userId}`);
+            if (listItem) {
+                listItem.remove();
+                alert('suppression réussite');
+            }
+            
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+        location.reload();
+        
+        }
+        
+    </script>
+
+    <!-- Required vendors -->
+    <script src="{% static 'vendor/global/global.min.js'%}"></script>
+    <script src="{% static 'js/quixnav-init.js'%}"></script>
+    <script src="{% static 'js/custom.min.js'%}"></script>
+    
+
+
+    <!-- Datatable -->
+    <script src="{% static 'vendor/datatables/js/jquery.dataTables.min.js'%}"></script>
+    <script src="{% static 'js/plugins-init/datatables.init.js'%}"></script>
+
+</body>
+
+</html>

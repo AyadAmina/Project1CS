@@ -19274,3 +19274,17 @@ html[dir="rtl"] [direction="rtl"][data-sidebar-style="compact"]:not([data-layout
   background-color: transparent;
   border: 0;
 }
+.content-body .btn-addAccount a{
+  color: #fff;
+  margin-left: 850px;
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #2a9d8f;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+}
+.content-body .btn-addAccount a:hover{
+  background-color: #fa9e1b;
+
+}
