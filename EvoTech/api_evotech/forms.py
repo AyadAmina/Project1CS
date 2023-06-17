@@ -1,6 +1,8 @@
 from django.forms import ModelForm
 from django import forms
 from .models import *
+from .models import Search
+
 
 
 class RegisterForm(ModelForm):
@@ -55,4 +57,9 @@ class TransportForm(forms.ModelForm):
 
 
 
+class SearchForm(forms.ModelForm):
+    address = forms.CharField(label='')
 
+    class Meta:
+        model = Search
+        fields = ['address', ]

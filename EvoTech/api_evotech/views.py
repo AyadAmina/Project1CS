@@ -11,6 +11,10 @@ from django.shortcuts import get_object_or_404
 from django.contrib.auth.decorators import login_required
 from channels.db import database_sync_to_async
 from channels.generic.websocket import AsyncWebsocketConsumer
+from .models import Search, Lieu
+from .forms import SearchForm
+import folium
+import geocoder
 
 from django.db.models import Max, Count
 
@@ -964,3 +968,42 @@ def History_Supprimer_Lieu(request, id_lieu):
     history=HistoryLieu(Iduser=user, Idlieu=lieu, Type_Action="Suppression lieu")
     history.save()
     return JsonResponse({"message": " added Historyuccessfully."})
+ 
+
+ #gestion de map
+def map(request):
+    form = SearchForm()
+
+    # Create Map Object
+    m = folium.Map(location=[28.033886, 1.659626], zoom_start=5)
+
+    if request.method == 'POST':
+        form = SearchForm(request.POST)
+        if form.is_valid():
+            address = form.save()
+            location = geocoder.osm(address.address)
+            lat = location.lat
+            lng = location.lng
+            country = location.country
+
+            if lat is None or lng is None:
+                address.delete()
+                return HttpResponse('Your address input is invalid')
+
+            m = folium.Map(location=[lat, lng], zoom_start=15)
+            folium.Marker([lat, lng], tooltip='Click for more', popup=country).add_to(m)
+
+    lieux = Lieu.objects.all()
+
+    # Add markers for each place
+    for lieu in lieux:
+        folium.Marker([lieu.latitude, lieu.longitude], tooltip=lieu.nomLieu, popup=lieu.descripLieu, icon=folium.Icon(color='green')).add_to(m)
+
+    # Get HTML Representation of Map Object
+    m = m._repr_html_()
+    context = {
+        'm': m,
+        'form': form,
+    }
+
+    return render(request, 'map.html', context)

@@ -2,6 +2,12 @@ from django.contrib import admin
 
 # Register your models here.
 from .models import *
+
+class SearchAdmin(admin.ModelAdmin):
+    list = ('address', 'date')
+
+    admin.site.register(Search)
+    
 class MeteoAdmin(admin.ModelAdmin):
     list = ('idMeteo', 'Temperature', 'prevision')
 

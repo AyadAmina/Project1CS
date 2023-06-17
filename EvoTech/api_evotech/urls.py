@@ -5,6 +5,7 @@ from rest_framework import routers
 from django.urls import include
 from django.conf import settings
 from django.conf.urls.static import static
+from .views import map
 
 # api urls
 router = routers.SimpleRouter()
@@ -70,8 +71,8 @@ urlpatterns = [
     path('retrieve-feedback/', views.retrieve_feedback, name='retrieve_feedback'),
     path('api/notifications/<int:admin_id>/', views.notification, name='notification'),
 
-
-    path('History/',view=views.History,name="Hist"),
+    path('map/', views.map, name='map'),
+    path('History/', view=views.History, name="Hist"),
     path('Preferable/<int:id_user>/<int:id_lieu>/', views.favorite, name='favorite'),
     path('Notification/<int:id_event>/', views.notification, name='notificaion'),
     path('all_notifications/',view=views.view_notifications,name='all_notifications'),
@@ -81,6 +82,7 @@ urlpatterns = [
     path('Histories/ModifierL/<int:id_lieu>',views.History_Modifier_Lieu,name='History_Modifier_Lieu'),
     path('Histories/SupprimerL/<int:id_lieu>',views.History_Supprimer_Lieu,name='History_Supprimer_Lieu')
 
+    
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL,
