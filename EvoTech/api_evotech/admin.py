@@ -19,9 +19,9 @@ class CategorieAdmin(admin.ModelAdmin):
     admin.site.register(Categorie)
 
 class UserAdmin(admin.ModelAdmin):
-    list = ('idUser', 'nomUser', 'prenomUser', 'username', 'motdepasse', 'profile')
+    list_display = ('idUser', 'nomUser', 'prenomUser', 'username', 'motdepasse', 'profile')
 
-    admin.site.register(User)
+admin.site.register(User, UserAdmin)
 
 class RegionAdmin(admin.ModelAdmin):
     list = ('numRegion', 'nomRegion', 'adminRegion')

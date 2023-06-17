@@ -273,7 +273,7 @@ def set_region_side():
 
 
 def login(request):
-  Top_10_lieu()
+ # Top_10_lieu()
   form = LoginForm()
   
   if request.method == 'POST': 
@@ -368,10 +368,12 @@ def adminRegional_view(request, user_id):
             user.motdepasse = motdepasse
 
         user.save()
+  notifications= Notification.objects.filter(adminreg=user_id)
 
   context = {
         'user': user,
         'region' : region,
+        'notifications':notifications
   }
 
   return render(request, "admin_regional_page.html",context)
@@ -415,7 +417,8 @@ def add_lieu(request, user_id):
     region = Region.objects.get(adminRegion= admin_region)
     communes = Commune.objects.filter(regionC=region)
     transports = Transport.objects.all()
-    notification= Notification.objects.filter(adminreg=user_id)
+    notifications= Notification.objects.filter(adminreg=user_id)
+
     
     if request.method == 'POST':
         form = LieuForm(request.POST, communes=communes)
@@ -449,7 +452,7 @@ def add_lieu(request, user_id):
        'transports' : transports,
        'categories' : Categorie.objects.all() ,
        'themes' : Theme.objects.all(),
-       'notification': notification
+       'notifications': notifications
     }
     
     return render(request, 'add_lieu.html', context)
@@ -461,6 +464,7 @@ def add_evenement(request, user_id):
     admin_region = User.objects.get(idUser=user_id)
     region = Region.objects.get(adminRegion= admin_region)
     lieux = Lieu.objects.filter(region=region)
+    notifications= Notification.objects.filter(adminreg=user_id)
 
     if request.method == 'POST':
         form = EvenementForm(request.POST, lieux=lieux)
@@ -478,7 +482,8 @@ def add_evenement(request, user_id):
     
     context = {
        'form': form ,
-       'user_id' : user_id
+       'user_id' : user_id,
+       'notifications':notifications
        
 
        }
@@ -498,10 +503,13 @@ def add_transport(request, user_id):
     else:
         form = TransportForm( )
 
+    notifications= Notification.objects.filter(adminreg=user_id)
 
     context = {
        'form': form , 
-       'user_id' : user_id
+       'user_id' : user_id,
+       'notifications':notifications
+
        }
     
     return render(request, 'add_transport.html', context)
@@ -672,6 +680,14 @@ class CommentConsumer(AsyncWebsocketConsumer):
 def index(request):
     template = loader.get_template('index.html')
     return HttpResponse(template.render())
+def listcomment(request,admin_id):
+    comments = Comment.get_comments_for_admin(admin_id)
+    template = loader.get_template('list-comment.html')
+    context = {
+        'comments': comments
+    }
+    
+    return HttpResponse(template.render(context,request))
 def admin(request):
     template = loader.get_template('indexadmin.html')
     return HttpResponse(template.render())
@@ -684,13 +700,21 @@ def lieu(request, lieu_id):
     username = request.user.username
     return render(request, 'comm.html', {'lieu': lieu,'name':username})
 
-def adminnot(request):
-    notifications = Notification.objects.filter(adminreg=request.user.id).order_by('-created_at')[:5]  
+def adminnot(request,admin_id):
+    notifications = Notification.objects.filter(adminreg=admin_id).order_by('-created_at')[:5]  
     template = loader.get_template('indexadmin.html')
     context = {
         'notifications': notifications
     }
     return HttpResponse(template.render(context, request))
+
+from django.shortcuts import get_object_or_404, redirect
+
+def delete_comment(request, comment_id):
+    comment = get_object_or_404(Comment, id=comment_id)
+     
+    comment.delete()
+    return redirect('listcomment', admin_id=comment.get_admin_id()) 
 
 
 
@@ -784,6 +808,21 @@ def retrieve_feedback(request):
             'num_feedback': num_feedback,
             'average_rating': average_rating,
             'user_rating': user_rating
+        })
+    else:
+        return JsonResponse({'error': 'Invalid request method'})
+from django.core import serializers
+from django.http import JsonResponse
+
+from django.core import serializers
+from django.http import JsonResponse
+
+def notification(request, admin_id):
+    if request.method == 'GET':
+        notifications = Notification.objects.filter(adminreg=admin_id).values()
+        notifications_list = list(notifications)
+        return JsonResponse({
+            'notifications': notifications_list,
         })
     else:
         return JsonResponse({'error': 'Invalid request method'})

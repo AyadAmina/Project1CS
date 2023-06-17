@@ -121,7 +121,13 @@ class Comment(models.Model):
 
     def __str__(self):
         return self.text
-    
+    def get_lieu_name(self):
+        return self.lieu.nomLieu
+    def get_admin_id(self):
+        return self.lieu.region.adminRegion.idUser
+    @classmethod
+    def get_comments_for_admin(cls, admin_id):
+        return cls.objects.filter(lieu__region__adminRegion__idUser=admin_id)
 class Notification(models.Model):
     adminreg = models.ForeignKey(User, on_delete=models.CASCADE)
     lieu =models.CharField(max_length=1000,default='')

@@ -61,12 +61,14 @@ urlpatterns = [
     path('delete-favoris/<int:favoris_id>',
          views.delete_favoris, name='delete_favoris'),
 
-    path('adm', views.adminnot, name='adm'),
+    path('notification/<int:admin_id>/', views.adminnot, name='notification'),
     path('comm/', views.comm, name='comm'),
-
+    path('delete_comment/<int:comment_id>/', views.delete_comment, name='delete_comment'),
+    path('listcomment/<int:admin_id>/', views.listcomment, name='listcomment'),
     path('<int:lieu_id>/', views.lieu, name='lieu_detail'),
     path('update-feedback/', views.update_feedback, name='update_feedback'),
     path('retrieve-feedback/', views.retrieve_feedback, name='retrieve_feedback'),
+    path('api/notifications/<int:admin_id>/', views.notification, name='notification'),
 
 ]
 if settings.DEBUG:

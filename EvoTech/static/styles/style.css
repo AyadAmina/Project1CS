@@ -19238,3 +19238,17 @@ html[dir="rtl"] [direction="rtl"][data-sidebar-style="compact"]:not([data-layout
   flex:0 0 50%
   
 }
+/* LIST COMMENT  */
+.box{
+  color:black;
+  font-family: inherit;
+  font-size: inherit;
+}
+.box-title span{
+  color:#2a9d8f;
+  font-weight: 500;
+}
+.box-content{
+  border:1.9px solid #2a9d8f;
+  border-radius: 5px;
+}

@@ -1,4 +1,41 @@
 <!DOCTYPE html>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    function updateNotifications() {
+        $.ajax({
+            url: '/api/notifications/{{user.idUser}}/',
+            type: 'GET',
+            dataType: 'json',
+            success: function(response) {
+                var notifications = response.notifications;
+                var notificationsList = '';
+                var maxNotifications = Math.min(notifications.length, 5); // Limit to a maximum of 5 notifications
+                 
+                for (var i = 0; i < maxNotifications; i++) {
+                    var notification = notifications[i];
+                    console.log(notification.author);
+                    notificationsList += '<li class="media dropdown-item">';
+                    notificationsList += '<span class="success"><i class="ti-user"></i></span>';
+                    notificationsList += '<div class="media-body">';
+                    notificationsList += '<a href="#">';
+                    notificationsList += '<p><strong>' + notification.author + '</strong> has added a <strong>commentmer</strong> in<strong>' + notification.event + '</strong></p>';
+                    notificationsList += '</a>';
+                    notificationsList += '</div>';
+                    notificationsList += '<span class="notify-time">' + notification.created_at + '</span>';
+                    notificationsList += '</li>';
+                }
+
+                $('#notifications-list').html(notificationsList);
+            },
+            error: function(xhr, status, error) {
+                console.log('Error:', error);
+            }
+        });
+    }
+
+    setInterval(updateNotifications, 10000);
+</script>
+
 <html lang="en">
 {% load static %}
 <head>
@@ -72,60 +109,27 @@
                                     <i class="mdi mdi-bell"></i>
                                     <div class="pulse-css"></div>
                                 </a>
-                                <div class="dropdown-menu dropdown-menu-right">
-                                    <ul class="list-unstyled">
-                                        <li class="media dropdown-item">
-                                            <span class="success"><i class="ti-user"></i></span>
-                                            <div class="media-body">
-                                                <a href="#">
-                                                    <p><strong>Martin</strong> has added a <strong>customer</strong> Successfully
-                                                    </p>
-                                                </a>
+                                               <!-- start notification-->
+                                               <div class="dropdown-menu dropdown-menu-right">
+                                                <ul class="list-unstyled">
+                                                    {% for notification in notifications %}
+                                                    <li class="media dropdown-item">
+                                                        <!-- Display the notification details -->
+                                                        <span class="success"><i class="ti-user"></i></span>
+                                                        <div class="media-body">
+                                                            <a href="#">
+                                                                <p><strong>{{ notification.author }}</strong> has added a <strong>commentmer</strong> in<strong>{{ notification.event }}</strong> </p>
+                                                            </a>
+                                                        </div>
+                                                        <span class="notify-time">{{ notification.created_at }}</span>
+                                                    </li>
+                                                    {% endfor %}
+                                                </ul>
+                                                <a class="all-notification" href="/listcomment/{{user_id}}/">See all notifications <i class="ti-arrow-right"></i></a>
                                             </div>
-                                            <span class="notify-time">3:20 am</span>
-                                        </li>
-                                        <li class="media dropdown-item">
-                                            <span class="primary"><i class="ti-shopping-cart"></i></span>
-                                            <div class="media-body">
-                                                <a href="#">
-                                                    <p><strong>Jennifer</strong> purchased Light Dashboard 2.0.</p>
-                                                </a>
-                                            </div>
-                                            <span class="notify-time">3:20 am</span>
-                                        </li>
-                                        <li class="media dropdown-item">
-                                            <span class="danger"><i class="ti-bookmark"></i></span>
-                                            <div class="media-body">
-                                                <a href="#">
-                                                    <p><strong>Robin</strong> marked a <strong>ticket</strong> as unsolved.
-                                                    </p>
-                                                </a>
-                                            </div>
-                                            <span class="notify-time">3:20 am</span>
-                                        </li>
-                                        <li class="media dropdown-item">
-                                            <span class="primary"><i class="ti-heart"></i></span>
-                                            <div class="media-body">
-                                                <a href="#">
-                                                    <p><strong>David</strong> purchased Light Dashboard 1.0.</p>
-                                                </a>
-                                            </div>
-                                            <span class="notify-time">3:20 am</span>
-                                        </li>
-                                        <li class="media dropdown-item">
-                                            <span class="success"><i class="ti-image"></i></span>
-                                            <div class="media-body">
-                                                <a href="#">
-                                                    <p><strong> James.</strong> has added a<strong>customer</strong> Successfully
-                                                    </p>
-                                                </a>
-                                            </div>
-                                            <span class="notify-time">3:20 am</span>
-                                        </li>
-                                    </ul>
-                                    <a class="all-notification" href="#">See all notifications <i
-                                            class="ti-arrow-right"></i></a>
-                                </div>
+                                            
+
+                                      <!-- end notification -->
                             </li>
                             <li class="nav-item dropdown header-profile">
                                 <a class="nav-link" href="#" role="button" data-toggle="dropdown">
