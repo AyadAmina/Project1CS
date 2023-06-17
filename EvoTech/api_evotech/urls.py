@@ -41,10 +41,11 @@ urlpatterns = [
 
     path('login/admin/AdminRegionalPage/<int:user_id>/',
          views.adminRegional_view, name='AdminRegionalPage'),
-    path('login/touriste/<int:user_id>/', views.userpage, name='userpage'),
+   
 
 
     path('register/', views.register_touriste, name='register_touriste'),
+     path('logout/<int:user_id>/', views.logout, name='logout'),
 
     path('login/admin/AdminRegionalPage/<int:user_id>/AddLieu',
          views.add_lieu, name='add_lieu'),
@@ -53,12 +54,13 @@ urlpatterns = [
 
     path('login/admin/AdminRegionalPage/<int:user_id>/AddTransport',
          views.add_transport, name='add_transport'),
+    path('login/admin/AdminRegionalPage/<int:user_id>/AddProduit', views.add_produit, name='add_produit'),
 
     path('save-photos/', views.save_photos, name='save_photos'),
     path('statistiques/', views.adminCentral_stats, name='chart'), 
 
 
-    path('my_profile/<int:id>', views.profile, name='profile'),
+    path('my_profile/<int:id>/', views.profile, name='profile'),
     path('delete-favoris/<int:favoris_id>',
          views.delete_favoris, name='delete_favoris'),
 
@@ -80,8 +82,17 @@ urlpatterns = [
     path('Histories/Supprimer/<int:id_event>',views.History_Supprimer_Event,name='History_Supprimer_Event'),
     path('Histories/AjoutL/<int:id_lieu>',views.History_Ajout_Lieu,name='History_Ajout_Lieu'),
     path('Histories/ModifierL/<int:id_lieu>',views.History_Modifier_Lieu,name='History_Modifier_Lieu'),
-    path('Histories/SupprimerL/<int:id_lieu>',views.History_Supprimer_Lieu,name='History_Supprimer_Lieu')
+    path('Histories/SupprimerL/<int:id_lieu>',views.History_Supprimer_Lieu,name='History_Supprimer_Lieu'),
 
+    path('login/admin/AdminRegionalPage/<int:user_id>/meslieux/', views.ListeLieuxAdmin, name='ListeLieuxAdmin'),
+    path('login/admin/AdminRegionalPage/<int:user_id>/modifier_lieu/<int:lieu_id>', views.update_lieu, name='update_lieu'),
+    path('delete-lieu/<int:lieu_id>', views.delete_lieu, name='delete_lieu'),
+    path('login/admin/AdminRegionalPage/<int:user_id>/mesevents/', views.ListeEventsAdmin, name='ListeEventsAdmin'),
+    path('login/admin/AdminRegionalPage/<int:user_id>/modifier_event/<int:event_id>', views.update_event, name='update_event'),
+    path('delete-event/<int:event_id>', views.delete_event, name='delete_event'),
+    path('login/admin/AdminRegionalPage/<int:user_id>/mesproduits/', views.ListeProduitsAdmin, name='ListeProduitsAdmin'),
+    path('login/admin/AdminRegionalPage/<int:user_id>/modifier_produit/<int:produit_id>', views.update_produit, name='update_produit'),
+    path('delete-produit/<int:produit_id>', views.delete_produit, name='delete_produit'),
     
 ]
 if settings.DEBUG:

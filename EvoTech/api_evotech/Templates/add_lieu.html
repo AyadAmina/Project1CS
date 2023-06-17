@@ -140,20 +140,35 @@
         <div class="quixnav">
             <div class="quixnav-scroll">
                 <ul class="metismenu" id="menu">
-                    <li class="nav-label first">Menu Principale</li>
-
-                    <li class="nav-label">Formulaire</li>
+                    <li class="nav-label first">Menu Principal</li>
+                    <!-- <li><a href="index.html"><i class="icon icon-single-04"></i><span class="nav-text">Dashboard</span></a>
+                    </li> -->
                     <li><a class="has-arrow" href="javascript:void()" aria-expanded="false"><i
-                                class="icon icon-form"></i><span class="nav-text">Formulaire</span></a>
+                                class="icon icon-single-04"></i><span class="nav-text">Statistiques</span></a>
+                       
+                    </li>
+                    
+                    <li class="nav-label">Configuration</li>
+                    <li><a class="has-arrow" href="javascript:void()" aria-expanded="false"><i
+                                class="icon icon-form"></i><span class="nav-text">Mes ajouts</span></a>
                                 <ul aria-expanded="false">
                                     <li><a href="{% url 'add_lieu' user_id=user_id %}">Ajouter Lieu</a></li>
                                     <li><a href="{% url 'add_evenement' user_id=user_id %}">Ajouter événement</a></li>
                                     
                                     <li><a href="{% url 'add_transport' user_id=user_id %}">Ajouter un transport</a></li>
+                                    <li><a href="{% url 'add_produit' user_id=user_id %}">Ajouter un produit artisanat</a></li>
                                 </ul>
                     </li>
 
-                 
+                    <li class="nav-label">Consultation</li>
+                    <li><a class="has-arrow" href="javascript:void()" aria-expanded="false"><i
+                                class="icon icon-layout-25"></i><span class="nav-text">Mes listes</span></a>
+                        <ul aria-expanded="false">
+                            <li><a href="{% url 'ListeLieuxAdmin' user_id=user_id %}">Mes lieux</a></li>
+                            <li><a href="{% url 'ListeEventsAdmin' user_id=user_id %}">Mes événements</a></li>
+                        </ul>
+                    </li>
+
                 </ul>
             </div>
         </div>
@@ -223,7 +238,7 @@
                                                 <h4 class="card-title">Fait Historique</h4>
                                                         <textarea class="form-control  mb-4" rows="4" id="comment" name="faitHisto" ></textarea>
                                                <h4 class="card-title">Produits Artisanaux</h4>
-                                            </div>
+                                             </div>
                                                 <input type="text" class="form-control input-rounded  mb-4" placeholder="Entrer les produitArtis" name="produitArtis">
                                                 <h4 class="card-title">Expressions Courantes</h4>
                                                         <input type="text" class="form-control input-rounded  mb-4" placeholder="Entrer les expressCourantes" name="expressCourantes">
@@ -250,7 +265,19 @@
                                                     <label>Heure de fermeture</label>
                                                     <input type="time" class="form-control" name="H_fermeture">
                                                 </div>
+
+
                                             </div>
+                                            <h4 class="card-title">Produits artisanaux</h4>
+                                       
+                                            <div class="card-body form-row">
+                                                <select class="custom-select" id="id_produits_artis" name="produits_artis" multiple>
+                                                    {% for produit in produits_artis %}
+                                                      <option value="{{ produit.idProduit }}">{{ produit.nomProduit }}</option>
+                                                    {% endfor %}
+                                                  </select>
+                                            </div>
+
                                         </div>
                                      <div class="text-md-right mx-4 mb-4">
                                         <button type="submit" class="btn btn-primary" href="{% url 'add_lieu' user_id %}">Ajouter</button>

@@ -1,0 +1,407 @@
+
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>viDZit</title>
+    <!-- Favicon icon -->
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'images/favicon.png' %}">
+    <!-- Custom Stylesheet -->
+    <link href="{% static 'styles/style.css' %}" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+    <link rel="stylesheet" href="{% static 'styles/map.css' %}"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'styles/add_photos.css' %}">
+    
+
+</head>
+
+<body>
+
+    <div id="preloader">
+        <div class="sk-three-bounce">
+            <div class="sk-child sk-bounce1"></div>
+            <div class="sk-child sk-bounce2"></div>
+            <div class="sk-child sk-bounce3"></div>
+        </div>
+    </div>   
+    <div id="main-wrapper">   
+        <div class="nav-header">
+            <a href="index.html" class="brand-logo">
+                <img class="logo-abbr" src="{% static 'images/logo.png' %}" alt="">
+                <img class="logo-compact" src="{% static 'images/logo-text.png' %}" alt="">
+                <img class="brand-title" src="{% static 'images/logo-text.png' %}" alt="">
+            </a>
+
+            <div class="nav-control">
+                <div class="hamburger">
+                    <span class="line"></span><span class="line"></span><span class="line"></span>
+                </div>
+            </div>
+        </div>    
+        <div class="header">
+            <div class="header-content">
+                <nav class="navbar navbar-expand">
+                    <div class="collapse navbar-collapse justify-content-between">
+                        <div class="header-left">
+                            <div class="search_bar dropdown">
+                                <span class="search_icon p-3 c-pointer" data-toggle="dropdown">
+                                    <i class="mdi mdi-magnify"></i>
+                                </span>
+                                <div class="dropdown-menu p-0 m-0">
+                                    <form>
+                                        <input class="form-control" type="search" placeholder="Search" aria-label="Search">
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+                        <ul class="navbar-nav header-right">
+                            <li class="nav-item dropdown notification_dropdown">
+                                <a class="nav-link" href="#" role="button" data-toggle="dropdown">
+                                    <i class="mdi mdi-bell"></i>
+                                    <div class="pulse-css"></div>
+                                </a>
+                                <!-- start notification-->
+                                <div class="dropdown-menu dropdown-menu-right">
+                                    <ul class="list-unstyled">
+                                        {% for notification in notifications %}
+                                        <li class="media dropdown-item">
+                                            <!-- Display the notification details -->
+                                            <span class="success"><i class="ti-user"></i></span>
+                                            <div class="media-body">
+                                                <a href="#">
+                                                    <p><strong>{{ notification.author }}</strong> has added a <strong>commentmer</strong> in<strong>{{ notification.event }}</strong> </p>
+                                                </a>
+                                            </div>
+                                            <span class="notify-time">{{ notification.created_at }}</span>
+                                        </li>
+                                        {% endfor %}
+                                    </ul>
+                                    <a class="all-notification" href="#">See all notifications <i class="ti-arrow-right"></i></a>
+                                </div>
+                                
+
+                          <!-- end notification -->
+                            </li>
+                            <li class="nav-item dropdown header-profile">
+                                <a class="nav-link" href="#" role="button" data-toggle="dropdown">
+                                    <i class="mdi mdi-account"></i>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-right">
+                                    <a href="./app-profile.html" class="dropdown-item">
+                                        <i class="icon-user"></i>
+                                        <span class="ml-2">Profile </span>
+                                    </a>
+                                  
+                                    <a href="./page-login.html" class="dropdown-item">
+                                        <i class="icon-key"></i>
+                                        <span class="ml-2">Déconnecter </span>
+                                    </a>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+        </div>  
+        <div class="quixnav">
+            <div class="quixnav-scroll">
+                <ul class="metismenu" id="menu">
+                    <li class="nav-label first">Menu Principal</li>
+                    <!-- <li><a href="index.html"><i class="icon icon-single-04"></i><span class="nav-text">Dashboard</span></a>
+                    </li> -->
+                    <li><a class="has-arrow" href="javascript:void()" aria-expanded="false"><i
+                                class="icon icon-single-04"></i><span class="nav-text">Statistiques</span></a>
+                       
+                    </li>
+                    
+                    <li class="nav-label">Configuration</li>
+                    <li><a class="has-arrow" href="javascript:void()" aria-expanded="false"><i
+                                class="icon icon-form"></i><span class="nav-text">Mes ajouts</span></a>
+                                <ul aria-expanded="false">
+                                    <li><a href="{% url 'add_lieu' user_id=user_id %}">Ajouter Lieu</a></li>
+                                    <li><a href="{% url 'add_evenement' user_id=user_id %}">Ajouter événement</a></li>
+                                    
+                                    <li><a href="{% url 'add_transport' user_id=user_id %}">Ajouter un transport</a></li>
+                                    <li><a href="{% url 'add_produit' user_id=user_id %}">Ajouter un produit artisanat</a></li>
+                                </ul>
+                    </li>
+
+                    <li class="nav-label">Consultation</li>
+                    <li><a class="has-arrow" href="javascript:void()" aria-expanded="false"><i
+                                class="icon icon-layout-25"></i><span class="nav-text">Mes listes</span></a>
+                        <ul aria-expanded="false">
+                            <li><a href="{% url 'ListeLieuxAdmin' user_id=user_id %}">Mes lieux</a></li>
+                            <li><a href="{% url 'ListeEventsAdmin' user_id=user_id %}">Mes événements</a></li>
+                        </ul>
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+        
+        <div class="content-body">
+            
+            <div class="container-fluid">
+                <div class="row page-titles mx-0">
+                    <div class="col-sm-6 p-md-0">
+                        <div class="welcome-text">
+                            <h4>Modifier le lieu</h4>
+                        </div>
+                    </div>
+                   
+                </div>
+                <!-- row -->
+                <div class="row">
+                    
+                    <div class="col-xl-6 col-xxl-12">
+                        <div class="card" style="width: 1150px;">
+                           
+                                <div class="basic-form">
+                                    
+                                    <form method="POST"  id="upload-form" enctype="multipart/form-data" >
+                                        {% csrf_token %}
+                                        
+                                          </br></br></br>
+
+                                          <div class="row" style="margin-left: 350px; display: flex; align-items: center;">
+                                            
+                                            
+                                            <div class="card-body" style="display: flex; align-items: center; ">
+                                                <h4 class="card-title" style="margin-right: 20px;">Nom : </h4>
+                                                <div class="basic-form">
+                                                    <div class="form-group" style="width: 300px;">
+                                                        <input type="text" class="form-control input-rounded" placeholder="Entrer le nom du lieu" name="nomLieu" value="{{lieu.nomLieu}}">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                           </div>
+
+                                           <div class="row" style="margin-left: 60px; ">
+                                            <div class="card-body" style="display: flex; align-items: center;">
+                                                <h4 class="card-title" style="margin-right: 20px;">Commune : </h4>
+                                                <div class="basic-form" style=" margin-right: 300px">
+                                                    <div class="form-row align-items-center">
+                                                        <div class="col-auto my-1">
+                                                            <select class="custom-select mr-sm-2" id="inlineFormCustomSelect" name="commune">
+                                                                {% for option in form.commune.field.choices %}
+                                                                <option value="{{ option.0 }}" {% if form.commune.value == option.0 %} selected {% endif %} {% if lieu.commune == commune %}selected{% endif %}>{{ option.1 }}</option>
+                                                                {% endfor %}
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <h4 class="card-title" style="margin-right: 20px;">Images : </h4>
+                                                <input type="file" name="images" id="file-input" accept="image/png, image/jpeg" multiple />
+                                                <label for="file-input" id="add_images">Choisir images</label>
+                                                <div id="images"></div>
+                                            </div>
+                                            
+                                         </div>
+                                            
+                                            <h4 class="card-title" style="margin-left: 20px;">Description</h4>
+                                            
+                                            <div class="card-body">
+                                                <div class="basic-form">
+                                                    <div class="form-group">
+                                                        <textarea class="form-control" rows="4" id="comment" name="descripLieu" >{{lieu.descripLieu}}</textarea>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        
+                                        
+                                            <div class="row" style="margin-left: 60px;display: flex; align-items: center;">
+                                                
+                                            <h4 class="card-title" style="margin-left: 10px;margin-right: 20px">Catégorie : </h4>
+                                            
+                                            <div class="card-body">
+                                                <div class="basic-form">
+                                                        <div class="form-row align-items-center">
+                                                            <div class="col-auto my-1">
+                                                                <select class="custom-select mr-sm-2" id="inlineFormCustomSelect" name="categorie">
+                                                                    {% for categorie in categories %}
+                                                                        <option value="{{ categorie.idCategorie }}" {% if lieu.categorie.idCategorie == categorie.idCategorie %}selected{% endif %}>{{ categorie.labelC }}</option>
+                                                                    {% endfor %}
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                </div>
+                                            </div>
+                                        
+                                         
+                                            
+                                            <h4 class="card-title" style="margin-left: 10px; margin-right: 20px">Thème : </h4>
+                                            
+                                            <div class="card-body">
+                                                <div class="basic-form">
+                                                        <div class="form-row align-items-center">
+                                                            <div class="col-auto my-1">
+                                                                <select class="custom-select mr-sm-2" id="inlineFormCustomSelect" name="theme">
+                                                                    {% for theme in themes %}
+                                                                    <option value="{{ theme.idTheme }}" {% if lieu.theme.idTheme == theme.idTheme %}selected{% endif %} >{{ theme.labelT }}</option>
+                                                                    {% endfor %}
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                </div>
+                                            </div>
+
+                                         </div>
+                                        
+                    
+                                            <h4 class="card-title" style="margin-left: 20px;">Exigences : </h4>
+                                            
+                                            <div class="card-body">
+                                                <div class="basic-form">
+                                                    <div class="form-group">
+                                                        <input type="text" class="form-control input-rounded" placeholder="Entrer les exigences de ce lieu" name="exigence" value="{{lieu.exigence}}">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        
+                                        
+                                            
+                                            <h4 class="card-title" style="margin-left: 20px;">Faits Historiques : </h4>
+                                            
+                                            <div class="card-body">
+                                                <div class="basic-form">
+                                                    <div class="form-group">
+                                                        <textarea class="form-control" rows="4" id="comment" name="faitHisto" >{{lieu.faitHisto}}</textarea>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        
+                                        
+                                            
+                                            <h4 class="card-title" style="margin-left: 20px;">Produits Artisanats : </h4>
+                                           
+                                            <div class="card-body">
+                                                <div class="basic-form">
+                                                    <div class="form-group">
+                                                        <input type="text" class="form-control input-rounded" placeholder="Entrer les produitArtis" name="produitArtis" value="{{lieu.produitArtis}}" >
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        
+                                        
+                                            
+                                            <h4 class="card-title" style="margin-left: 20px;">Expressions courantes : </h4>
+                                            
+                                            <div class="card-body">
+                                                <div class="basic-form">
+                                                    <div class="form-group">
+                                                        <input type="text" class="form-control input-rounded" placeholder="Entrer les expressCourantes" name="expressCourantes" value="{{lieu.expressCourantes}}">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        
+                                        
+                                            
+                                            <h4 class="card-title" style="margin-left: 10px;">Spécifier le lieu sur le map : </h4>
+                                           
+                                            <div class="card-body">
+                                                <div class="basic-form" >
+                                                    
+                                                    <div id="map" style="z-index: 0;"></div>
+                                                    </br>
+                                                    <div class="form-row align-items-center">
+                                                        <div class="col">
+                                                            <input type="text" class="form-control input-rounded" id="latitude" placeholder="Latitude" name="latitude" value="{{ lieu.latitude }}">
+                                                        </div>
+                                                        <div class="col">
+                                                            <input type="text" class="form-control input-rounded" id="longitude" placeholder="Longitude" name="longitude" value="{{ lieu.longitude }}">
+                                                        </div>
+                                                </div>
+                                            </div>
+                                        
+                                          </br> </br>
+                                          <div style="margin-left: 10px;display: flex; align-items: center;">
+                                          <h4 class="card-title" style="margin-left: 10px;margin-right: 440px;">Moyens de transport : </h4>
+                                          <h4 class="card-title" >Produits artisanaux : </h4>
+                                           </div>
+                                          <div class="row" style="margin-left: 60px;display: flex; align-items: center;">
+                                            
+                                            
+                                            <div class="card-body">
+                                                <div class="basic-form">
+                                                    {% for transport in transports %}
+                                                    <div class="form-check mb-2">
+                                                        <input class="form-check-input" type="checkbox" id="transport{{ transport.idTransport }}" name="transport" value="{{ transport.idTransport }}" {% if transport in lieu.transport.all %}checked{% endif %}>
+                                                        <label class="form-check-label" for="transport{{ transport.idTransport }}">{{ transport.typeTrans }}</label>
+                                                    </div>
+                                                    {% endfor %}
+                                                </div>
+
+                                                
+                                            </div>
+                                               
+                                             
+                                                <div class="card-body form-row">
+                                                    <select class="custom-select" id="id_produits_artis" name="produits_artis" style="height: 200px;" multiple>
+                                                        {% for produit in produits_artis %}
+                                                          <option value="{{ produit.idProduit }}" {% if produit in lieu.produits_artis.all %}selected{% endif %}>{{ produit.nomProduit }}</option>
+                                                        {% endfor %}
+                                                      </select>
+                                                </div>
+                                        
+                                          </div>
+                                           
+                                            <h4 class="card-title" style="margin-left: 10px;">Horaires : </h4>
+                                            
+                                            <div class="card-body form-row">
+                                                <div class="form-group col-md-6">
+                                                    <label>Heure d'ouverture</label>
+                                                    <input type="time" class="form-control" name="H_ouverture" value="{{ lieu.H_ouverture|time:'H:i' }}" >
+                                                </div>
+                                                <div class="form-group col-md-6">
+                                                    <label>Heure de fermeture</label>
+                                                    <input type="time" class="form-control" name="H_fermeture" value="{{ lieu.H_fermeture|time:'H:i' }}">
+                                                </div>
+                                            </div>
+                                        
+                                       
+                                        
+                                        <button type="submit" class="btn btn-primary" href="{% url 'update_lieu' user_id lieu_id %}" style="margin-left:1000px ;">Enregistrer</button>
+                                    </form>
+                                    
+                    
+                                </div>
+                                
+                            
+                        </div>
+                       
+                    </div>
+                    
+                    
+                </div>
+            </div>
+        </div>
+        
+      
+        <div class="footer">
+            <div class="copyright"  style="display: flex; align-items: center; margin-left: 100px;">
+                <p>Copyright © Designed &amp; Developed by <a href="#" target="_blank">EvoTech Team</a> 2023</p>
+            </div>
+        </div>
+  
+        
+    </div>
+    
+    <script src="{% static 'vendor/global/global.min.js' %}" ></script>
+    <script src="{% static 'js/quixnav-init.js' %}"></script>
+    <script src="{% static 'js/custom.min.js' %}"></script>
+
+    
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="{% static 'js/map.js' %}"></script>
+    <script src="{% static 'js/add_photos.js' %}"></script>
+
+
+</body>
+
+</html>

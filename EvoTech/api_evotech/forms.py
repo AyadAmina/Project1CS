@@ -63,3 +63,11 @@ class SearchForm(forms.ModelForm):
     class Meta:
         model = Search
         fields = ['address', ]
+
+class ProduitsArtisForm(forms.ModelForm):
+             
+    class Meta:
+        model = ProduitsArtis
+        fields = '__all__'
+
+

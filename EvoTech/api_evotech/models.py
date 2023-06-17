@@ -36,6 +36,8 @@ class User(models.Model):
    motdepasse = models.CharField(max_length=100)
    profile = models.CharField(max_length=100)
 
+   is_authenticated = models.BooleanField(default=False)
+
    def __str__(self) -> str:
         return (self.username)
 
@@ -48,6 +50,14 @@ class Region(models.Model):
 
    def __str__(self) -> str:
         return (self.nomRegion)
+   
+class ProduitsArtis(models.Model):
+   idProduit = models.AutoField(primary_key=True)
+   nomProduit = models.CharField(max_length=100, default="")
+   prix = models.FloatField()
+   origine = models.CharField(max_length=1000, blank=True)
+   def __str__(self) -> str:
+        return (str(self.nomProduit))
 
 class Commune(models.Model):
    idComm = models.AutoField(primary_key=True)
@@ -71,6 +81,9 @@ class Lieu(models.Model):
     exigence = models.CharField(max_length=1000, blank=True)
     faitHisto = models.CharField(max_length=1000, blank=True)
     produitArtis = models.CharField(max_length=1000, default="", blank=True)
+
+    produits_artis = models.ManyToManyField(ProduitsArtis, null=True, blank=True)
+
     expressCourantes = models.CharField(max_length=1000, blank=True)
     longitude = models.FloatField()
     latitude = models.FloatField()

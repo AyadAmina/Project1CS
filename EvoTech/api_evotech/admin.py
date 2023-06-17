@@ -40,7 +40,7 @@ class CommuneAdmin(admin.ModelAdmin):
     admin.site.register(Commune)
 
 class LieuAdmin(admin.ModelAdmin):
-    list = ('idLieu', 'nomLieu', 'descripLieu', 'exigence', 'faitHisto', 'produitArtis',
+    list = ('idLieu', 'nomLieu', 'descripLieu', 'exigence', 'faitHisto', 'produitArtis', 'produits_artis'
             'expressCourantes', 'longitude', 'latitude', 'H_ouverture', 'H_fermeture', 'climat','region',
              'commune','categorie','theme','transport','feedback' ,'nmb_feedback' )
 
@@ -96,3 +96,8 @@ class HistoryLieuAdmin(admin.ModelAdmin):
         list = ('idHis', 'Iduser', 'timestamp', 'Idlieu','Type_Action' )
 
         admin.site.register(HistoryLieu)
+
+class ProduitsArtisAdmin(admin.ModelAdmin):
+    list = ('idProduit', 'nomProduit', 'prix', 'origine')
+
+    admin.site.register(ProduitsArtis)
