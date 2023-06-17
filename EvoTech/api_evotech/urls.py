@@ -11,6 +11,8 @@ urlpatterns = [
     path('login/admin/AdminRegionalPage/<int:user_id>/', views.adminRegional_view, name='AdminRegionalPage'),
     path('login/touriste/<int:user_id>/', views.userpage, name='userpage'),
 
+    path('logout/<int:user_id>/', views.logout, name='logout'),
+
 
     path('register/', views.register_touriste, name='register_touriste'),
     #path('forgetPassword/', views.forget_password, name='forget_assword'),

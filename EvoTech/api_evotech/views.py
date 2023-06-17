@@ -3,6 +3,7 @@ from django.http import HttpResponse
 from django.template import loader
 from .models import *
 from .forms import *
+from .decorators import *
 
 from django.shortcuts import render
 
@@ -78,7 +79,10 @@ def login(request):
   
     try:
           user = User.objects.get(username=username, motdepasse=motdepasse)
+          user.is_authenticated = True
+          
           user_id = user.idUser
+          user.save()
 
           if user.profile=='Admin central' : 
             return redirect('AdminCentralPage')
@@ -99,8 +103,6 @@ def login(request):
   return render(request, "login.html", context)
 
 
-
-
 def register_touriste(request):
   form = RegisterForm()
 
@@ -116,7 +118,9 @@ def register_touriste(request):
           # Create the user object and set the default value for the profile field
           user = form.save(commit=False)
           user.profile = 'Touriste'  # Set the default value for the profile field
+          user.is_authenticated = True
           user.save()
+          return redirect('userpage',user_id=user.idUser)
       else : 
           error_message = 'Invalid form , whould you try again ?'
           return render(request, 'page-register.html', {'error_message': error_message})  
@@ -125,8 +129,15 @@ def register_touriste(request):
   return render(request, "page-register.html", context )
 
 
+def logout(request,user_id):
+  user = User.objects.get(idUser=user_id)
+  user.is_authenticated = False 
+  user.save() 
+  return redirect('index')
 
 
+@custom_login_required
+@admin_required(role='Admin central')
 def adminCentral_view(request): 
   user = User.objects.get( profile="Admin central")
 
@@ -149,7 +160,10 @@ def adminCentral_view(request):
   return render(request, "admin_central_page.html",context)
 
 
+@custom_login_required
+@admin_required(role='Admin régional')
 def adminRegional_view(request, user_id):
+  
   user = User.objects.get( idUser=user_id)
   region = Region.objects.get(adminRegion=user)
 
@@ -213,7 +227,8 @@ def save_photos(request, lieu ,event):
 
 
 
-
+@custom_login_required
+@admin_required(role='Admin régional')
 def add_lieu(request, user_id):
     admin_region = User.objects.get(idUser=user_id)
     region = Region.objects.get(adminRegion= admin_region)
@@ -258,6 +273,8 @@ def add_lieu(request, user_id):
 
 
 
+@custom_login_required
+@admin_required(role='Admin régional')
 def add_evenement(request, user_id):
     admin_region = User.objects.get(idUser=user_id)
     region = Region.objects.get(adminRegion= admin_region)
@@ -289,6 +306,8 @@ def add_evenement(request, user_id):
 
 
 
+@custom_login_required
+@admin_required(role='Admin régional')
 def add_transport(request, user_id):
     if request.method == 'POST':
         form = TransportForm(request.POST)

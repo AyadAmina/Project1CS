@@ -34,6 +34,8 @@ class User(models.Model):
    motdepasse = models.CharField(max_length=100)
    profile = models.CharField(max_length=100)
 
+   is_authenticated = models.BooleanField(default=False)
+
    def __str__(self) -> str:
         return (self.username)
 
