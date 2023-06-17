@@ -77,8 +77,8 @@ class Lieu(models.Model):
     categorie = models.ForeignKey(Categorie, on_delete=models.CASCADE,null=True, blank=True)
     theme = models.ForeignKey(Theme, on_delete=models.CASCADE, null=True, blank=True)
     transport = models.ManyToManyField(Transport, null=True, blank=True)
-    feedback=models.FloatField(default=0)
-    nmb_feedback=models.IntegerField(default=0)
+    feedback=models.FloatField(default=0, blank=True)
+    nmb_feedback=models.IntegerField(default=0, blank=True)
     def __str__(self) -> str:
         return self.nomLieu  
     def get_admin_id(self):
@@ -86,11 +86,11 @@ class Lieu(models.Model):
     
 class Evenement(models.Model):
    idEvent = models.AutoField(primary_key=True)
-   nomEvent = models.CharField(max_length=100)
-   descripEvent = models.CharField(max_length=1000)
-   dateEvent = models.DateField()
-   H_debut = models.TimeField()
-   H_fin = models.TimeField()
+   nomEvent = models.CharField(max_length=100,default="", blank=True)
+   descripEvent = models.CharField(max_length=1000,default="", blank=True)
+   dateEvent = models.DateField(null=True,blank=True)
+   H_debut = models.TimeField(null=True,blank=True)
+   H_fin = models.TimeField(null=True,blank=True)
    id_lieu = models.ForeignKey(Lieu, on_delete=models.CASCADE, null=True, blank=True)
    def __str__(self) -> str:
         return (str(self.nomEvent))
@@ -137,7 +137,52 @@ class Notification(models.Model):
 
     def __str__(self):
         return self.author
+    
 class Feedback(models.Model):
     user = models.CharField(max_length=100)
     lieu = models.ForeignKey(Lieu, on_delete=models.CASCADE, related_name='feedbacks')
     rating = models.IntegerField()
+
+class NotificationEvent(models.Model):
+    idNotif = models.AutoField(primary_key=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    event = models.ForeignKey(Evenement, on_delete=models.CASCADE)
+    seen = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+    def __str__(self) -> str:
+        return (str(self.idNotif))
+    
+class HistoryEvent(models.Model):
+    idHis = models.AutoField(primary_key=True)
+    Iduser = models.ForeignKey(User, on_delete=models.CASCADE)
+    timestamp = models.DateTimeField(auto_now_add=True)
+    Idevent = models.ForeignKey(Evenement, on_delete=models.CASCADE)
+    STATUS_CHOICES = (
+      ('Ajout Evenemen', 'Ajout Evenement'),
+      ('Modification Evenement', 'Modification Evenement'),
+      ('Suppression Evenement', 'Suppression Evenement'),
+      ('Ajout lieu', 'Ajout lieu'),
+      ('Modification lieu', 'Modification lieu'),
+      ('Suppression lieu', 'Suppression lieu'),
+        )
+    Type_Action = models.CharField(max_length=100, choices=STATUS_CHOICES)
+
+   
+    def __str__(self) -> str:
+        return (str(self.idHis))
+
+class HistoryLieu(models.Model):
+    idHis = models.AutoField(primary_key=True)
+    Iduser = models.ForeignKey(User, on_delete=models.CASCADE)
+    timestamp = models.DateTimeField(auto_now_add=True)
+    Idlieu = models.ForeignKey(Lieu, on_delete=models.CASCADE)
+    STATUS_CHOICES = (
+      ('Ajout lieu', 'Ajout lieu'),
+      ('Modification lieu', 'Modification lieu'),
+      ('Suppression lieu', 'Suppression lieu'),
+        )
+    Type_Action = models.CharField(max_length=100, choices=STATUS_CHOICES)
+
+   
+    def __str__(self) -> str:
+        return (str(self.idHis))

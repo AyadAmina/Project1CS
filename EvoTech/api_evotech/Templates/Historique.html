@@ -1,21 +1,26 @@
+
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
-{% load static %}
+
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>ViDzit</title>
+    <title>viDZit</title>
     <!-- Favicon icon -->
-    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'images/favicon.png' %}">
-
+    <link rel="icon" type="image/png" sizes="16x16" href="./images/favicon.png">
+    <!-- Datatable -->
+    <link href="{% static 'vendor/datatables/css/jquery.dataTables.min.css' %}" rel="stylesheet">
     <!-- Custom Stylesheet -->
-    <link href="{% static 'styles/chart.css' %}" rel="stylesheet">
     <link href="{% static 'styles/style.css' %}" rel="stylesheet">
-    
+    <link href="{% static 'plugins/font-awesome-4.7.0/css/font-awesome.min.css' %}" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
 </head>
 
 <body>
+
     <!--*******************
         Preloader start
     ********************-->
@@ -41,9 +46,9 @@
         ***********************************-->
         <div class="nav-header">
             <a href="index.html" class="brand-logo">
-                <img class="logo-abbr" src="../../static/images/logo.png" alt="">
-                <img class="logo-compact" src="../../static/images/logo-text.png" alt="">
-                <img class="brand-title" src="../../static/images/logo-text.png" alt="">
+                <img class="logo-abbr" src="{% static 'images/logo.png' %}" alt="">
+                <img class="logo-compact" src="{% static 'images/logo-text.png'%}" alt="">
+                <img class="brand-title" src="{% static 'images/logo-text.png' %}" alt="">
             </a>
 
             <div class="nav-control">
@@ -64,6 +69,16 @@
                 <nav class="navbar navbar-expand">
                     <div class="collapse navbar-collapse justify-content-between">
                         <div class="header-left">
+                            <div class="search_bar dropdown">
+                                <span class="search_icon p-3 c-pointer" data-toggle="dropdown">
+                                    <i class="mdi mdi-magnify"></i>
+                                </span>
+                                <div class="dropdown-menu p-0 m-0">
+                                    <form>
+                                        <input class="form-control" type="search" placeholder="Search" aria-label="Search">
+                                    </form>
+                                </div>
+                            </div>
                         </div>
 
                         <ul class="navbar-nav header-right">
@@ -158,132 +173,114 @@
         <!--**********************************
             Sidebar start
         ***********************************-->
-        <div class="quixnav">
-            <div class="quixnav-scroll">
-                <ul class="metismenu" id="menu">
-                    <li class="nav-label first">Main Menu</li>
-                    <li class="nav-label">Formulaire</li>
-                    <li><a class="has-arrow" href="javascript:void()" aria-expanded="false"><i
-                                class="icon icon-form"></i><span class="nav-text">Formulaire</span></a>
-                                <ul aria-expanded="false">
-                                    <li><a href="#">Ajouter Lieu</a></li>
-                                    <li><a href="#">Ajouter événement</a></li>
-                                  
-                                    <li><a href="#">Ajouter un transport</a></li>
-                                </ul>
-                    </li>
-                </ul>
-            </div>
-        </div>
+      
         <!--**********************************
             Sidebar end
         ***********************************-->
-         <!--**********************************
-            Content start
+
+        <!--**********************************
+            Content body start
         ***********************************-->
         <div class="content-body">
             <div class="container-fluid">
-                <h2 class="mb-4">Statistiques</h2>
-                <div class="row mb-5">
-                    <div class="col-lg-6 col-sm-6 mb-4">
-                        <div class="card">
-                            <div class="card-header">
-                                <h4 class="card-title">Camembert du meilleur feedback par emplacement</h4>
-                            </div>
-                            <div class="card-body">
-                                <canvas id="pie-chart"></canvas>
-                            </div>
+                <div class="row page-titles mx-0">
+                    <div class="col-sm-6 p-md-0">
+                        <div class="welcome-text">
+                            <h4>Historique</h4>
+                           
                         </div>
-
                     </div>
-                    <div class="col-lg-6 col-sm-6">
-                        <div class="card">
-                            <div class="card-header">
-                                <h4 class="card-title ">Graphique à barres des 10 meilleurs lieux selon les feedbacks </h4>
-                            </div>
-                            <div class="card-body mt-5 mb-5">
-                                <canvas id="bar-chart"></canvas>
-                            </div>
-                        </div>
-
-                    </div>
-                    <div class="col-lg-6 col-sm-6">
-                        <div class="card">
-                            <div class="card-header">
-                                <h4 class="card-title">Carte polaire des régions ayant le nombre maximum d'événements </h4>
-                            </div>
-                            <div class="card-body">
-                                <canvas id="polar-chart"></canvas>
-                            </div>
-                        </div>
-
-                    </div>
-                    <div class="col-lg-6 col-sm-6">
-                        <div class="card">
-                            <div class="card-header">
-                                <h4 class="card-title">Graphique à barres des meilleurs lieux selon le nombre de choix comme favoris</h4>
-                            </div>
-                            <div class="card-body mt-5 mb-5">
-                                <canvas id="bar-chart2"></canvas>
-                            </div>
-                        </div>
-
-                    </div>
-                    
-                <!-- <div>
-                        <div class="chart-container">
-                     <canvas id="pie-chart"></canvas>
-                       </div>
-                      <div class="chart-container">
-                     <canvas id="bar-chart"></canvas>
-                       </div>
-                      <div class="chart-container">
-                     <canvas id="polar-chart"></canvas>
-                      </div>
-                      <div class="chart-container">
-                     <canvas id="bar-chart2"></canvas>
-                      </div>
-                      
-             </div>  -->
-             
-                    
+                   
                 </div>
+                <!-- row -->
+
+
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table id="example" class="display" style="min-width: 845px">
+                                        <thead>
+                                            <tr>
+                                                <th>Utilisateur</th>
+                                                <th>Action</th>
+                                                <th>Objet</th>
+                                                <th>Region</th>
+                                                <th>Temps</th>
+                                               
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for History  in Histories  %}
+                                            <tr>
+                                                <td>{{History.username}}</td>
+                                                <td>{{History.Action}}</td>
+                                                <td>{{History.Object}}</td>
+                                                <td>{{History.region}}</td>
+                                                <td>{{History.Time}}</td>
+                                               
+                                            </tr>
+                                           {% endfor %}
+                                          
+                                        </tbody>
+                                       
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     
                 </div>
             </div>
-            <!--**********************************
-                         Content end
-                     ***********************************-->
- 
+        </div>
+        <!--**********************************
+            Content body end
+        ***********************************-->
+
+
+        <!--**********************************
+            Footer start
+        ***********************************-->
+        <div class="footer" >
+            <div class="copyright"  style="display: flex; align-items: center; margin-left: 400px;">
+                <p>Copyright © Designed &amp; Developed by <a href="#" target="_blank">EvoTech Team</a> 2023</p>
+            </div>
+        </div>
+  
+        <!--**********************************
+            Footer end
+        ***********************************-->
+
+        <!--**********************************
+           Support ticket button start
+        ***********************************-->
+
+        <!--**********************************
+           Support ticket button end
+        ***********************************-->
+
+        
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!--**********************************
+        Main wrapper end
+    ***********************************-->
 
-    <script src="{% static 'js/chart.js' %}"></script>
- 
-    <script>
-        // Retrieve the data passed from the Django view
-        var data = JSON.parse('{{ data_json|escapejs }}');
-
-        // Call the function in the external JavaScript file to create the charts
-        createPieChart(data); // bestfeedback 6 cotés 
-        createBarChart(data); // best 10 lieus 
-        createPolarChart(data); // Les 5 premiers regions qui ont le maximum nombre d'évenements 
-        createBarChart2(data);
-    </script>
-    
     <!--**********************************
         Scripts
     ***********************************-->
     <!-- Required vendors -->
-    <script src="{% static 'vendor/global/global.min.js' %}" ></script>
+    <script src="{% static 'vendor/global/global.min.js' %}"></script>
     <script src="{% static 'js/quixnav-init.js' %}"></script>
-    <script src="{% static 'js/custom.min.js' %}"></script>
+    <script src="{% static 'js/custom.min.js '%}"></script>
+    
 
-    <script src="{% static 'js/add_photos.js' %}"></script>
 
+    <!-- Datatable -->
+    <script src="{% static 'vendor/datatables/js/jquery.dataTables.min.js' %}"></script>
+    <script src="{% static 'js/plugins-init/datatables.init.js' %}"></script>
    
 </body>
 
 </html>
-
-  
