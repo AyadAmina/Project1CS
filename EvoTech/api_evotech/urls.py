@@ -26,7 +26,7 @@ websocket_urlpatterns = [
 urlpatterns = [
     path('', views.index, name='index'),
     path('liste_lieux/<int:user_id>/', views.ListeDesLieux, name='ListeDesLieux'),
-    path('détail_lieu/<str:slug>/<int:id>/<int:user_id>/',
+    path('détail_lieu/<int:user_id>/<str:slug>/<int:id>',
          views.LieuDetail, name='LieuDetail'),
 
     path('liste_event/<int:user_id>/', views.ListeEvents, name='ListeEvents'),

@@ -157,7 +157,7 @@ def suggestionapi(request):
 
 #page détail d'un lieu
 
-def LieuDetail(request, slug, id ,user_id ):
+def LieuDetail(request ,user_id, slug, id  ):
   lieu = Lieu.objects.get(idLieu=id)
   events = Evenement.objects.filter(id_lieu=lieu)
   photos = Photo.objects.all()
