@@ -183,7 +183,7 @@
                                     <li><a href="{% url 'add_evenement' user_id=user_id %}">Ajouter événement</a></li>
                                     
                                     <li><a href="{% url 'add_transport' user_id=user_id %}">Ajouter un transport</a></li>
-                                    <li><a href="{% url 'add_produit' user_id=user_id %}">Ajouter un produit artisanat</a></li>
+                                    <li><a href="{% url 'add_produit' user_id=user_id %}">Ajouter un produit artisanal</a></li>
                                     
                                 </ul>
                     </li>
@@ -217,7 +217,7 @@
                 <div class="row page-titles mx-0">
                     <div class="col-sm-6 p-md-0">
                         <div class="welcome-text">
-                            <h4>Ajouter un produit artisanat</h4>
+                            <h4>Ajouter un produit artisanal</h4>
                             
                         </div>
                     </div>
@@ -240,7 +240,7 @@
                                                 <h4 class="card-title" style="margin-right: 20px;">Nom:</h4>
                                                 <div class="basic-form">
                                                         <div class="form-group" style="margin-right: 150px; width: 300px;">
-                                                            <input type="text" class="form-control input-rounded" placeholder="Entrer le nom du produit" name="nomProduit">
+                                                            <input type="text" class="form-control input-rounded" placeholder="Entrer le nom du produit" name="nomProduit" required>
                                                         </div>
                                               
                                                 </div>
@@ -248,12 +248,21 @@
                                                 <h4 class="card-title" style="margin-right: 20px;">Prix:</h4>
                                                 <div class="basic-form">
                                                         <div class="form-group" style="width: 300px;">
-                                                            <input type="text" class="form-control input-rounded" placeholder="Entrer le prix du produit" name="prix">
+                                                            <input type="text" class="form-control input-rounded" placeholder="Entrer le prix du produit" name="prix" required>
                                                         </div>
                                               
                                                 </div>
                                             </div>
-                                          </div>        
+                                            <div class="row" style="margin-left:250px ;">
+                                              <h4 class="card-title" style="margin-right: 20px;">Origine:</h4>
+                                                <div class="basic-form">
+                                                        <div class="form-group" style="width: 300px;">
+                                                            <input type="text" class="form-control input-rounded" placeholder="Entrer l'origine du produit" name="origine">
+                                                        </div>
+                                              
+                                                </div>
+                                            </div>
+                                        </div>        
                                         <button type="submit" class="btn btn-primary" href="{% url 'AdminRegionalPage' user_id %}" style="margin-left:100px ;">Ajouter</button>
                                     </form>
                                 </div>

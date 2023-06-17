@@ -517,28 +517,28 @@
 										<div class="owl-carousel owl-theme test_slider">
 
 											<!-- Produits Item -->
-											{% for produit in produits%}
-											<div class="owl-item">
-												<div class="test_item">
-													{% if produit.pictures.all %}
-													{% with first_photo=produit.pictures.first %}
-													<div class="test_image"><img src="{{first_photo.image.url}}" alt="https://unsplash.com/@anniegray"></div>
-													{% endwith %}
-													{% endif %}
-													<div class="test_content_container">
-														<div class="test_content">
-															<div class="test_item_info">
-																<div class="test_name">{{produit.nomProduit}}</div>
-																<div class="test_date">{{produit.prix}} DA</div>
+											{% for produit in produits %}
+												<div class="owl-item">
+													<div class="test_item">
+														{% if produit.pictures.all %}
+															{% with first_photo=produit.pictures.first %}
+																<div class="test_image"><img src="{{ first_photo.image.url }}" alt="https://unsplash.com/@anniegray"></div>
+															{% endwith %}
+														{% endif %}
+														<div class="test_content_container">
+															<div class="test_content">
+																<div class="test_item_info">
+																	<div class="test_name">{{ produit.nomProduit }}</div>
+																	<div class="test_date">{{ produit.prix }} DA</div>
+																</div>
+																<br><br><br>
+																<div class="test_quote_title">{{ produit.origine }}</div>
 															</div>
-														   </br></br></br>
-															<div class="test_quote_title" >{{produit.origine}}</div>
-															
 														</div>
 													</div>
 												</div>
-											</div>
 											{% endfor %}
+
 											
 
 											
@@ -818,6 +818,7 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&key=AIzaSyCIwF204lFZg1y4kPSIhKaHEXMLYxxuMhA"></script>
 <script src="{% static 'js/single_listing_custom.js' %}"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="{% static 'js/custom.js' %}"></script>
 <script>
     $(document).ready(function () {
         var lieu_id = "{{ lieu.idLieu }}";

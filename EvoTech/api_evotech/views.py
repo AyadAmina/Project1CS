@@ -161,10 +161,12 @@ def LieuDetail(request ,user_id, slug, id  ):
   lieu = Lieu.objects.get(idLieu=id)
   events = Evenement.objects.filter(id_lieu=lieu)
   photos = Photo.objects.all()
+  
   transports = lieu.transport.all()
   name=request.user.username
   produits = lieu.produits_artis.all()
-
+  print(produits)
+  
   transport_icons = {
         'Métro': 'fa-subway',
         'Bus': 'fa-bus',
@@ -179,6 +181,13 @@ def LieuDetail(request ,user_id, slug, id  ):
        
         transports_with_icons.append((transport, icon_class))
 
+  # Retrieve the related photos for each produit
+  photos_by_produit = {}
+  for produit in produits:
+        photos = Photo.objects.filter(produitId=produit)
+        photos_by_produit[produit] = photos  
+        print("hani", photos_by_produit[produit])
+
   context = {
       'lieu': lieu,
       'photos': photos,
@@ -186,8 +195,11 @@ def LieuDetail(request ,user_id, slug, id  ):
       'transports_with_icons': transports_with_icons,
       'name': name,
       'produits': produits,
-      'user_id' : user_id
+      'user_id' : user_id,
+      
   }
+  
+  context['photos_by_produit'] = photos_by_produit
   return render(request, 'détail_lieu.html', context)
 
 #page liste des événements
