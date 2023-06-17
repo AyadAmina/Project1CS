@@ -273,7 +273,7 @@ def set_region_side():
 
 
 def login(request):
-  Top_10_lieu()
+  
   form = LoginForm()
   
   if request.method == 'POST': 
@@ -407,10 +407,19 @@ def save_photos(request, lieu ,event):
                 for chunk in image.chunks():
                     destination.write(chunk)
 
-
+#Notifier AdminCentral Ajout Lieu
+def History_Ajout_Lieu(request, id_lieu, user_id):
+ if request.method == 'POST':
+    #current_user_id = request.user.id
+    lieu = get_object_or_404(Lieu, pk=id_lieu)
+    user = get_object_or_404(User, pk=user_id)
+    history= HistoryLieu(Iduser=user, Idlieu=lieu, Type_Action="Ajout lieu")
+    history.save()
+    return JsonResponse({"message": " added Historyuccessfully."})
 
 
 def add_lieu(request, user_id):
+    print(user_id)
     admin_region = User.objects.get(idUser=user_id)
     region = Region.objects.get(adminRegion= admin_region)
     communes = Commune.objects.filter(regionC=region)
@@ -432,6 +441,7 @@ def add_lieu(request, user_id):
           lieu.save()
 
           save_photos(request,lieu.idLieu,None)
+          History_Ajout_Lieu(request, lieu.idLieu, user_id)
           return redirect('add_lieu',user_id)
         else:
           print(form.errors)
@@ -455,6 +465,34 @@ def add_lieu(request, user_id):
     return render(request, 'add_lieu.html', context)
 
 
+#Envoyer notification 
+def notification(request, id_event):
+    if request.method == 'POST':
+        event = get_object_or_404(Evenement, pk=id_event)
+        lieu = get_object_or_404(Lieu, pk=event.id_lieu.idLieu)
+        print(lieu) 
+        users = User.objects.all()
+        for user in users:
+            if(user.profile=="Touriste"):
+                existing_notification = NotificationEvent.objects.filter(user=user, event=event, seen=True).exists()
+                if not existing_notification:
+                    notification = NotificationEvent.objects.create(user=user, event=event)
+            
+       
+        return render(request, 'index.html', {'event':event, 'lieu':lieu})
+        
+    
+    return HttpResponse('Invalid request method.')
+
+#Notifier AdminCentral Ajout Event
+def History_Ajout_Event(request, id_event, user_id):
+ if request.method == 'POST':
+    #current_user_id = request.user.id
+    event = get_object_or_404(Evenement, pk=id_event)
+    user = get_object_or_404(User, pk=user_id)
+    history= HistoryEvent(Iduser=user, Idevent=event, Type_Action="Ajout Evenement")
+    history.save()
+    return JsonResponse({"message": " added Historyuccessfully."})
 
 
 def add_evenement(request, user_id):
@@ -468,7 +506,8 @@ def add_evenement(request, user_id):
             event = form.save()
   
             save_photos(request,event.id_lieu.idLieu,event)
-
+            notification(request, event.idEvent)
+            History_Ajout_Event(request, event.idEvent, user_id)
             return redirect('add_evenement',user_id)
     else:
         form = EvenementForm(lieux=lieux)
@@ -788,3 +827,113 @@ def retrieve_feedback(request):
     else:
         return JsonResponse({'error': 'Invalid request method'})
 
+# notifications evenements
+# Ajouter favorite  
+def favorite(request, id_user, id_lieu):
+    if request.method == 'POST':
+        lieu = get_object_or_404(Lieu, pk=id_lieu)
+        uuser = get_object_or_404(User, pk=id_user)
+        fav = Favoris(id_lieu=lieu, idUser=uuser)
+        fav.save()
+    
+        return render(request, 'liste_lieux.html')
+
+
+#Afficher toutes les notifications
+def view_notifications(request):
+    print("hello")
+    notifications = NotificationEvent.objects.all()
+    notifications_data = []
+
+    for notification in notifications:
+        event = get_object_or_404(Evenement, pk=notification.event_id)
+        lieu = get_object_or_404(Lieu, pk=event.id_lieu.idLieu)
+        notification_data = {
+            'nomEvent': event.nomEvent,
+            'nomLieu': lieu.nomLieu,
+        }
+        notifications_data.append(notification_data)
+    
+    return JsonResponse({'notifications': notifications_data})
+
+# gestion d'historique
+def History(request):
+ if request.method == 'GET':
+    HistEvent = HistoryEvent.objects.all()
+    HistLieu = HistoryLieu.objects.all()
+    History_data = []
+
+    for hist_event in HistEvent:
+        event = get_object_or_404(Evenement, pk=hist_event.Idevent.idEvent)
+        admin_reg = get_object_or_404(User, pk=hist_event.Iduser.idUser)
+        region= event.id_lieu.region
+        history_data = {
+            
+            'username':admin_reg.username,
+            'Action': hist_event.Type_Action,
+            'Object': event.nomEvent,
+            'Time': hist_event.timestamp,
+            'region': region.nomRegion
+        }
+        History_data.append(history_data)
+
+    for hist_lieu in HistLieu:
+        lieu = get_object_or_404(Lieu, pk=hist_lieu.Idlieu.idLieu)
+        admin_reg = get_object_or_404(User, pk=hist_lieu.Iduser.idUser)
+        history_data = {
+            'username':admin_reg.username,
+            'Action': hist_lieu.Type_Action,
+            'Object': lieu.nomLieu,
+            'Time': hist_lieu.timestamp,
+            'region': lieu.region.nomRegion
+        }
+        History_data.append(history_data)
+
+    print(History_data)
+    return render(request, 'Historique.html', {'Histories': History_data})
+
+
+#---------------------------- Historique des evenments -------------------------------#
+
+#Notifier AdminCentral  Modifier Event
+def History_Modifier_Event(request, id_event):
+ if request.method == 'POST':
+    #current_user_id = request.user.id
+    event = get_object_or_404(Evenement, pk=id_event)
+    user = get_object_or_404(User, pk=1)
+    history= HistoryEvent(Iduser=user, Idevent=event, Type_Action="Modification Evenement")
+    history.save()
+    return JsonResponse({"message": " added Historyuccessfully."})
+
+#Notifier AdminCentral  Supprimer Event
+def History_Supprimer_Event(request, id_event):
+ if request.method == 'POST':
+    #current_user_id = request.user.id
+    event = get_object_or_404(Evenement, pk=id_event)
+    user = get_object_or_404(User, pk=1)
+    history= HistoryEvent(Iduser=user, Idevent=event, Type_Action="Suppression Evenement")
+    history.save()
+    return JsonResponse({"message": " added Historyuccessfully."})
+
+#-------------------------------- Historique Lieu ------------------------------------------------------#
+
+
+#Notifier AdminCentral  Modifier Lieu
+def History_Modifier_Lieu(request, id_lieu):
+ if request.method == 'POST':
+    #current_user_id = request.user.id
+    lieu = get_object_or_404(Lieu, pk=id_lieu)
+    user = get_object_or_404(User, pk=1)
+    history= HistoryLieu(Iduser=user, Idlieu=lieu, Type_Action="Modification lieu")
+    history.save()
+    return JsonResponse({"message": " added Historyuccessfully."})
+
+#Notifier AdminCentral  Supprimer Lieu
+def History_Supprimer_Lieu(request, id_lieu):
+ if request.method == 'POST':
+    #current_user_id = request.user.id
+    lieu = get_object_or_404(Lieu, pk=id_lieu)
+    user = get_object_or_404(User, pk=1)
+    history=HistoryLieu(Iduser=user, Idlieu=lieu, Type_Action="Suppression lieu")
+    history.save()
+    return JsonResponse({"message": " added Historyuccessfully."})

@@ -76,3 +76,17 @@ class FeedbackAdmin(admin.ModelAdmin):
 
     admin.site.register(Feedback) 
 
+class NotificationEventAdmin(admin.ModelAdmin):
+    list = ('idNotif', 'user', 'event', 'seen', 'created_at')
+
+    admin.site.register(NotificationEvent)
+
+class HistoryEventAdmin(admin.ModelAdmin):
+    list = ('idHis', 'Iduser', 'timestamp', 'Idevent','Type_Action' )
+
+    admin.site.register(HistoryEvent)
+
+class HistoryLieuAdmin(admin.ModelAdmin):
+        list = ('idHis', 'Iduser', 'timestamp', 'Idlieu','Type_Action' )
+
+        admin.site.register(HistoryLieu)
