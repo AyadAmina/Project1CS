@@ -329,11 +329,11 @@
 	}
 	.logo a img
 	{
-		width: 24px;
+		width: 100px;
 	}
 	.logo a
 	{
-		font-size: 24px;
+		font-size: 100px;
 	}
 	.home_slider_nav
 	{
@@ -402,7 +402,7 @@
 	}
 	.logo a img
 	{
-		width: 16px;
+		width: 100px;
 		margin-right: 7px;
 	}
 	.hamburger i
@@ -421,11 +421,11 @@
 	}
 	.menu_logo
 	{
-		margin-bottom: 17px;
+		margin-bottom: 100px;
 	}
 	.menu_logo a img
 	{
-		width: 28px !important;
+		width: 100px !important;
 	}
 	.menu_item a
 	{

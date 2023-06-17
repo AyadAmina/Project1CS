@@ -125,14 +125,7 @@ p a:hover::after
 {
 	opacity: 0.2;
 }
-::selection
-{
-	
-}
-p::selection
-{
-	
-}
+
 h1{font-size: 48px;}
 h2{font-size: 36px;}
 h3{font-size: 24px;}
@@ -144,15 +137,7 @@ h1, h2, h3, h4, h5, h6
 	-webkit-font-smoothing: antialiased;
 
 }
-h1::selection, 
-h2::selection, 
-h3::selection, 
-h4::selection, 
-h5::selection, 
-h6::selection
-{
-	
-}
+
 .form-control
 {
 	color: #db5246;
@@ -700,7 +685,7 @@ header .slider{
 	transition: all 0.3s ease;
 }
 #tab-1:checked ~ header .slider{
-	left: 5.5%;
+	left: 8.5%;
 	width: 150px;
 	transform: translateX(5%);
 }
@@ -710,7 +695,7 @@ header .slider{
 	transform: translateX(-50%);
 }
 #tab-3:checked ~ header .slider{
-	left: 90.5%;
+	left: 88%;
 	width: 100px;
 	transform: translateX(-105%);
 }
@@ -1218,10 +1203,7 @@ header .slider{
 {
 	height: 52px;
 }
-.footer_nav
-{
-	
-}
+
 .footer_nav_list
 {
 	font-size: 0px;
