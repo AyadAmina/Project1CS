@@ -79,7 +79,7 @@ def addUser(request):
         prenom = request.POST.get('prenom')
         nom_utilisateur = request.POST.get('nom_utilisateur')
         password =  nom_utilisateur + '2023' 
-        profile = 'adminregional'
+        profile = 'Admin régional'
         
         user = User(nomUser = nom, prenomUser = prenom, username = nom_utilisateur, motdepasse = password, profile = profile )
         user.save()
@@ -88,7 +88,7 @@ def addUser(request):
     return render(request, 'add_user.html', {'user': user})
 
 def listComptes(request):
-    users = User.objects.filter(profile = 'adminregional')
+    users = User.objects.filter(profile = 'Admin régional')
     return render(request, 'liste_comptes.html', {'users': users})
 
 def deleteUser(request, userId):
