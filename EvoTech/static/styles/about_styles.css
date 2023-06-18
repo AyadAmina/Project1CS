@@ -1372,3 +1372,11 @@ section
 {
 	color: #FFFFFF;
 }
+.intro_text {
+	word-spacing: 5px;
+	margin-bottom: 0px;
+	font-weight: 600;
+	color: #264653;
+	margin-top: 20px;
+	text-align: justify;
+}

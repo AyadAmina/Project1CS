@@ -463,7 +463,7 @@ section
 
 .main_nav_container
 {
-	margin-right: 100px;
+	margin-right: 80px !important;
 }
 .main_nav_item
 {
