@@ -80,7 +80,7 @@ class Lieu(models.Model):
     descripLieu = models.CharField(max_length=1000, blank=True)
     exigence = models.CharField(max_length=1000, blank=True)
     faitHisto = models.CharField(max_length=1000, blank=True)
-    produitArtis = models.CharField(max_length=1000, default="", blank=True)
+    
     expressCourantes = models.CharField(max_length=1000, blank=True)
     produits_artis = models.ManyToManyField(ProduitsArtis, null=True, blank=True)
     longitude = models.FloatField()
