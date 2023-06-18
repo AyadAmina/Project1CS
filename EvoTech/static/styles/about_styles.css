@@ -481,7 +481,7 @@ section
 
 .main_nav_container
 {
-	margin-right: 221px;
+	margin-right: 100px !important;
 }
 .main_nav_item
 {
@@ -798,12 +798,7 @@ section
 	padding-bottom: 105px;
 	background: #f6f9fb;
 }
-.intro_image
-{
-	position: absolute;
-    right: 0;
-    top: 13px;
-}
+
 .intro_title
 {
 	font-size: 30px;
@@ -811,12 +806,13 @@ section
 	color: #264653;
 	text-transform: uppercase;
 }
-.intro_text
-{
+.intro_text {
+	word-spacing: 5px;
 	margin-bottom: 0px;
 	font-weight: 600;
-	color: #929191;
-	margin-top: 60px;
+	color: #264653;
+	margin-top: 20px;
+	text-align: justify;
 }
 .intro_button
 {
@@ -1371,12 +1367,4 @@ section
 .footer_nav_item a:hover
 {
 	color: #FFFFFF;
-}
-.intro_text {
-	word-spacing: 5px;
-	margin-bottom: 0px;
-	font-weight: 600;
-	color: #264653;
-	margin-top: 20px;
-	text-align: justify;
 }

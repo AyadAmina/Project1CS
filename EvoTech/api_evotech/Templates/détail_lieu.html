@@ -26,6 +26,7 @@
 <link rel="stylesheet" type="text/css" href="{% static 'styles/contact_responsive.css' %}">
 <link rel="stylesheet" type="text/css" href="{% static 'styles/main_styles.css' %}">
 
+
 <style>
 .rating_1 {color: #ffeb8d;}
 .rating_2 {color: #fed46b;}
@@ -47,28 +48,7 @@
 
 		<!-- Top Bar -->
 
-		<div class="top_bar">
-			<div class="container">
-				<div class="row">
-					<div class="col d-flex flex-row">
-						<div class="phone">+45 345 3324 56789</div>
-						<div class="social">
-							<ul class="social_list">
-								<li class="social_list_item"><a href="#"><i class="fa fa-pinterest" aria-hidden="true"></i></a></li>
-								<li class="social_list_item"><a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
-								<li class="social_list_item"><a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
-								<li class="social_list_item"><a href="#"><i class="fa fa-dribbble" aria-hidden="true"></i></a></li>
-								<li class="social_list_item"><a href="#"><i class="fa fa-behance" aria-hidden="true"></i></a></li>
-								<li class="social_list_item"><a href="#"><i class="fa fa-linkedin" aria-hidden="true"></i></a></li>
-							</ul>
-						</div>
-						<div class="user_box ml-auto">
-							<div class="user_box_login user_box_link"><a href="#">login</a></div>
-							<div class="user_box_register user_box_link"><a href="#">register</a></div>
-						</div>
-					</div>
-				</div>
-			</div>		
+		<div class="top_bar">			
 		</div>
 
 		<!-- Main Navigation -->
@@ -78,45 +58,107 @@
 				<div class="row">
 					<div class="col main_nav_col d-flex flex-row align-items-center justify-content-start">
 						<div class="logo_container">
-							<div class="logo"><img src="../../static/images/ourlogo.png" alt=""></div>
+							<div class="logo"><a href="#"><img src="../../static/images/logo.png" alt=""></a></div>
 						</div>
 						<div class="main_nav_container ml-auto">
 							<ul class="main_nav_list">
-								<li class="main_nav_item"><a href="index.html">home</a></li>
-								<li class="main_nav_item"><a href="about.html">about us</a></li>
-								<li class="main_nav_item"><a href="offers.html">offers</a></li>
-								<li class="main_nav_item"><a href="blog.html">news</a></li>
-								<li class="main_nav_item"><a href="contact.html">contact</a></li>
+								<li class="main_nav_item"><a href="#">home</a></li>
+								<li class="main_nav_item"><a href="{% url 'map' user_id=user.idUser %}">Maps</a></li>
+								<li class="main_nav_item"><a href="{% url 'ListeDesLieux' user_id=user.idUser %}">Lieux</a></li>
+								<li class="main_nav_item"><a href="{% url 'ListeEvents' user_id=user.idUser %}">évenements</a></li>
+								<li class="main_nav_item"><a href="about.html">À propos de nous </a></li>
+								<li class="main_nav_item"><a href="contact.html">Contactez-nous</a></li>
+								<li class="main_nav_item dropdown notification_dropdown">
+									<a class="nav-link" href="#" role="button" data-toggle="dropdown" id="notificationsLink">
+										<i class="mdi mdi-bell"></i>
+										<div class="pulse-css"></div>
+									  </a>
+									  
+												   <!-- start notification-->
+												    <div class="dropdown-menu dropdown-menu-right">
+													<ul class="list-unstyled" id="notificationList">
+													
+														  
+													  <!-- {% for notification in notifications %}
+														<li class="media dropdown-item">
+															<span class="success"><i class="ti-user"></i></span>
+															<div class="media-body">
+																<a href="#">
+																	<p><strong>{{notification.nomEvent}}</strong>has been added in <strong>{{notification.nomLieu}}</strong> </p>
+																</a>
+															</div>
+														   
+														</li>
+														{% endfor %} -->
+													</ul>
+													   
+														</div> 
+														<!-- end notification -->
+	
+	
+								</li>
 							</ul>
 						</div>
-						<div class="content_search ml-lg-0 ml-auto">
-							<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-							width="17px" height="17px" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve">
-								<g>
-									<g>
-										<g>
-											<path class="mag_glass" fill="#FFFFFF" d="M78.438,216.78c0,57.906,22.55,112.343,63.493,153.287c40.945,40.944,95.383,63.494,153.287,63.494
-											s112.344-22.55,153.287-63.494C489.451,329.123,512,274.686,512,216.78c0-57.904-22.549-112.342-63.494-153.286
-											C407.563,22.549,353.124,0,295.219,0c-57.904,0-112.342,22.549-153.287,63.494C100.988,104.438,78.439,158.876,78.438,216.78z
-											M119.804,216.78c0-96.725,78.69-175.416,175.415-175.416s175.418,78.691,175.418,175.416
-											c0,96.725-78.691,175.416-175.416,175.416C198.495,392.195,119.804,313.505,119.804,216.78z"/>
-										</g>
-									</g>
-									<g>
-										<g>
-											<path class="mag_glass" fill="#FFFFFF" d="M6.057,505.942c4.038,4.039,9.332,6.058,14.625,6.058s10.587-2.019,14.625-6.058L171.268,369.98
-											c8.076-8.076,8.076-21.172,0-29.248c-8.076-8.078-21.172-8.078-29.249,0L6.057,476.693
-											C-2.019,484.77-2.019,497.865,6.057,505.942z"/>
-										</g>
-									</g>
-								</g>
-							</svg>
+
+
+						
+
+						
+
+
+
+						
+						<!-- the button of user in the nav bar: check CSS file line 563, 525-->
+						<div class=" header-profile ml-lg-0 ml-auto">
+							<!--the white user button-->
+							<a class="nav-link" href="#" role="button" data-toggle="dropdown">
+								<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+								width="17px" height="17px" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve">
+											<g>
+												<path class="mag_glass" fill="#FFFFFF" d="M304 128a80 80 0 1 0 -160 0 80 80 0 1 0 160 0zM96 128a128 128 0 1 1 256 0A128 128 0 1 1 96 
+												128zM49.3 464H398.7c-8.9-63.3-63.3-112-129-112H178.3c-65.7 0-120.1 48.7-129 112zM0 482.3C0 383.8 79.8 304 178.3 304h91.4C368.2 304 
+												448 383.8 448 482.3c0 16.4-13.3 29.7-29.7 29.7H29.7C13.3 512 0 498.7 0 482.3z"/>
+											</g>
+								</svg>
+							</a>
+							<!--the list inside the user button-->
+							<div class="dropdown-menu dropdown-menu-right">
+								<a href="{% url 'profile' user_id=user.idUser %}" class="dropdown-item">
+									<div class="profile-icon">
+										<svg    viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" 
+											clip-rule="evenodd" d="M16.5 7.063C16.5 10.258 14.57 13 12 13c-2.572 0-4.5-2.742-4.5-5.938C7.5 3.868 9.16 2 12 2s4.5 1.867
+											 4.5 5.063zM4.102 20.142C4.487 20.6 6.145 22 12 22c5.855 0 7.512-1.4 7.898-1.857a.416.416 0 0 0 .09-.317C19.9 18.944 19.106
+											  15 12 15s-7.9 3.944-7.989 4.826a.416.416 0 0 0 .091.317z" fill="#264653"/>
+										</svg>
+										<span class="ml-2">PROFILE </span>
+									</div>
+								</a>
+							
+								<a href="{% url 'logout' user_id=user.idUser %}" class="dropdown-item">
+									<div>
+										<svg  viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+											<path d="M12.9999 2C10.2385 2 7.99991 4.23858 7.99991 7C7.99991 7.55228 8.44762 8 8.99991 8C9.55219 8 9.99991 7.55228 9.99991
+											 7C9.99991 5.34315 11.3431 4 12.9999 4H16.9999C18.6568 4 19.9999 5.34315 19.9999 7V17C19.9999 18.6569 18.6568 20 16.9999 
+											 20H12.9999C11.3431 20 9.99991 18.6569 9.99991 17C9.99991 16.4477 9.55219 16 8.99991 16C8.44762 16 7.99991 16.4477 7.99991 17C7.99991 19.7614 10.2385 22 12.9999 22H16.9999C19.7613 22 21.9999 19.7614 21.9999 17V7C21.9999 4.23858 19.7613 2 16.9999 2H12.9999Z" fill="#264653"/>
+											<path d="M13.9999 11C14.5522 11 14.9999 11.4477 14.9999 12C14.9999 12.5523 14.5522 13 13.9999 13V11Z" fill="#264653"/>
+											<path d="M5.71783 11C5.80685 10.8902 5.89214 10.7837 5.97282 10.682C6.21831 10.3723 6.42615 10.1004 6.57291 9.90549C6.64636 9.80795 6.70468 9.72946 6.74495 9.67492L6.79152 9.61162L6.804 9.59454L6.80842 9.58848C6.80846 9.58842 6.80892 9.58778 5.99991 9L6.80842 9.58848C7.13304 9.14167 7.0345 8.51561 6.58769 8.19098C6.14091 7.86637 5.51558 7.9654 5.19094 8.41215L5.18812 8.41602L5.17788 8.43002L5.13612 8.48679C5.09918 8.53682 5.04456 8.61033 4.97516 8.7025C4.83623 8.88702 4.63874 9.14542 4.40567 9.43937C3.93443 10.0337 3.33759 10.7481 2.7928 11.2929L2.08569 12L2.7928 12.7071C3.33759 13.2519 3.93443 13.9663 4.40567 14.5606C4.63874 14.8546 4.83623 15.113 4.97516 15.2975C5.04456 15.3897 5.09918 15.4632 5.13612 15.5132L5.17788 15.57L5.18812 15.584L5.19045 15.5872C5.51509 16.0339 6.14091 16.1336 6.58769 15.809C7.0345 15.4844 7.13355 14.859 6.80892 14.4122L5.99991 15C6.80892 14.4122 6.80897 14.4123 6.80892 14.4122L6.804 14.4055L6.79152 14.3884L6.74495 14.3251C6.70468 14.2705 6.64636 14.1921 6.57291 14.0945C6.42615 13.8996 6.21831 13.6277 5.97282 13.318C5.89214 13.2163 5.80685 13.1098 5.71783 13H13.9999V11H5.71783Z" fill="#264653"/>
+											</svg>
+										<span class="ml-2">LOGOUT </span>
+									</div>
+									
+								</a>
+							</div>
 						</div>
 
-						<form id="search_form" class="search_form bez_1">
-							<input type="search" class="search_content_input bez_1">
-						</form>
+
+
+
+
+
 						
+
+						
+
 						<div class="hamburger">
 							<i class="fa fa-bars trans_200"></i>
 						</div>
@@ -130,16 +172,17 @@
 	<div class="menu trans_500">
 		<div class="menu_content d-flex flex-column align-items-center justify-content-center text-center">
 			<div class="menu_close_container"><div class="menu_close"></div></div>
-			<div class="logo menu_logo"><a href="#"><img src="../../static/images/ourlogo.png" alt=""></a></div>
+			<div class="logo menu_logo"><a href="#"><img src="../../static/images/logo.png" alt=""></a></div>
 			<ul>
-				<li class="menu_item"><a href="index.html">home</a></li>
-				<li class="menu_item"><a href="about.html">about us</a></li>
+				<li class="menu_item"><a href="{% url 'index' %}">Acceuil</a></li>
+				<li class="menu_item"><a href="about.html">carte</a></li>
 				<li class="menu_item"><a href="offers.html">offers</a></li>
 				<li class="menu_item"><a href="blog.html">news</a></li>
 				<li class="menu_item"><a href="contact.html">contact</a></li>
 			</ul>
 		</div>
 	</div>
+
 
 	<!-- Home -->
 
@@ -241,10 +284,10 @@
 								<div class="hotel_title_button ml-lg-auto text-lg-right" >
 									<div class="hotel_title_button_content" style="display: flex; align-items: center; justify-content: center;">
 									<div class="button book_button" style="width: 80px;background-color:#2a9d8f; border: none;text-align: center;display: flex; align-items: center; justify-content: center;"title="Enregistrer le lieu"><i class="fas fa-bookmark" style="display: inline-block; font-size: 30px;color: #fa9e1b;"></i></div>
-									<div class="button book_button trans_200"><a href="{% url 'ListeDesLieux' user_id  %}">Retour à la liste<span></span><span></span><span></span></a></div> 
+									<div class="button book_button trans_200"><a href="{% url 'ListeDesLieux' user.idUser  %}">Retour à la liste<span></span><span></span><span></span></a></div> 
 									</div>
 									<div class="hotel_map_link_container">
-										<div class="hotel_map_link">Voir la localisation sur map</div>
+										html <div class="hotel_map_link" ><a href="{% url 'map' user_id  %}">Voir la localisation sur la carte</a></div>
 									</div>
 								</div>
 								
@@ -375,7 +418,7 @@
                                                       <td>{{event.dateEvent}}</td>
                                                       <td style="display: flex; align-items: center; justify-content: center;">
                                                         <span class="button book_button trans_200" style="width: 40px;height: 40px;display: flex; align-items: center; justify-content: center;" title="Détails">
-														<a href="{% url 'EventDetail' user_id event.nomEvent event.idEvent%}" style=" color: #fa9e1b;"><i class="fas fa-search" ></i></a> 
+														<a href="{% url 'EventDetail' user.idUser event.nomEvent event.idEvent%}" style=" color: #fa9e1b;"><i class="fas fa-search" ></i></a> 
 														</span>
                                                       </td>
                                                      
@@ -665,145 +708,69 @@
 		</div>		
 	</div>
 
-	<!-- Footer -->
 
-	<footer class="footer">
-		<div class="container">
-			<div class="row">
+<!-- Footer -->
+<footer class="footer">
+	<div class="container">
+		<div class="row justify-content-around">
 
-				<!-- Footer Column -->
-				<div class="col-lg-3 footer_column">
-					<div class="footer_col">
-						<div class="footer_content footer_about">
-							<div class="logo_container footer_logo">
-								<div class="logo"><img src="../../static/images/ourlogo.png" alt=""></div>
-							</div>
-							<p class="footer_about_text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus quis vu lputate eros, iaculis consequat nisl. Nunc et suscipit urna. Integer eleme ntum orci eu vehicula pretium.</p>
-							<ul class="footer_social_list">
-								<li class="footer_social_item"><a href="#"><i class="fa fa-pinterest"></i></a></li>
-								<li class="footer_social_item"><a href="#"><i class="fa fa-facebook-f"></i></a></li>
-								<li class="footer_social_item"><a href="#"><i class="fa fa-twitter"></i></a></li>
-								<li class="footer_social_item"><a href="#"><i class="fa fa-dribbble"></i></a></li>
-								<li class="footer_social_item"><a href="#"><i class="fa fa-behance"></i></a></li>
-							</ul>
+			<!-- Footer Column -->
+					<div class="col-md-4 footer_column">
+				<div clas="footer_col">
+					<div class="footer_content footer_about">
+						<div class="logo_container footer_logo">
+							<div class="logo"><a href="#"><img src="../../static/images/logo.png" alt=""></a></div>
 						</div>
+						<p class="footer_about_text">Une application touristique numérique visant à améliorer le tourisme en Algérie. En favorisant la découverte et la promotion des sites touristiques locaux, ViDZit contribue à renforcer l'attrait du tourisme intérieur en Algérie. Son objectif est d'offrir une expérience touristique enrichissante et de stimuler la croissance du secteur touristique dans le pays.
+						</p>
+						<ul class="footer_social_list">
+							<li class="footer_social_item"><a href="#"><i class="fa fa-facebook-f"></i></a></li>
+							<li class="footer_social_item"><a href="#"><i class="fa fa-twitter"></i></a></li>
+							<li class="footer_social_item"><a href="#"><i class="fa fa-instagram"></i></a></li>
+							<li class="footer_social_item"><a href="#"><i class="fa fa-youtube"></i></a></li>
+
+						</ul>
 					</div>
 				</div>
-
-				<!-- Footer Column -->
-				<div class="col-lg-3 footer_column">
-					<div class="footer_col">
-						<div class="footer_title">blog posts</div>
-						<div class="footer_content footer_blog">
-							
-							<!-- Footer blog item -->
-							<div class="footer_blog_item clearfix">
-								<div class="footer_blog_image"><img src="../../static/images/footer_blog_1.jpg" alt="https://unsplash.com/@avidenov"></div>
-								<div class="footer_blog_content">
-									<div class="footer_blog_title"><a href="blog.html">Travel with us this year</a></div>
-									<div class="footer_blog_date">Nov 29, 2017</div>
-								</div>
-							</div>
-							
-							<!-- Footer blog item -->
-							<div class="footer_blog_item clearfix">
-								<div class="footer_blog_image"><img src="../../static/images/footer_blog_2.jpg" alt="https://unsplash.com/@deannaritchie"></div>
-								<div class="footer_blog_content">
-									<div class="footer_blog_title"><a href="blog.html">New destinations for you</a></div>
-									<div class="footer_blog_date">Nov 29, 2017</div>
-								</div>
-							</div>
-
-							<!-- Footer blog item -->
-							<div class="footer_blog_item clearfix">
-								<div class="footer_blog_image"><img src="../../static/images/footer_blog_3.jpg" alt="https://unsplash.com/@bergeryap87"></div>
-								<div class="footer_blog_content">
-									<div class="footer_blog_title"><a href="blog.html">Travel with us this year</a></div>
-									<div class="footer_blog_date">Nov 29, 2017</div>
-								</div>
-							</div>
-
-						</div>
-					</div>
-				</div>
-
-				<!-- Footer Column -->
-				<div class="col-lg-3 footer_column">
-					<div class="footer_col">
-						<div class="footer_title">tags</div>
-						<div class="footer_content footer_tags">
-							<ul class="tags_list clearfix">
-								<li class="tag_item"><a href="#">design</a></li>
-								<li class="tag_item"><a href="#">fashion</a></li>
-								<li class="tag_item"><a href="#">music</a></li>
-								<li class="tag_item"><a href="#">video</a></li>
-								<li class="tag_item"><a href="#">party</a></li>
-								<li class="tag_item"><a href="#">photography</a></li>
-								<li class="tag_item"><a href="#">adventure</a></li>
-								<li class="tag_item"><a href="#">travel</a></li>
-							</ul>
-						</div>
-					</div>
-				</div>
-
-				<!-- Footer Column -->
-				<div class="col-lg-3 footer_column">
-					<div class="footer_col">
-						<div class="footer_title">contact info</div>
-						<div class="footer_content footer_contact">
-							<ul class="contact_info_list">
-								<li class="contact_info_item d-flex flex-row">
-									<div><div class="contact_info_icon"><img src="../../static/images/placeholder.svg" alt=""></div></div>
-									<div class="contact_info_text">4127 Raoul Wallenber 45b-c Gibraltar</div>
-								</li>
-								<li class="contact_info_item d-flex flex-row">
-									<div><div class="contact_info_icon"><img src="../../static/images/phone-call.svg" alt=""></div></div>
-									<div class="contact_info_text">2556-808-8613</div>
-								</li>
-								<li class="contact_info_item d-flex flex-row">
-									<div><div class="contact_info_icon"><img src="../../static/images/message.svg" alt=""></div></div>
-									<div class="contact_info_text"><a href="mailto:contactme@gmail.com?Subject=Hello" target="_top">contactme@gmail.com</a></div>
-								</li>
-								<li class="contact_info_item d-flex flex-row">
-									<div><div class="contact_info_icon"><img src="../../static/images/planet-earth.svg" alt=""></div></div>
-									<div class="contact_info_text"><a href="https://colorlib.com">www.colorlib.com</a></div>
-								</li>
-							</ul>
-						</div>
-					</div>
-				</div>
-
 			</div>
+			<!-- Footer Column-->
+			<div class="col-md-4 footer_column">
+				<div class="footer_col">
+					<div class="footer_title">Contact</div>
+					<div class="footer_content footer_contact">
+						<ul class="contact_info_list">
+							<li class="contact_info_item d-flex flex-row">
+								<div><div class="contact_info_icon"><img src="../../static/images/placeholder.svg" alt=""></div></div>
+								<div class="contact_info_text">119 rue Didouche Mourad, Algiers, Algeria</div>
+							</li>
+							<li class="contact_info_item d-flex flex-row">
+								<div><div class="contact_info_icon"><img src="../../static/images/phone-call.svg" alt=""></div></div>
+								<div class="contact_info_text"> +213 21 50 43 43 / +213 21 50 45 45 </div>
+							</li>
+							<li class="contact_info_item d-flex flex-row">
+								<div><div class="contact_info_icon"><img src="../../static/images/message.svg" alt=""></div></div>
+								<div class="contact_info_text"><a href="mailto:contactme@gmail.com?Subject=Hello" target="_top">contact@vidzit.dz</a></div>
+							</li>
+							 <li class="contact_info_item d-flex flex-row">
+								<div><div class="contact_info_icon"><img src="../../static/images/planet-earth.svg" alt=""></div></div>
+								<div class="contact_info_text"><a href="https://www.mta.gov.dz/">www.mta.gov.dz
+								</a></div>
+							</li> 
+						</ul>
+					</div>
+				</div>
+			</div>
+
 		</div>
-	</footer>
+	</div>
+</footer> 
 
 	<!-- Copyright -->
 
 	<div class="copyright">
-		<div class="container">
-			<div class="row">
-				<div class="col-lg-3 order-lg-1 order-2  ">
-					<div class="copyright_content d-flex flex-row align-items-center">
-						<div><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
-<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></div>
+					<div class="copyright_content d-flex flex-row align-items-center justify-content-center">
+						<div>Tous droits réservés - Ministère du Tourisme et de l'Artisanat - &copy;<script>document.write(new Date().getFullYear());</script></div>
 					</div>
-				</div>
-				<div class="col-lg-9 order-lg-2 order-1">
-					<div class="footer_nav_container d-flex flex-row align-items-center justify-content-lg-end">
-						<div class="footer_nav">
-							<ul class="footer_nav_list">
-								<li class="footer_nav_item"><a href="index.html">home</a></li>
-								<li class="footer_nav_item"><a href="about.html">about us</a></li>
-								<li class="footer_nav_item"><a href="offers.html">offers</a></li>
-								<li class="footer_nav_item"><a href="blog.html">news</a></li>
-								<li class="footer_nav_item"><a href="contact.html">contact</a></li>
-							</ul>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
 	</div>
 
 </div>

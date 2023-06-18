@@ -1,6 +1,10 @@
-from django.shortcuts import render , redirect
+from django.core import serializers
+from django.shortcuts import get_object_or_404, redirect
+from django.http import JsonResponse
+from django.shortcuts import render, redirect
 from django.http import HttpResponse, JsonResponse
 from django.template import loader
+from django.urls import reverse
 from .models import *
 from .serializers import *
 from rest_framework import viewsets
@@ -22,7 +26,9 @@ from django.db.models import Max, Count
 
 import os
 
-#api views
+# api views
+
+
 class MeteoViewSet(viewsets.ModelViewSet):
     serializer_class = MeteoSerializer
     queryset = Meteo.objects.all()
@@ -32,17 +38,21 @@ class ThemeViewSet(viewsets.ModelViewSet):
     serializer_class = ThemeSerializer
     queryset = Theme.objects.all()
 
+
 class CategorieViewSet(viewsets.ModelViewSet):
     serializer_class = CategorieSerializer
     queryset = Categorie.objects.all()
+
 
 class CommuneViewSet(viewsets.ModelViewSet):
     serializer_class = CommuneSerializer
     queryset = Commune.objects.all()
 
+
 class UserViewSet(viewsets.ModelViewSet):
     serializer_class = UserSerializer
     queryset = User.objects.all()
+
 
 class RegionViewSet(viewsets.ModelViewSet):
     serializer_class = RegionSerializer
@@ -53,13 +63,16 @@ class EvenementViewSet(viewsets.ModelViewSet):
     serializer_class = EvenementSerializer
     queryset = Evenement.objects.all()
 
+
 class LieuViewSet(viewsets.ModelViewSet):
     serializer_class = LieuSerializer
     queryset = Lieu.objects.all()
 
+
 class TransportViewSet(viewsets.ModelViewSet):
     serializer_class = TransportSerializer
     queryset = Transport.objects.all()
+
 
 class PhotoViewSet(viewsets.ModelViewSet):
     serializer_class = PhotoSerializer
@@ -67,109 +80,121 @@ class PhotoViewSet(viewsets.ModelViewSet):
 
 
 # template views
-#home
+# home
 def index(request):
-  template = loader.get_template('index.html')
- 
- 
-  return HttpResponse(template.render())
+    template = loader.get_template('index.html')
 
-#liste des lieux
+    return HttpResponse(template.render())
+
+
+# liste des lieux
 product_per_page = 4
+
+
 @custom_login_required
 @admin_required(role='Touriste')
-def ListeDesLieux(request,user_id):
- 
-  regions = Region.objects.all()
-  categories = Categorie.objects.all()
-  themes = Theme.objects.all()
+def ListeDesLieux(request, user_id):
 
-  selected_region = request.GET.get('region', "")   
-  selected_catg = request.GET.get('categorie', "")   
-  selected_thm = request.GET.get('theme', "")
-  search= request.GET.get('search', "")
+    regions = Region.objects.all()
+    categories = Categorie.objects.all()
+    themes = Theme.objects.all()
 
-  
-  if selected_region:
-        lieux = Lieu.objects.filter(region=selected_region).prefetch_related('photos')
+    selected_region = request.GET.get('region', "")
+    selected_catg = request.GET.get('categorie', "")
+    selected_thm = request.GET.get('theme', "")
+    search = request.GET.get('search', "")
+
+    if selected_region:
+        lieux = Lieu.objects.filter(
+            region=selected_region).prefetch_related('photos')
         if selected_catg:
-            lieux = lieux.filter(categorie=selected_catg).prefetch_related('photos')
+            lieux = lieux.filter(
+                categorie=selected_catg).prefetch_related('photos')
         elif selected_thm:
             lieux = lieux.filter(theme=selected_thm).prefetch_related('photos')
         elif search:
-            lieux = Lieu.objects.filter(nomLieu__icontains=search).prefetch_related('photos')
-  elif selected_catg:
-        lieux = Lieu.objects.filter(categorie=selected_catg).prefetch_related('photos')
+            lieux = Lieu.objects.filter(
+                nomLieu__icontains=search).prefetch_related('photos')
+    elif selected_catg:
+        lieux = Lieu.objects.filter(
+            categorie=selected_catg).prefetch_related('photos')
         if selected_region:
-            lieux = lieux.filter(region=selected_region).prefetch_related('photos')
+            lieux = lieux.filter(
+                region=selected_region).prefetch_related('photos')
         elif selected_thm:
             lieux = lieux.filter(theme=selected_thm).prefetch_related('photos')
         elif search:
-            lieux = Lieu.objects.filter(nomLieu__icontains=search).prefetch_related('photos')
-  elif selected_thm:
-        lieux = Lieu.objects.filter(theme=selected_thm).prefetch_related('photos')
+            lieux = Lieu.objects.filter(
+                nomLieu__icontains=search).prefetch_related('photos')
+    elif selected_thm:
+        lieux = Lieu.objects.filter(
+            theme=selected_thm).prefetch_related('photos')
         if selected_region:
-            lieux = lieux.filter(region=selected_region).prefetch_related('photos')
+            lieux = lieux.filter(
+                region=selected_region).prefetch_related('photos')
         elif selected_catg:
-            lieux = lieux.filter(categorie=selected_catg).prefetch_related('photos')
+            lieux = lieux.filter(
+                categorie=selected_catg).prefetch_related('photos')
         elif search:
-            lieux = Lieu.objects.filter(nomLieu__icontains=search).prefetch_related('photos')
-  elif search:
-        lieux = Lieu.objects.filter(nomLieu__icontains=search).prefetch_related('photos')
-  else:
+            lieux = Lieu.objects.filter(
+                nomLieu__icontains=search).prefetch_related('photos')
+    elif search:
+        lieux = Lieu.objects.filter(
+            nomLieu__icontains=search).prefetch_related('photos')
+    else:
         lieux = Lieu.objects.prefetch_related('photos')
- 
-  #Pagination
-  page = request.GET.get('page',1)
-  product_paginator = Paginator(lieux, product_per_page)
-  try:
-      lieux = product_paginator.page(page)
-  except EmptyPage:
-      lieux = product_paginator.page(product_paginator.num_pages)
-  except:
-      lieux = product_paginator.page(product_per_page)
 
-  context = { 
-      'lieux': lieux,
-      'regions': regions,
-      'categories' : categories,
-      'themes' : themes,
-      'page_obj': lieux,
-      'is_paginated': True,
-      'paginator': product_paginator,
-      'user_id' : user_id
-      }
-   
-  return render(request, 'liste_lieux.html', context)
+    # Pagination
+    page = request.GET.get('page', 1)
+    product_paginator = Paginator(lieux, product_per_page)
+    try:
+        lieux = product_paginator.page(page)
+    except EmptyPage:
+        lieux = product_paginator.page(product_paginator.num_pages)
+    except:
+        lieux = product_paginator.page(product_per_page)
+
+    context = {
+        'lieux': lieux,
+        'regions': regions,
+        'categories': categories,
+        'themes': themes,
+        'page_obj': lieux,
+        'is_paginated': True,
+        'paginator': product_paginator,
+        'user': User.objects.get(idUser=user_id)
+    }
+
+    return render(request, 'liste_lieux.html', context)
 
 
-#proposition des recherches
+# proposition des recherches
 def suggestionapi(request):
     if 'term' in request.GET:
         search = request.GET.get('term')
         qs = Lieu.objects.filter(nomLieu__icontains=search)[0:10]
         titles = list()
-        for lieu in qs :
+        for lieu in qs:
             titles.append(lieu.nomLieu)
-        
+
         return JsonResponse(titles, safe=False)
     return JsonResponse([], safe=False)
 
 
-#page détail d'un lieu
+# page détail d'un lieu
 @custom_login_required
 @admin_required(role='Touriste')
-def LieuDetail(request ,user_id, slug, id  ):
-  lieu = Lieu.objects.get(idLieu=id)
-  events = Evenement.objects.filter(id_lieu=lieu)
-  photos = Photo.objects.all()
-  
-  transports = lieu.transport.all()
-  name=request.user.username
-  produits = lieu.produits_artis.all()
-  print(produits)
-  
-  transport_icons = {
+def LieuDetail(request, user_id, slug, id):
+    lieu = Lieu.objects.get(idLieu=id)
+    events = Evenement.objects.filter(id_lieu=lieu)
+    photos = Photo.objects.all()
+
+    transports = lieu.transport.all()
+    name = request.user.username
+    produits = lieu.produits_artis.all()
+    print(produits)
+
+    transport_icons = {
         'Métro': 'fa-subway',
         'Bus': 'fa-bus',
         'Taxi': 'fa-taxi',
@@ -177,160 +202,163 @@ def LieuDetail(request ,user_id, slug, id  ):
         'Tramway': 'fa-train',
         'Téléphérique': 'fa-cable-car',
     }
-  transports_with_icons = []
-  for transport in transports:
+    transports_with_icons = []
+    for transport in transports:
         icon_class = transport_icons.get(transport.typeTrans, '')
-       
+
         transports_with_icons.append((transport, icon_class))
 
-  # Retrieve the related photos for each produit
-  photos_by_produit = {}
-  for produit in produits:
+    # Retrieve the related photos for each produit
+    photos_by_produit = {}
+    for produit in produits:
         photos = Photo.objects.filter(produitId=produit)
-        photos_by_produit[produit] = photos  
+        photos_by_produit[produit] = photos
         print("hani", photos_by_produit[produit])
 
-  context = {
-      'lieu': lieu,
-      'photos': photos,
-      'events': events,
-      'transports_with_icons': transports_with_icons,
-      'name': name,
-      'produits': produits,
-      'user_id' : user_id,
-      
-  }
-  
-  context['photos_by_produit'] = photos_by_produit
-  return render(request, 'détail_lieu.html', context)
+    context = {
+        'lieu': lieu,
+        'photos': photos,
+        'events': events,
+        'transports_with_icons': transports_with_icons,
+        'name': name,
+        'produits': produits,
+        'user': User.objects.get(idUser=user_id)
 
-#page liste des événements
+    }
+
+    context['photos_by_produit'] = photos_by_produit
+    return render(request, 'détail_lieu.html', context)
+
+# page liste des événements
+
+
 @custom_login_required
 @admin_required(role='Touriste')
-def ListeEvents(request,user_id):
-   
-    search= request.GET.get('search', "")
+def ListeEvents(request, user_id):
+
+    search = request.GET.get('search', "")
     if search:
         events = Evenement.objects.filter(nomEvent__icontains=search)
     else:
         events = Evenement.objects.all()
 
-    #Pagination
-    page = request.GET.get('page',1)
+    # Pagination
+    page = request.GET.get('page', 1)
     product_paginator = Paginator(events, product_per_page)
     try:
-      events = product_paginator.page(page)
+        events = product_paginator.page(page)
     except EmptyPage:
-      events = product_paginator.page(product_paginator.num_pages)
+        events = product_paginator.page(product_paginator.num_pages)
     except:
-      events = product_paginator.page(product_per_page)
+        events = product_paginator.page(product_per_page)
 
     context = {
-      'events': events,
-      'page_obj': events,
-      'is_paginated': True,
-      'paginator': product_paginator,
-      'user_id' :user_id
+        'events': events,
+        'page_obj': events,
+        'is_paginated': True,
+        'paginator': product_paginator,
+        'user': User.objects.get(idUser=user_id)
     }
     return render(request, 'liste_event.html', context)
 
-#proposition des recherches
+# proposition des recherches
+
+
 def suggestionapi2(request):
     if 'term' in request.GET:
         search = request.GET.get('term')
         qs = Evenement.objects.filter(nomEvent__icontains=search)[0:10]
         titles = list()
-        for event in qs :
+        for event in qs:
             titles.append(event.nomEvent)
-        
+
         return JsonResponse(titles, safe=False)
     return JsonResponse([], safe=False)
 
-#page détail d'un événement
+# page détail d'un événement
+
+
 @custom_login_required
 @admin_required(role='Touriste')
-def EventDetail(request,user_id,slug, id):
- event = Evenement.objects.get(idEvent=id)
- lieu = Lieu.objects.get(nomLieu=event.id_lieu)
- lieu_id=event.id_lieu_id
- context = {
-      'event': event,
-      'lieu': lieu,
-      'id_lieu': lieu_id,
-      'user_id' :user_id
+def EventDetail(request, user_id, slug, id):
+    event = Evenement.objects.get(idEvent=id)
+    lieu = Lieu.objects.get(nomLieu=event.id_lieu)
+    lieu_id = event.id_lieu_id
+    context = {
+        'event': event,
+        'lieu': lieu,
+        'id_lieu': lieu_id,
+        'user': User.objects.get(idUser=user_id)
     }
- return render(request, 'détail_event.html', context)
+    return render(request, 'détail_event.html', context)
 
 
 # User authentification -------------------------------------------------------------
 def login(request):
 
-  form = LoginForm()
-  
-  if request.method == 'POST': 
-    username = request.POST['username']
-    motdepasse = request.POST['motdepasse']
-  
-    try:
-          user = User.objects.get(username=username, motdepasse=motdepasse)
-          user.is_authenticated = True
-          
-          user_id = user.idUser
-          user.save()
+    form = LoginForm()
 
-          if user.profile=='Admin central' : 
-            return redirect('AdminCentralPage',user_id=user_id)
-          
-          elif user.profile=='Admin régional' : 
-            return redirect('AdminRegionalPage',user_id=user_id)
-          
-          elif user.profile=='Touriste' : 
-            return redirect('profile',user_id=user_id)
-    
-    except User.DoesNotExist:
+    if request.method == 'POST':
+        username = request.POST['username']
+        motdepasse = request.POST['motdepasse']
+
+        try:
+            user = User.objects.get(username=username, motdepasse=motdepasse)
+            user.is_authenticated = True
+
+            user_id = user.idUser
+            user.save()
+
+            if user.profile == 'Admin central':
+                return redirect('AdminCentralPage', user_id=user_id)
+
+            elif user.profile == 'Admin régional':
+                return redirect('AdminRegionalPage', user_id=user_id)
+
+            elif user.profile == 'Touriste':
+                return redirect('profile', user_id=user_id)
+
+        except User.DoesNotExist:
             # User with the given username and password does not exist
             # Handle the case accordingly (e.g., display an error message)
-          error_message = 'Invalid username or password, try to register'
-          return render(request, 'login.html', {'error_message': error_message})
-          
-  context = {'form' : form }
-  return render(request, "login.html", context)
+            error_message = 'Invalid username or password, try to register'
+            return render(request, 'login.html', {'error_message': error_message})
 
-
+    context = {'form': form}
+    return render(request, "login.html", context)
 
 
 def register_touriste(request):
-  form = RegisterForm()
+    form = RegisterForm()
 
-  if request.method == 'POST': 
-      form = RegisterForm(request.POST)
+    if request.method == 'POST':
+        form = RegisterForm(request.POST)
 
-      if form.is_valid():
-          username = form.cleaned_data['username']
-          nomUser = form.cleaned_data['nomUser']
-          prenomUser = form.cleaned_data['prenomUser']
-          motdepasse = form.cleaned_data['motdepasse']
-            
-          # Create the user object and set the default value for the profile field
-          user = form.save(commit=False)
-          user.profile = 'Touriste'  # Set the default value for the profile field
-          user.is_authenticated = True
-          user.save()
-          return redirect('profile',id=user.idUser)
-      else : 
-          error_message = 'Invalid form , whould you try again ?'
-          return render(request, 'page-register.html', {'error_message': error_message})  
-      
-  context = {'form' : form }
-  return render(request, "page-register.html", context )
+        if form.is_valid():
+            username = form.cleaned_data['username']
+            nomUser = form.cleaned_data['nomUser']
+            prenomUser = form.cleaned_data['prenomUser']
+            motdepasse = form.cleaned_data['motdepasse']
+
+            # Create the user object and set the default value for the profile field
+            user = form.save(commit=False)
+            user.profile = 'Touriste'  # Set the default value for the profile field
+            user.is_authenticated = True
+            user.save()
+            return redirect('profile', id=user.idUser)
+        else:
+            error_message = 'Invalid form , whould you try again ?'
+            return render(request, 'page-register.html', {'error_message': error_message})
+
+    context = {'form': form}
+    return render(request, "page-register.html", context)
 
 
-
-def logout(request,user_id):
-  user = User.objects.get(idUser=user_id)
-  user.is_authenticated = False 
-  user.save() 
-  return redirect('index')
+def logout(request, user_id):
+    user = User.objects.get(idUser=user_id)
+    user.is_authenticated = False
+    user.save()
+    return redirect('index')
 
 # User authentification -------------------------------------------------------------
 
@@ -338,11 +366,11 @@ def logout(request,user_id):
 # admin page  -----------------------------------------------------------------------
 @custom_login_required
 @admin_required(role='Admin central')
-def adminCentral_view(request, user_id): 
-  user = User.objects.get( profile="Admin central")
+def adminCentral_view(request, user_id):
+    user = User.objects.get(profile="Admin central")
 
-  if request.method == 'POST':
-        # Update the user information 
+    if request.method == 'POST':
+        # Update the user information
         user.nomUser = request.POST.get('nomUser')
         user.prenomUser = request.POST.get('prenomUser')
         user.username = request.POST.get('username')
@@ -353,23 +381,22 @@ def adminCentral_view(request, user_id):
 
         user.save()
 
-  context = {
+    context = {
         'user': user,
-        'user_id':user.idUser
-  }
+        'user_id': user.idUser
+    }
 
-  return render(request, "admin_central_page.html",context)
-
+    return render(request, "admin_central_page.html", context)
 
 
 @custom_login_required
 @admin_required(role='Admin régional')
 def adminRegional_view(request, user_id):
-  user = User.objects.get( idUser=user_id)
-  region = Region.objects.get(adminRegion=user)
+    user = User.objects.get(idUser=user_id)
+    region = Region.objects.get(adminRegion=user)
 
-  if request.method == 'POST':
-        # Update the user information 
+    if request.method == 'POST':
+        # Update the user information
         user.nomUser = request.POST.get('nomUser')
         user.prenomUser = request.POST.get('prenomUser')
         user.username = request.POST.get('username')
@@ -379,28 +406,26 @@ def adminRegional_view(request, user_id):
             user.motdepasse = motdepasse
 
         user.save()
-  notifications= Notification.objects.filter(adminreg=user_id)
+    notifications = Notification.objects.filter(adminreg=user_id)
 
-  context = {
+    context = {
         'user': user,
         'user_id': user_id,
-        'region' : region,
-        'notifications':notifications
-  }
+        'region': region,
+        'notifications': notifications
+    }
 
-  return render(request, "admin_regional_page.html",context)
+    return render(request, "admin_regional_page.html", context)
 
 # admin page  -----------------------------------------------------------------------
 
 
-
-
-def save_photos(request, lieu ,event):
+def save_photos(request, lieu, event):
     if request.method == 'POST' and request.FILES.getlist('images'):
         images = request.FILES.getlist('images')
 
         for image in images:
-            photo = Photo(image=image, lieuId_id=lieu ,eventId=event )
+            photo = Photo(image=image, lieuId_id=lieu, eventId=event)
             photo.save()
 
             # Get the file extension
@@ -418,17 +443,16 @@ def save_photos(request, lieu ,event):
                     destination.write(chunk)
 
 
-
-
-#Notifier AdminCentral Ajout Lieu
+# Notifier AdminCentral Ajout Lieu
 def History_Ajout_Lieu(request, id_lieu, user_id):
- if request.method == 'POST':
-    #current_user_id = request.user.id
-    lieu = get_object_or_404(Lieu, pk=id_lieu)
-    user = get_object_or_404(User, pk=user_id)
-    history= HistoryLieu(Iduser=user, Idlieu=lieu, Type_Action="Ajout lieu")
-    history.save()
-    return JsonResponse({"message": " added Historyuccessfully."})
+    if request.method == 'POST':
+        # current_user_id = request.user.id
+        lieu = get_object_or_404(Lieu, pk=id_lieu)
+        user = get_object_or_404(User, pk=user_id)
+        history = HistoryLieu(Iduser=user, Idlieu=lieu,
+                              Type_Action="Ajout lieu")
+        history.save()
+        return JsonResponse({"message": " added Historyuccessfully."})
 
 
 # Les ajouts pour l'admin régional --------------------------------------------
@@ -436,117 +460,118 @@ def History_Ajout_Lieu(request, id_lieu, user_id):
 @admin_required(role='Admin régional')
 def add_lieu(request, user_id):
     admin_region = User.objects.get(idUser=user_id)
-    region = Region.objects.get(adminRegion= admin_region)
+    region = Region.objects.get(adminRegion=admin_region)
     communes = Commune.objects.filter(regionC=region)
     transports = Transport.objects.all()
-    notifications= Notification.objects.filter(adminreg=user_id)
+    notifications = Notification.objects.filter(adminreg=user_id)
 
-    
     if request.method == 'POST':
         form = LieuForm(request.POST, communes=communes)
-       
-        if form.is_valid():
-          
-          lieu = form.save(commit=False)
-          lieu.region = region
-       
-          lieu.save()
-          selected_transports = request.POST.getlist('transport')
-          lieu.transport.set(selected_transports)
-          selected_produits = form.cleaned_data['produits_artis']
-          lieu.produits_artis.set(selected_produits)
-          lieu.save()
-          
 
-          save_photos(request,lieu.idLieu,None)
-          History_Ajout_Lieu(request, lieu.idLieu, user_id)
-          return redirect('add_lieu',user_id)
+        if form.is_valid():
+
+            lieu = form.save(commit=False)
+            lieu.region = region
+
+            lieu.save()
+            selected_transports = request.POST.getlist('transport')
+            lieu.transport.set(selected_transports)
+            selected_produits = form.cleaned_data['produits_artis']
+            lieu.produits_artis.set(selected_produits)
+            lieu.save()
+
+            save_photos(request, lieu.idLieu, None)
+            History_Ajout_Lieu(request, lieu.idLieu, user_id)
+            return redirect('add_lieu', user_id)
         else:
-          print(form.errors)
-        
-         
+            print(form.errors)
+
     else:
         form = LieuForm(communes=communes)
 
-    communes_choices = [(commune.idComm, commune.nomComm) for commune in communes]
+    communes_choices = [(commune.idComm, commune.nomComm)
+                        for commune in communes]
     form.fields['commune'].choices = communes_choices
 
     context = {
-       'form': form , 
-       'user_id' : user_id ,
-       'transports' : transports,
-       'categories' : Categorie.objects.all() ,
-       'themes' : Theme.objects.all(),
-       'produits_artis' : ProduitsArtis.objects.all(),
-       'notifications': notifications
+        'form': form,
+        'user_id': user_id,
+        'transports': transports,
+        'categories': Categorie.objects.all(),
+        'themes': Theme.objects.all(),
+        'produits_artis': ProduitsArtis.objects.all(),
+        'notifications': notifications
     }
-    
+
     return render(request, 'add_lieu.html', context)
 
 
-#Envoyer notification 
+# Envoyer notification
 
-def notification(request,id_event):
+def notification(request, id_event):
     if request.method == 'POST':
         event = get_object_or_404(Evenement, pk=id_event)
         lieu = get_object_or_404(Lieu, pk=event.id_lieu.idLieu)
-        print(lieu) 
+        print(lieu)
         users = User.objects.all()
         for user in users:
-            if(user.profile=="Touriste"):
-                existing_notification = NotificationEvent.objects.filter(user=user, event=event, seen=True).exists()
+            if (user.profile == "Touriste"):
+                existing_notification = NotificationEvent.objects.filter(
+                    user=user, event=event, seen=True).exists()
                 if not existing_notification:
-                    notification = NotificationEvent.objects.create(user=user, event=event)
-            
-       
-        return render(request, 'index.html', {'event':event, 'lieu':lieu})
-        
-    
+                    notification = NotificationEvent.objects.create(
+                        user=user, event=event)
+
+        return render(request, 'index.html', {'event': event, 'lieu': lieu})
+
     return HttpResponse('Invalid request method.')
 
-#Notifier AdminCentral Ajout Event
+# Notifier AdminCentral Ajout Event
+
+
 def History_Ajout_Event(request, id_event, user_id):
- if request.method == 'POST':
-    #current_user_id = request.user.id
-    event = get_object_or_404(Evenement, pk=id_event)
-    user = get_object_or_404(User, pk=user_id)
-    history= HistoryEvent(Iduser=user, Idevent=event, Type_Action="Ajout Evenement")
-    history.save()
-    return JsonResponse({"message": " added Historyuccessfully."})
+    if request.method == 'POST':
+        # current_user_id = request.user.id
+        event = get_object_or_404(Evenement, pk=id_event)
+        user = get_object_or_404(User, pk=user_id)
+        history = HistoryEvent(Iduser=user, Idevent=event,
+                               Type_Action="Ajout Evenement")
+        history.save()
+        return JsonResponse({"message": " added Historyuccessfully."})
+
 
 @custom_login_required
 @admin_required(role='Admin régional')
 def add_evenement(request, user_id):
     admin_region = User.objects.get(idUser=user_id)
-    region = Region.objects.get(adminRegion= admin_region)
+    region = Region.objects.get(adminRegion=admin_region)
     lieux = Lieu.objects.filter(region=region)
-    notifications= Notification.objects.filter(adminreg=user_id)
+    notifications = Notification.objects.filter(adminreg=user_id)
 
     if request.method == 'POST':
         form = EvenementForm(request.POST, lieux=lieux)
         if form.is_valid():
             event = form.save()
-  
-            save_photos(request,event.id_lieu.idLieu,event)
+
+            save_photos(request, event.id_lieu.idLieu, event)
             notification(request, event.idEvent)
             History_Ajout_Event(request, event.idEvent, user_id)
-            return redirect('add_evenement',user_id)
+            return redirect('add_evenement', user_id)
     else:
         form = EvenementForm(lieux=lieux)
-    
+
     lieux_choices = [(lieu.idLieu, lieu.nomLieu) for lieu in lieux]
     form.fields['id_lieu'].choices = lieux_choices
-    
+
     context = {
-       'form': form ,
-       'user_id' : user_id,
-       'notifications':notifications
-       
+        'form': form,
+        'user_id': user_id,
+        'notifications': notifications
 
-       }
-    
+
+    }
+
     return render(request, 'add_evenement.html', context)
-
 
 
 @custom_login_required
@@ -554,30 +579,30 @@ def add_evenement(request, user_id):
 def add_transport(request, user_id):
     if request.method == 'POST':
         form = TransportForm(request.POST)
-       
+
         if form.is_valid():
             form.save()
             return redirect('add_transport', user_id)
     else:
-        form = TransportForm( )
+        form = TransportForm()
 
-    notifications= Notification.objects.filter(adminreg=user_id)
+    notifications = Notification.objects.filter(adminreg=user_id)
 
     context = {
-       'form': form , 
-       'user_id' : user_id,
-       'notifications':notifications
+        'form': form,
+        'user_id': user_id,
+        'notifications': notifications
 
-       }
-    
+    }
+
     return render(request, 'add_transport.html', context)
-
 
 
 def adminCentral_stats(request):
 
-    #bestfeedback cotés 
-    labels = ['Nord-Ouest', 'Nord-Milieu', 'Nord-Est', 'Sud-Ouest', 'Sud-Milieu', 'Sud-Est']
+    # bestfeedback cotés
+    labels = ['Nord-Ouest', 'Nord-Milieu', 'Nord-Est',
+              'Sud-Ouest', 'Sud-Milieu', 'Sud-Est']
 
     regions = []
     lieux_by_cote = {}
@@ -596,69 +621,71 @@ def adminCentral_stats(request):
         max_feedback_by_cote[cote] = max_feedback
 
     cotes = labels
-    cote_feedback = [value for value in max_feedback_by_cote.values() if value is not None]
-    
-    # top 10 lieus 
-    top_10_lieux = Lieu.objects.order_by('-feedback')[:10].values('nomLieu', 'feedback')
+    cote_feedback = [
+        value for value in max_feedback_by_cote.values() if value is not None]
+
+    # top 10 lieus
+    top_10_lieux = Lieu.objects.order_by(
+        '-feedback')[:10].values('nomLieu', 'feedback')
 
     lieu_names = []
     feedback_values = []
 
     for lieu in top_10_lieux:
         lieu_names.append(lieu['nomLieu'])
-        feedback_values.append(lieu['feedback'])  
+        feedback_values.append(lieu['feedback'])
 
-    # Les 5 regions ayant max nombre d'event 
-    regions_with_events = Region.objects.annotate(num_events=Count('lieu__evenement')).order_by('-num_events')[:5]
+    # Les 5 regions ayant max nombre d'event
+    regions_with_events = Region.objects.annotate(
+        num_events=Count('lieu__evenement')).order_by('-num_events')[:5]
 
     region_names = [region.nomRegion for region in regions_with_events]
     event_counts = [region.num_events for region in regions_with_events]
 
-
-    # Les 5 lieus choisit comme favoris  
-    top_lieux_with_favorites = Lieu.objects.annotate(num_favorites=Count('favoris')).order_by('-num_favorites')[:10]
+    # Les 5 lieus choisit comme favoris
+    top_lieux_with_favorites = Lieu.objects.annotate(
+        num_favorites=Count('favoris')).order_by('-num_favorites')[:10]
 
     lieu_favoris = [lieu.nomLieu for lieu in top_lieux_with_favorites]
-    favorites_counts = [lieu.num_favorites for lieu in top_lieux_with_favorites]   
+    favorites_counts = [
+        lieu.num_favorites for lieu in top_lieux_with_favorites]
 
-
-    # Pass the data to the template 
+    # Pass the data to the template
 
     data = {
         'cotes': cotes,
-        'cote_feedback': cote_feedback, 
+        'cote_feedback': cote_feedback,
 
-        'lieu_names' : lieu_names,
-        'feedback_values' : feedback_values,
-        
-        'region_names' : region_names,
-        'event_counts' : event_counts,
+        'lieu_names': lieu_names,
+        'feedback_values': feedback_values,
 
-        'lieu_favoris' : lieu_favoris,
-        'favorites_counts' : favorites_counts
+        'region_names': region_names,
+        'event_counts': event_counts,
+
+        'lieu_favoris': lieu_favoris,
+        'favorites_counts': favorites_counts
     }
 
     data_json = json.dumps(data)
     user = User.objects.get(profile='Admin central')
 
-    return render(request, 'statistiques.html', {'data_json': data_json , 'user_id':user.idUser})
-    
+    return render(request, 'statistiques.html', {'data_json': data_json, 'user_id': user.idUser})
 
 
-
-#Profile treatment
+# Profile treatment
 @custom_login_required
 @admin_required(role='Touriste')
 def profile(request, user_id):
     user = User.objects.get(idUser=user_id)
     lieuxFavoris = Favoris.objects.filter(idUser=user_id)
-    
+
     if request.method == 'POST':
         nom = request.POST.get('nom')
         prenom = request.POST.get('prenom')
         nom_utilisateur = request.POST.get('nom_utilisateur')
-        password = request.POST.get('password')  # Add this line to get the password value
-        
+        # Add this line to get the password value
+        password = request.POST.get('password')
+
         if nom:
             user.nomUser = nom
         if prenom:
@@ -667,23 +694,27 @@ def profile(request, user_id):
             user.username = nom_utilisateur
         if password:
             user.password = password  # Update the user's password with the new value
-        
+
         user.save()
- 
+
         return redirect('profile', user_id=user_id)
-    
+
     return render(request, 'my_profile.html', {'user': user, 'lieuxFavoris': lieuxFavoris})
 
-#suppression
+# suppression
+
+
 def delete_favoris(request, favoris_id):
     favoris = get_object_or_404(Favoris, id_favoris=favoris_id)
     favoris.delete()
     return HttpResponse(status=204)
 
-#commentaires/feedbacks
+# commentaires/feedbacks
+
+
 class CommentConsumer(AsyncWebsocketConsumer):
     async def connect(self):
-       
+
         self.lieu_id = self.scope['url_route']['kwargs']['lieu_id']
         self.lieu_group_name = 'lieu_%s_comments' % self.lieu_id
 
@@ -703,7 +734,7 @@ class CommentConsumer(AsyncWebsocketConsumer):
         )
 
     async def receive(self, text_data):
-        
+
         text_data_json = json.loads(text_data)
         comment = text_data_json['comment']
         author = text_data_json['author']
@@ -718,7 +749,7 @@ class CommentConsumer(AsyncWebsocketConsumer):
         lieu = await database_sync_to_async(Lieu.objects.get)(pk=self.lieu_id)
         admin_id = await database_sync_to_async(lieu.get_admin_id)()
         admin = await database_sync_to_async(User.objects.get)(idUser=admin_id)
-        notification =await database_sync_to_async( Notification.objects.create)(adminreg=admin, lieu=lieu.nomLieu,author=author)
+        notification = await database_sync_to_async(Notification.objects.create)(adminreg=admin, lieu=lieu.nomLieu, author=author)
 
         # Send the comment to the lieu group
         await self.channel_layer.group_send(
@@ -742,49 +773,53 @@ def index(request):
     template = loader.get_template('index.html')
     return HttpResponse(template.render())
 
-def listcomment(request,admin_id):
+
+def listcomment(request, admin_id):
     comments = Comment.get_comments_for_admin(admin_id)
     notifications = Notification.objects.filter(adminreg=admin_id)
     template = loader.get_template('list-comment.html')
 
     context = {
         'comments': comments,
-        'idUser':admin_id,
-        'notifications':notifications,
-        
+        'idUser': admin_id,
+        'notifications': notifications,
+
     }
-    
-    return HttpResponse(template.render(context,request))
+
+    return HttpResponse(template.render(context, request))
+
 
 def admin(request):
     template = loader.get_template('indexadmin.html')
     return HttpResponse(template.render())
+
+
 def comm(request):
- 
-    return render(request,'comm.html')
+
+    return render(request, 'comm.html')
+
 
 def lieu(request, lieu_id):
     lieu = Lieu.objects.get(pk=lieu_id)
     username = request.user.username
-    return render(request, 'comm.html', {'lieu': lieu,'name':username})
+    return render(request, 'comm.html', {'lieu': lieu, 'name': username})
 
-def adminnot(request,admin_id):
-    notifications = Notification.objects.filter(adminreg=admin_id).order_by('-created_at')[:5]  
+
+def adminnot(request, admin_id):
+    notifications = Notification.objects.filter(
+        adminreg=admin_id).order_by('-created_at')[:5]
     template = loader.get_template('indexadmin.html')
     context = {
         'notifications': notifications
     }
     return HttpResponse(template.render(context, request))
 
-from django.shortcuts import get_object_or_404, redirect
 
 def delete_comment(request, comment_id):
     comment = get_object_or_404(Comment, id=comment_id)
-     
+
     comment.delete()
-    return redirect('listcomment', admin_id=comment.get_admin_id()) 
-
-
+    return redirect('listcomment', admin_id=comment.get_admin_id())
 
 
 class AdminNotificationConsumer(AsyncWebsocketConsumer):
@@ -815,31 +850,29 @@ class AdminNotificationConsumer(AsyncWebsocketConsumer):
         }))
 
 
-
-
-
 # Restrict access to authenticated users
 
 def update_feedback(request):
     if request.method == 'POST' and request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest':
         lieu_id = request.POST.get('lieu_id')
         rating = int(request.POST.get('rating'))
-        
 
         try:
             lieu = get_object_or_404(Lieu, idLieu=lieu_id)
 
             # Check if the user already has a feedback for the lieu
-            existing_feedback = Feedback.objects.filter(user=request.user.id, lieu=lieu).first()
+            existing_feedback = Feedback.objects.filter(
+                user=request.user.id, lieu=lieu).first()
 
             if existing_feedback:
                 # If the user has an existing feedback, update it
                 existing_feedback.rating = rating
-              
+
                 existing_feedback.save()
             else:
                 # Create a new feedback instance
-                feedback = Feedback(user=request.user.id, lieu=lieu, rating=rating)
+                feedback = Feedback(user=request.user.id,
+                                    lieu=lieu, rating=rating)
                 feedback.save()
 
             # Update the feedback and number of feedback in the Lieu model
@@ -858,13 +891,14 @@ def update_feedback(request):
 
 
 def retrieve_feedback(request):
-    
+
     if request.method == 'POST':
         lieu_id = request.POST.get('lieu_id')
         feedback = Feedback.objects.filter(lieu_id=lieu_id)
         num_feedback = feedback.count()
         total_rating = sum(feedback.values_list('rating', flat=True))
-        average_rating = round(total_rating / num_feedback) if num_feedback > 0 else 0
+        average_rating = round(
+            total_rating / num_feedback) if num_feedback > 0 else 0
 
         user_rating = 0
         if request.user.is_authenticated:
@@ -880,26 +914,24 @@ def retrieve_feedback(request):
         })
     else:
         return JsonResponse({'error': 'Invalid request method'})
-from django.core import serializers
-from django.http import JsonResponse
 
 
 # notifications evenements
-# Ajouter favorite  
+# Ajouter favorite
 def favorite(request, user_id, id_lieu):
-    
+
     lieu = get_object_or_404(Lieu, pk=id_lieu)
     uuser = get_object_or_404(User, pk=user_id)
     fav = Favoris(id_lieu=lieu, idUser=uuser)
     fav.save()
-    
+
     user = User.objects.get(idUser=user_id)
     lieuxFavoris = Favoris.objects.filter(idUser=user_id)
 
-    return render(request, 'my_profile.html',{'user' : user , 'lieuxFavoris':lieuxFavoris})
+    return render(request, 'my_profile.html', {'user': user, 'lieuxFavoris': lieuxFavoris})
 
 
-#Afficher toutes les notifications
+# Afficher toutes les notifications
 
 def view_notifications(request):
     print("hello")
@@ -914,102 +946,113 @@ def view_notifications(request):
             'nomLieu': lieu.nomLieu,
         }
         notifications_data.append(notification_data)
-    
+
     return JsonResponse({'notifications': notifications_data})
 
 # gestion d'historique
+
+
 def History(request):
- if request.method == 'GET':
-    HistEvent = HistoryEvent.objects.all()
-    HistLieu = HistoryLieu.objects.all()
-    History_data = []
+    if request.method == 'GET':
+        HistEvent = HistoryEvent.objects.all()
+        HistLieu = HistoryLieu.objects.all()
+        History_data = []
 
-    for hist_event in HistEvent:
-        event = get_object_or_404(Evenement, pk=hist_event.Idevent.idEvent)
-        admin_reg = get_object_or_404(User, pk=hist_event.Iduser.idUser)
-        region= event.id_lieu.region
-        history_data = {
-            
-            'username':admin_reg.username,
-            'Action': hist_event.Type_Action,
-            'Object': event.nomEvent,
-            'Time': hist_event.timestamp,
-            'region': region.nomRegion
-        }
-        History_data.append(history_data)
+        for hist_event in HistEvent:
+            event = get_object_or_404(Evenement, pk=hist_event.Idevent.idEvent)
+            admin_reg = get_object_or_404(User, pk=hist_event.Iduser.idUser)
+            region = event.id_lieu.region
+            history_data = {
 
-    for hist_lieu in HistLieu:
-        lieu = get_object_or_404(Lieu, pk=hist_lieu.Idlieu.idLieu)
-        admin_reg = get_object_or_404(User, pk=hist_lieu.Iduser.idUser)
-        history_data = {
-            'username':admin_reg.username,
-            'Action': hist_lieu.Type_Action,
-            'Object': lieu.nomLieu,
-            'Time': hist_lieu.timestamp,
-            'region': lieu.region.nomRegion
-        }
-        History_data.append(history_data)
+                'username': admin_reg.username,
+                'Action': hist_event.Type_Action,
+                'Object': event.nomEvent,
+                'Time': hist_event.timestamp,
+                'region': region.nomRegion
+            }
+            History_data.append(history_data)
 
-    print(History_data)
-    return render(request, 'Historique.html', {'Histories': History_data})
+        for hist_lieu in HistLieu:
+            lieu = get_object_or_404(Lieu, pk=hist_lieu.Idlieu.idLieu)
+            admin_reg = get_object_or_404(User, pk=hist_lieu.Iduser.idUser)
+            history_data = {
+                'username': admin_reg.username,
+                'Action': hist_lieu.Type_Action,
+                'Object': lieu.nomLieu,
+                'Time': hist_lieu.timestamp,
+                'region': lieu.region.nomRegion
+            }
+            History_data.append(history_data)
+
+        print(History_data)
+        return render(request, 'Historique.html', {'Histories': History_data})
 
 
-#---------------------------- Historique des evenments -------------------------------#
+# ---------------------------- Historique des evenments -------------------------------#
 
-#Notifier AdminCentral  Modifier Event
+# Notifier AdminCentral  Modifier Event
 def History_Modifier_Event(request, id_event):
- if request.method == 'POST':
-    #current_user_id = request.user.id
-    event = get_object_or_404(Evenement, pk=id_event)
-    user = get_object_or_404(User, pk=1)
-    history= HistoryEvent(Iduser=user, Idevent=event, Type_Action="Modification Evenement")
-    history.save()
-    return JsonResponse({"message": " added Historyuccessfully."})
+    if request.method == 'POST':
+        # current_user_id = request.user.id
+        event = get_object_or_404(Evenement, pk=id_event)
+        user = get_object_or_404(User, pk=1)
+        history = HistoryEvent(Iduser=user, Idevent=event,
+                               Type_Action="Modification Evenement")
+        history.save()
+        return JsonResponse({"message": " added Historyuccessfully."})
 
-#Notifier AdminCentral  Supprimer Event
+# Notifier AdminCentral  Supprimer Event
+
+
 def History_Supprimer_Event(request, id_event):
- if request.method == 'POST':
-    #current_user_id = request.user.id
-    event = get_object_or_404(Evenement, pk=id_event)
-    user = get_object_or_404(User, pk=1)
-    history= HistoryEvent(Iduser=user, Idevent=event, Type_Action="Suppression Evenement")
-    history.save()
-    return JsonResponse({"message": " added Historyuccessfully."})
+    if request.method == 'POST':
+        # current_user_id = request.user.id
+        event = get_object_or_404(Evenement, pk=id_event)
+        user = get_object_or_404(User, pk=1)
+        history = HistoryEvent(Iduser=user, Idevent=event,
+                               Type_Action="Suppression Evenement")
+        history.save()
+        return JsonResponse({"message": " added Historyuccessfully."})
 
-#-------------------------------- Historique Lieu ------------------------------------------------------#
+# -------------------------------- Historique Lieu ------------------------------------------------------#
 
 
-#Notifier AdminCentral  Modifier Lieu
+# Notifier AdminCentral  Modifier Lieu
 def History_Modifier_Lieu(request, id_lieu):
- if request.method == 'POST':
-    #current_user_id = request.user.id
-    lieu = get_object_or_404(Lieu, pk=id_lieu)
-    user = get_object_or_404(User, pk=1)
-    history= HistoryLieu(Iduser=user, Idlieu=lieu, Type_Action="Modification lieu")
-    history.save()
-    return JsonResponse({"message": " added Historyuccessfully."})
+    if request.method == 'POST':
+        # current_user_id = request.user.id
+        lieu = get_object_or_404(Lieu, pk=id_lieu)
+        user = get_object_or_404(User, pk=1)
+        history = HistoryLieu(Iduser=user, Idlieu=lieu,
+                              Type_Action="Modification lieu")
+        history.save()
+        return JsonResponse({"message": " added Historyuccessfully."})
 
-#Notifier AdminCentral  Supprimer Lieu
+# Notifier AdminCentral  Supprimer Lieu
+
+
 def History_Supprimer_Lieu(request, id_lieu):
- if request.method == 'POST':
-    #current_user_id = request.user.id
-    lieu = get_object_or_404(Lieu, pk=id_lieu)
-    user = get_object_or_404(User, pk=1)
-    history=HistoryLieu(Iduser=user, Idlieu=lieu, Type_Action="Suppression lieu")
-    history.save()
-    return JsonResponse({"message": " added Historyuccessfully."})
- 
+    if request.method == 'POST':
+        # current_user_id = request.user.id
+        lieu = get_object_or_404(Lieu, pk=id_lieu)
+        user = get_object_or_404(User, pk=1)
+        history = HistoryLieu(Iduser=user, Idlieu=lieu,
+                              Type_Action="Suppression lieu")
+        history.save()
+        return JsonResponse({"message": " added Historyuccessfully."})
 
-#gestion de map
+
+# gestion de map
 @custom_login_required
 @admin_required(role='Touriste')
-def map(request,user_id):
+def map(request, user_id):
     form = SearchForm()
 
     # Create Map Object
     m = folium.Map(location=[28.033886, 1.659626], zoom_start=5)
 
     if request.method == 'POST':
+        # Handle form submission
         form = SearchForm(request.POST)
         if form.is_valid():
             address = form.save()
@@ -1023,36 +1066,58 @@ def map(request,user_id):
                 return HttpResponse('Your address input is invalid')
 
             m = folium.Map(location=[lat, lng], zoom_start=15)
-            folium.Marker([lat, lng], tooltip='Click for more', popup=country).add_to(m)
+            folium.Marker([lat, lng], tooltip='Click for more',
+                          popup=country).add_to(m)
 
     lieux = Lieu.objects.all()
 
     # Add markers for each place
     for lieu in lieux:
-        folium.Marker([lieu.latitude, lieu.longitude], tooltip=lieu.nomLieu, popup=lieu.descripLieu, icon=folium.Icon(color='green')).add_to(m)
+        url = reverse('LieuDetail', args=(user_id, lieu.nomLieu, lieu.idLieu))
+        popup_content = f'<a href="{url}">{lieu.nomLieu}</a>'
+        popup_content = f'<a href="/détail_lieu/{user_id}/{lieu.nomLieu}/{lieu.idLieu}">{lieu.nomLieu}</a>'
+        folium.Marker([lieu.latitude, lieu.longitude], tooltip=lieu.nomLieu, popup=folium.Popup(
+            popup_content), icon=folium.Icon(color='green')).add_to(m)
 
     # Get HTML Representation of Map Object
     m = m._repr_html_()
     context = {
         'm': m,
         'form': form,
+        'user': User.objects.get(idUser=user_id)
+    }
+
+    return render(request, 'map.html', context)
+
+    # Add markers for each place
+    for lieu in lieux:
+        folium.Marker([lieu.latitude, lieu.longitude], tooltip=lieu.nomLieu,
+                      popup=lieu.descripLieu, icon=folium.Icon(color='green')).add_to(m)
+
+    # Get HTML Representation of Map Object
+    m = m._repr_html_()
+    context = {
+        'm': m,
+        'form': form,
+        'user': User.objects.get(idUser=user_id)
     }
 
     return render(request, 'map.html', context)
 
 
-#lieux admin
+# lieux admin
 @custom_login_required
 @admin_required(role='Admin régional')
 def ListeLieuxAdmin(request, user_id):
-   adminR = User.objects.get(idUser=user_id)
-   regionR = Region.objects.get(adminRegion=adminR)
-   lieux= Lieu.objects.filter(region=regionR)
-   context ={
+    adminR = User.objects.get(idUser=user_id)
+    regionR = Region.objects.get(adminRegion=adminR)
+    lieux = Lieu.objects.filter(region=regionR)
+    context = {
         'lieux': lieux,
-        'user_id': user_id
-     }
-   return render(request, 'meslieux.html', context)
+        'user': User.objects.get(idUser=user_id)
+    }
+    return render(request, 'meslieux.html', context)
+
 
 @custom_login_required
 @admin_required(role='Admin régional')
@@ -1078,14 +1143,15 @@ def update_lieu(request, user_id, lieu_id):
             lieu.produits_artis.set(selected_produits)
             lieu.save()
             save_photos(request, lieu.idLieu, None)
-           
+
             return redirect('update_lieu', user_id, lieu_id)
         else:
             print(form.errors)
     else:
         form = LieuForm(instance=lieu, communes=communes)
 
-    communes_choices = [(commune.idComm, commune.nomComm) for commune in communes]
+    communes_choices = [(commune.idComm, commune.nomComm)
+                        for commune in communes]
     form.fields['commune'].choices = communes_choices
 
     context = {
@@ -1110,54 +1176,58 @@ def delete_lieu(request, lieu_id):
     lieu.delete()
     return HttpResponse(status=204)
 
-#evenements admin
+# evenements admin
+
+
 @custom_login_required
 @admin_required(role='Admin régional')
 def ListeEventsAdmin(request, user_id):
-   adminR = User.objects.get(idUser=user_id)
-   regionR = Region.objects.get(adminRegion=adminR)
-   lieux= Lieu.objects.filter(region=regionR)
-   events= Evenement.objects.filter(id_lieu__in=lieux)
-   context ={
+    adminR = User.objects.get(idUser=user_id)
+    regionR = Region.objects.get(adminRegion=adminR)
+    lieux = Lieu.objects.filter(region=regionR)
+    events = Evenement.objects.filter(id_lieu__in=lieux)
+    context = {
         'lieux': lieux,
-        'user_id': user_id,
+        'user': User.objects.get(idUser=user_id),
         'events': events
-     }
-   return render(request, 'mesevents.html', context)
+    }
+    return render(request, 'mesevents.html', context)
 
 
 @custom_login_required
 @admin_required(role='Admin régional')
 def update_event(request, user_id, event_id):
- 
+
     admin_region = User.objects.get(idUser=user_id)
-    region = Region.objects.get(adminRegion= admin_region)
+    region = Region.objects.get(adminRegion=admin_region)
     lieux = Lieu.objects.filter(region=region)
-    event = Evenement.objects.get(idEvent=event_id)  # Get the existing event object
-    print("objet:",event)
+    # Get the existing event object
+    event = Evenement.objects.get(idEvent=event_id)
+    print("objet:", event)
     if request.method == 'POST':
         form = EvenementForm(request.POST, lieux=lieux, instance=event)
         if form.is_valid():
             event = form.save()
-            save_photos(request,event.id_lieu.idLieu,event)
+            save_photos(request, event.id_lieu.idLieu, event)
 
-            return redirect('update_event',user_id, event_id)
+            return redirect('update_event', user_id, event_id)
     else:
         form = EvenementForm(lieux=lieux, instance=event)
-    
+
     lieux_choices = [(lieu.idLieu, lieu.nomLieu) for lieu in lieux]
     form.fields['id_lieu'].choices = lieux_choices
-    
-    context = {
-       'form': form ,
-       'user_id' : user_id,
-       'event_id': event_id,
-       'event': event
-       
 
-       }
-    
+    context = {
+        'form': form,
+        'user_id': user_id,
+        'event_id': event_id,
+        'event': event
+
+
+    }
+
     return render(request, 'modifier_event.html', context)
+
 
 @custom_login_required
 @admin_required(role='Admin régional')
@@ -1166,46 +1236,50 @@ def delete_event(request, event_id):
     event.delete()
     return HttpResponse(status=204)
 
-#produits admin
+# produits admin
+
+
 @custom_login_required
 @admin_required(role='Admin régional')
 def add_produit(request, user_id):
     if request.method == 'POST':
         form = ProduitsArtisForm(request.POST)
-       
+
         if form.is_valid():
             form.save()
             return redirect('add_produit', user_id)
     else:
-        form = ProduitsArtisForm( )
-
+        form = ProduitsArtisForm()
 
     context = {
-       'form': form , 
-       'user_id' : user_id
-       }
-    
+        'form': form,
+        'user_id': user_id
+    }
+
     return render(request, 'add_produit.html', context)
+
 
 @custom_login_required
 @admin_required(role='Admin régional')
 def ListeProduitsAdmin(request, user_id):
-   adminR = User.objects.get(idUser=user_id)
-   regionR = Region.objects.get(adminRegion=adminR)
-   lieux= Lieu.objects.filter(region=regionR)
-   produits = ProduitsArtis.objects.filter(lieu__in=lieux)
-   context ={
+    adminR = User.objects.get(idUser=user_id)
+    regionR = Region.objects.get(adminRegion=adminR)
+    lieux = Lieu.objects.filter(region=regionR)
+    produits = ProduitsArtis.objects.filter(lieu__in=lieux)
+    context = {
         'lieux': lieux,
         'user_id': user_id,
         'produits': produits
-        
-     }
-   return render(request, 'mesproduits.html', context)
+
+    }
+    return render(request, 'mesproduits.html', context)
+
 
 @custom_login_required
 @admin_required(role='Admin régional')
 def update_produit(request, user_id, produit_id):
-    produit = ProduitsArtis.objects.get(idProduit=produit_id)  # Get the existing produit object
+    # Get the existing produit object
+    produit = ProduitsArtis.objects.get(idProduit=produit_id)
 
     if request.method == 'POST':
         form = ProduitsArtisForm(request.POST, instance=produit)
@@ -1224,6 +1298,7 @@ def update_produit(request, user_id, produit_id):
 
     return render(request, 'modifier_produit.html', context)
 
+
 @custom_login_required
 @admin_required(role='Admin régional')
 def delete_produit(request, produit_id):
@@ -1232,33 +1307,36 @@ def delete_produit(request, produit_id):
     return HttpResponse(status=204)
 
 
-
-#gestion des comptes
+# gestion des comptes
 def addUser(request):
     user = None
     if request.method == 'POST':
         nom = request.POST.get('nom')
         prenom = request.POST.get('prenom')
         nom_utilisateur = request.POST.get('nom_utilisateur')
-        password =  nom_utilisateur + '2023' 
+        password = nom_utilisateur + '2023'
         profile = 'Admin régional'
-        
-        user = User(nomUser = nom, prenomUser = prenom, username = nom_utilisateur, motdepasse = password, profile = profile )
+
+        user = User(nomUser=nom, prenomUser=prenom,
+                    username=nom_utilisateur, motdepasse=password, profile=profile)
         user.save()
         return redirect('listComptes')
 
     user = User.objects.get(profile='Admin central')
-    return render(request, 'add_user.html', {'user': user,'user_id':user.idUser})
+    return render(request, 'add_user.html', {'user': user, 'user_id': user.idUser})
+
 
 def listComptes(request):
-    users = User.objects.filter(profile = 'Admin régional')
+    users = User.objects.filter(profile='Admin régional')
     user = User.objects.get(profile='Admin central')
-    return render(request, 'liste_comptes.html', {'users': users,'user_id':user.idUser})
+    return render(request, 'liste_comptes.html', {'users': users, 'user_id': user.idUser})
+
 
 def deleteUser(request, userId):
     user = get_object_or_404(User, idUser=userId)
     user.delete()
     return HttpResponse(status=204)
+
 
 def notification2(request, admin_id):
     if request.method == 'GET':
