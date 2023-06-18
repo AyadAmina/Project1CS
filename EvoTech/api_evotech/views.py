@@ -76,7 +76,8 @@ def index(request):
 
 #liste des lieux
 product_per_page = 4
-
+@custom_login_required
+@admin_required(role='Touriste')
 def ListeDesLieux(request,user_id):
  
   regions = Region.objects.all()
@@ -156,7 +157,8 @@ def suggestionapi(request):
 
 
 #page détail d'un lieu
-
+@custom_login_required
+@admin_required(role='Touriste')
 def LieuDetail(request ,user_id, slug, id  ):
   lieu = Lieu.objects.get(idLieu=id)
   events = Evenement.objects.filter(id_lieu=lieu)
@@ -203,7 +205,8 @@ def LieuDetail(request ,user_id, slug, id  ):
   return render(request, 'détail_lieu.html', context)
 
 #page liste des événements
-
+@custom_login_required
+@admin_required(role='Touriste')
 def ListeEvents(request,user_id):
    
     search= request.GET.get('search', "")
@@ -244,7 +247,8 @@ def suggestionapi2(request):
     return JsonResponse([], safe=False)
 
 #page détail d'un événement
-
+@custom_login_required
+@admin_required(role='Touriste')
 def EventDetail(request,user_id,slug, id):
  event = Evenement.objects.get(idEvent=id)
  lieu = Lieu.objects.get(nomLieu=event.id_lieu)
@@ -257,57 +261,9 @@ def EventDetail(request,user_id,slug, id):
     }
  return render(request, 'détail_event.html', context)
 
-#Account treatment
-import secrets
-from faker import Faker
 
-def create_admin_regional(number_regions):
-  fake = Faker()
-   
-  for i in range(1,number_regions ):
-    first_name = fake.first_name()
-    last_name = fake.last_name()
-    username = f"admin_user{i}"
-    password = secrets.token_hex(4)  # Generate a random password
-    user = User.objects.create(
-        username=username,
-        profile="Admin régional",
-        nomUser=last_name,
-        prenomUser=first_name,
-        motdepasse=password
-    )
-    user.save()
-
-
-def link_region_adminregional(number_regions):
-
-  for i in range(1,number_regions ):
-    region = Region.objects.get(numRegion=i)
-    region.adminRegion = User.objects.get(username=f"admin_user{i}")
-    region.save()
-    
-
-def set_region_side():
-  regions = {
-    "Nord-Ouest": [13, 46, 31, 27, 22, 20, 29, 48, 2, 38, 14],
-    "Nord-Milieu": [42, 44, 26, 17, 51, 9, 16, 35, 15, 6, 34, 10, 28],
-    "Nord-Est": [18, 25, 21, 23, 36, 41, 24, 4, 19, 5, 40, 12, 7, 57, 43],
-    "Sud-Est": [39, 30, 33, 55, 56],
-    "Sud-Ouest": [45, 8, 38, 32, 37, 52],
-    "Sud-Milieu": [3, 32, 47, 11, 1, 53, 54, 50, 49, 58]
-  }
- 
-  for i in range(1,59 ):
-    region = Region.objects.get(numRegion=i)
-    for cote, values in regions.items():
-        if i in values:
-            region.coteRegion = cote
-            break
-    region.save()
-
-
+# User authentification -------------------------------------------------------------
 def login(request):
-  set_region_side()
 
   form = LoginForm()
   
@@ -368,7 +324,7 @@ def register_touriste(request):
   context = {'form' : form }
   return render(request, "page-register.html", context )
 
-# for tests only 
+
 
 def logout(request,user_id):
   user = User.objects.get(idUser=user_id)
@@ -376,7 +332,10 @@ def logout(request,user_id):
   user.save() 
   return redirect('index')
 
+# User authentification -------------------------------------------------------------
 
+
+# admin page  -----------------------------------------------------------------------
 @custom_login_required
 @admin_required(role='Admin central')
 def adminCentral_view(request, user_id): 
@@ -403,6 +362,8 @@ def adminCentral_view(request, user_id):
 
 
 
+@custom_login_required
+@admin_required(role='Admin régional')
 def adminRegional_view(request, user_id):
   user = User.objects.get( idUser=user_id)
   region = Region.objects.get(adminRegion=user)
@@ -429,7 +390,7 @@ def adminRegional_view(request, user_id):
 
   return render(request, "admin_regional_page.html",context)
 
-
+# admin page  -----------------------------------------------------------------------
 
 
 
@@ -470,8 +431,10 @@ def History_Ajout_Lieu(request, id_lieu, user_id):
     return JsonResponse({"message": " added Historyuccessfully."})
 
 
+# Les ajouts pour l'admin régional --------------------------------------------
+@custom_login_required
+@admin_required(role='Admin régional')
 def add_lieu(request, user_id):
-    print(user_id)
     admin_region = User.objects.get(idUser=user_id)
     region = Region.objects.get(adminRegion= admin_region)
     communes = Commune.objects.filter(regionC=region)
@@ -490,8 +453,10 @@ def add_lieu(request, user_id):
           lieu.save()
           selected_transports = request.POST.getlist('transport')
           lieu.transport.set(selected_transports)
-
+          selected_produits = form.cleaned_data['produits_artis']
+          lieu.produits_artis.set(selected_produits)
           lieu.save()
+          
 
           save_photos(request,lieu.idLieu,None)
           History_Ajout_Lieu(request, lieu.idLieu, user_id)
@@ -549,7 +514,8 @@ def History_Ajout_Event(request, id_event, user_id):
     history.save()
     return JsonResponse({"message": " added Historyuccessfully."})
 
-
+@custom_login_required
+@admin_required(role='Admin régional')
 def add_evenement(request, user_id):
     admin_region = User.objects.get(idUser=user_id)
     region = Region.objects.get(adminRegion= admin_region)
@@ -583,7 +549,8 @@ def add_evenement(request, user_id):
 
 
 
-
+@custom_login_required
+@admin_required(role='Admin régional')
 def add_transport(request, user_id):
     if request.method == 'POST':
         form = TransportForm(request.POST)
@@ -1034,7 +1001,8 @@ def History_Supprimer_Lieu(request, id_lieu):
  
 
 #gestion de map
-
+@custom_login_required
+@admin_required(role='Touriste')
 def map(request,user_id):
     form = SearchForm()
 
@@ -1074,6 +1042,8 @@ def map(request,user_id):
 
 
 #lieux admin
+@custom_login_required
+@admin_required(role='Admin régional')
 def ListeLieuxAdmin(request, user_id):
    adminR = User.objects.get(idUser=user_id)
    regionR = Region.objects.get(adminRegion=adminR)
@@ -1084,6 +1054,8 @@ def ListeLieuxAdmin(request, user_id):
      }
    return render(request, 'meslieux.html', context)
 
+@custom_login_required
+@admin_required(role='Admin régional')
 def update_lieu(request, user_id, lieu_id):
     admin_region = User.objects.get(idUser=user_id)
     region = Region.objects.get(adminRegion=admin_region)
@@ -1130,12 +1102,17 @@ def update_lieu(request, user_id, lieu_id):
 
     return render(request, 'modifier_lieu.html', context)
 
+
+@custom_login_required
+@admin_required(role='Admin régional')
 def delete_lieu(request, lieu_id):
     lieu = get_object_or_404(Lieu, idLieu=lieu_id)
     lieu.delete()
     return HttpResponse(status=204)
 
 #evenements admin
+@custom_login_required
+@admin_required(role='Admin régional')
 def ListeEventsAdmin(request, user_id):
    adminR = User.objects.get(idUser=user_id)
    regionR = Region.objects.get(adminRegion=adminR)
@@ -1148,6 +1125,9 @@ def ListeEventsAdmin(request, user_id):
      }
    return render(request, 'mesevents.html', context)
 
+
+@custom_login_required
+@admin_required(role='Admin régional')
 def update_event(request, user_id, event_id):
  
     admin_region = User.objects.get(idUser=user_id)
@@ -1179,12 +1159,16 @@ def update_event(request, user_id, event_id):
     
     return render(request, 'modifier_event.html', context)
 
+@custom_login_required
+@admin_required(role='Admin régional')
 def delete_event(request, event_id):
     event = get_object_or_404(Evenement, idEvent=event_id)
     event.delete()
     return HttpResponse(status=204)
 
 #produits admin
+@custom_login_required
+@admin_required(role='Admin régional')
 def add_produit(request, user_id):
     if request.method == 'POST':
         form = ProduitsArtisForm(request.POST)
@@ -1203,6 +1187,8 @@ def add_produit(request, user_id):
     
     return render(request, 'add_produit.html', context)
 
+@custom_login_required
+@admin_required(role='Admin régional')
 def ListeProduitsAdmin(request, user_id):
    adminR = User.objects.get(idUser=user_id)
    regionR = Region.objects.get(adminRegion=adminR)
@@ -1216,6 +1202,8 @@ def ListeProduitsAdmin(request, user_id):
      }
    return render(request, 'mesproduits.html', context)
 
+@custom_login_required
+@admin_required(role='Admin régional')
 def update_produit(request, user_id, produit_id):
     produit = ProduitsArtis.objects.get(idProduit=produit_id)  # Get the existing produit object
 
@@ -1236,11 +1224,15 @@ def update_produit(request, user_id, produit_id):
 
     return render(request, 'modifier_produit.html', context)
 
-
+@custom_login_required
+@admin_required(role='Admin régional')
 def delete_produit(request, produit_id):
     produit = get_object_or_404(ProduitsArtis, idProduit=produit_id)
     produit.delete()
     return HttpResponse(status=204)
+
+
+
 #gestion des comptes
 def addUser(request):
     user = None
