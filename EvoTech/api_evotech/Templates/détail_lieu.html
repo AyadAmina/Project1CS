@@ -26,7 +26,10 @@
 <link rel="stylesheet" type="text/css" href="{% static 'styles/contact_responsive.css' %}">
 <link rel="stylesheet" type="text/css" href="{% static 'styles/main_styles.css' %}">
 
+<<<<<<< Updated upstream
 
+=======
+>>>>>>> Stashed changes
 <style>
 .rating_1 {color: #ffeb8d;}
 .rating_2 {color: #fed46b;}
@@ -284,7 +287,11 @@
 								<div class="hotel_title_button ml-lg-auto text-lg-right" >
 									<div class="hotel_title_button_content" style="display: flex; align-items: center; justify-content: center;">
 									<div class="button book_button" style="width: 80px;background-color:#2a9d8f; border: none;text-align: center;display: flex; align-items: center; justify-content: center;"title="Enregistrer le lieu"><i class="fas fa-bookmark" style="display: inline-block; font-size: 30px;color: #fa9e1b;"></i></div>
+<<<<<<< Updated upstream
 									<div class="button book_button trans_200"><a href="{% url 'ListeDesLieux' user.idUser  %}">Retour à la liste<span></span><span></span><span></span></a></div> 
+=======
+									<div class="button book_button trans_200"><a href="{% url 'ListeDesLieux' user_id  %}">Retour à la liste<span></span><span></span><span></span></a></div> 
+>>>>>>> Stashed changes
 									</div>
 									<div class="hotel_map_link_container">
 										html <div class="hotel_map_link" ><a href="{% url 'map' user_id  %}">Voir la localisation sur la carte</a></div>
@@ -418,7 +425,11 @@
                                                       <td>{{event.dateEvent}}</td>
                                                       <td style="display: flex; align-items: center; justify-content: center;">
                                                         <span class="button book_button trans_200" style="width: 40px;height: 40px;display: flex; align-items: center; justify-content: center;" title="Détails">
+<<<<<<< Updated upstream
 														<a href="{% url 'EventDetail' user.idUser event.nomEvent event.idEvent%}" style=" color: #fa9e1b;"><i class="fas fa-search" ></i></a> 
+=======
+														<a href="{% url 'EventDetail' user_id event.nomEvent event.idEvent%}" style=" color: #fa9e1b;"><i class="fas fa-search" ></i></a> 
+>>>>>>> Stashed changes
 														</span>
                                                       </td>
                                                      
@@ -560,6 +571,7 @@
 										<div class="owl-carousel owl-theme test_slider">
 
 											<!-- Produits Item -->
+<<<<<<< Updated upstream
 											{% for produit in produits %}
 												<div class="owl-item">
 													<div class="test_item">
@@ -582,6 +594,30 @@
 												</div>
 											{% endfor %}
 
+=======
+											{% for produit in produits%}
+											<div class="owl-item">
+												<div class="test_item">
+													{% if produit.pictures.all %}
+													{% with first_photo=produit.pictures.first %}
+													<div class="test_image"><img src="{{first_photo.image.url}}" alt="https://unsplash.com/@anniegray"></div>
+													{% endwith %}
+													{% endif %}
+													<div class="test_content_container">
+														<div class="test_content">
+															<div class="test_item_info">
+																<div class="test_name">{{produit.nomProduit}}</div>
+																<div class="test_date">{{produit.prix}} DA</div>
+															</div>
+														   </br></br></br>
+															<div class="test_quote_title" >{{produit.origine}}</div>
+															
+														</div>
+													</div>
+												</div>
+											</div>
+											{% endfor %}
+>>>>>>> Stashed changes
 											
 
 											

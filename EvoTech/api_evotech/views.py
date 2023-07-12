@@ -82,13 +82,29 @@ class PhotoViewSet(viewsets.ModelViewSet):
 # template views
 # home
 def index(request):
+<<<<<<< Updated upstream
     template = loader.get_template('index.html')
+=======
+  template = loader.get_template('index.html')
+ 
+ 
+  return HttpResponse(template.render())
+>>>>>>> Stashed changes
 
     return HttpResponse(template.render())
 
 
 # liste des lieux
 product_per_page = 4
+<<<<<<< Updated upstream
+=======
+
+def ListeDesLieux(request,user_id):
+ 
+  regions = Region.objects.all()
+  categories = Categorie.objects.all()
+  themes = Theme.objects.all()
+>>>>>>> Stashed changes
 
 
 @custom_login_required
@@ -144,6 +160,7 @@ def ListeDesLieux(request, user_id):
     else:
         lieux = Lieu.objects.prefetch_related('photos')
 
+<<<<<<< Updated upstream
     # Pagination
     page = request.GET.get('page', 1)
     product_paginator = Paginator(lieux, product_per_page)
@@ -169,6 +186,23 @@ def ListeDesLieux(request, user_id):
 
 
 # proposition des recherches
+=======
+  context = { 
+      'lieux': lieux,
+      'regions': regions,
+      'categories' : categories,
+      'themes' : themes,
+      'page_obj': lieux,
+      'is_paginated': True,
+      'paginator': product_paginator,
+      'user_id' : user_id
+      }
+   
+  return render(request, 'liste_lieux.html', context)
+
+
+#proposition des recherches
+>>>>>>> Stashed changes
 def suggestionapi(request):
     if 'term' in request.GET:
         search = request.GET.get('term')
@@ -181,6 +215,7 @@ def suggestionapi(request):
     return JsonResponse([], safe=False)
 
 
+<<<<<<< Updated upstream
 # page détail d'un lieu
 @custom_login_required
 @admin_required(role='Touriste')
@@ -195,6 +230,19 @@ def LieuDetail(request, user_id, slug, id):
     print(produits)
 
     transport_icons = {
+=======
+#page détail d'un lieu
+
+def LieuDetail(request ,user_id, slug, id  ):
+  lieu = Lieu.objects.get(idLieu=id)
+  events = Evenement.objects.filter(id_lieu=lieu)
+  photos = Photo.objects.all()
+  transports = lieu.transport.all()
+  name=request.user.username
+  produits = lieu.produits_artis.all()
+
+  transport_icons = {
+>>>>>>> Stashed changes
         'Métro': 'fa-subway',
         'Bus': 'fa-bus',
         'Taxi': 'fa-taxi',
@@ -205,6 +253,7 @@ def LieuDetail(request, user_id, slug, id):
     transports_with_icons = []
     for transport in transports:
         icon_class = transport_icons.get(transport.typeTrans, '')
+<<<<<<< Updated upstream
 
         transports_with_icons.append((transport, icon_class))
 
@@ -237,6 +286,27 @@ def LieuDetail(request, user_id, slug, id):
 def ListeEvents(request, user_id):
 
     search = request.GET.get('search', "")
+=======
+       
+        transports_with_icons.append((transport, icon_class))
+
+  context = {
+      'lieu': lieu,
+      'photos': photos,
+      'events': events,
+      'transports_with_icons': transports_with_icons,
+      'name': name,
+      'produits': produits,
+      'user_id' : user_id
+  }
+  return render(request, 'détail_lieu.html', context)
+
+#page liste des événements
+
+def ListeEvents(request,user_id):
+   
+    search= request.GET.get('search', "")
+>>>>>>> Stashed changes
     if search:
         events = Evenement.objects.filter(nomEvent__icontains=search)
     else:
@@ -253,11 +323,19 @@ def ListeEvents(request, user_id):
         events = product_paginator.page(product_per_page)
 
     context = {
+<<<<<<< Updated upstream
         'events': events,
         'page_obj': events,
         'is_paginated': True,
         'paginator': product_paginator,
         'user': User.objects.get(idUser=user_id)
+=======
+      'events': events,
+      'page_obj': events,
+      'is_paginated': True,
+      'paginator': product_paginator,
+      'user_id' :user_id
+>>>>>>> Stashed changes
     }
     return render(request, 'liste_event.html', context)
 
@@ -275,6 +353,7 @@ def suggestionapi2(request):
         return JsonResponse(titles, safe=False)
     return JsonResponse([], safe=False)
 
+<<<<<<< Updated upstream
 # page détail d'un événement
 
 
@@ -289,12 +368,26 @@ def EventDetail(request, user_id, slug, id):
         'lieu': lieu,
         'id_lieu': lieu_id,
         'user': User.objects.get(idUser=user_id)
+=======
+#page détail d'un événement
+
+def EventDetail(request,user_id,slug, id):
+ event = Evenement.objects.get(idEvent=id)
+ lieu = Lieu.objects.get(nomLieu=event.id_lieu)
+ lieu_id=event.id_lieu_id
+ context = {
+      'event': event,
+      'lieu': lieu,
+      'id_lieu': lieu_id,
+      'user_id' :user_id
+>>>>>>> Stashed changes
     }
     return render(request, 'détail_event.html', context)
 
 
 # User authentification -------------------------------------------------------------
 def login(request):
+<<<<<<< Updated upstream
 
     form = LoginForm()
 
@@ -319,6 +412,33 @@ def login(request):
                 return redirect('profile', user_id=user_id)
 
         except User.DoesNotExist:
+=======
+  set_region_side()
+
+  form = LoginForm()
+  
+  if request.method == 'POST': 
+    username = request.POST['username']
+    motdepasse = request.POST['motdepasse']
+  
+    try:
+          user = User.objects.get(username=username, motdepasse=motdepasse)
+          user.is_authenticated = True
+          
+          user_id = user.idUser
+          user.save()
+
+          if user.profile=='Admin central' : 
+            return redirect('AdminCentralPage',user_id=user_id)
+          
+          elif user.profile=='Admin régional' : 
+            return redirect('AdminRegionalPage',user_id=user_id)
+          
+          elif user.profile=='Touriste' : 
+            return redirect('profile',user_id=user_id)
+    
+    except User.DoesNotExist:
+>>>>>>> Stashed changes
             # User with the given username and password does not exist
             # Handle the case accordingly (e.g., display an error message)
             error_message = 'Invalid username or password, try to register'
@@ -334,11 +454,32 @@ def register_touriste(request):
     if request.method == 'POST':
         form = RegisterForm(request.POST)
 
+<<<<<<< Updated upstream
         if form.is_valid():
             username = form.cleaned_data['username']
             nomUser = form.cleaned_data['nomUser']
             prenomUser = form.cleaned_data['prenomUser']
             motdepasse = form.cleaned_data['motdepasse']
+=======
+      if form.is_valid():
+          username = form.cleaned_data['username']
+          nomUser = form.cleaned_data['nomUser']
+          prenomUser = form.cleaned_data['prenomUser']
+          motdepasse = form.cleaned_data['motdepasse']
+            
+          # Create the user object and set the default value for the profile field
+          user = form.save(commit=False)
+          user.profile = 'Touriste'  # Set the default value for the profile field
+          user.is_authenticated = True
+          user.save()
+          return redirect('profile',id=user.idUser)
+      else : 
+          error_message = 'Invalid form , whould you try again ?'
+          return render(request, 'page-register.html', {'error_message': error_message})  
+      
+  context = {'form' : form }
+  return render(request, "page-register.html", context )
+>>>>>>> Stashed changes
 
             # Create the user object and set the default value for the profile field
             user = form.save(commit=False)
@@ -353,12 +494,25 @@ def register_touriste(request):
     context = {'form': form}
     return render(request, "page-register.html", context)
 
+def logout(request,user_id):
+  user = User.objects.get(idUser=user_id)
+  user.is_authenticated = False 
+  user.save() 
+  return redirect('index')
 
+<<<<<<< Updated upstream
 def logout(request, user_id):
     user = User.objects.get(idUser=user_id)
     user.is_authenticated = False
     user.save()
     return redirect('index')
+=======
+
+@custom_login_required
+@admin_required(role='Admin central')
+def adminCentral_view(request, user_id): 
+  user = User.objects.get( profile="Admin central")
+>>>>>>> Stashed changes
 
 # User authentification -------------------------------------------------------------
 
@@ -383,14 +537,23 @@ def adminCentral_view(request, user_id):
 
     context = {
         'user': user,
+<<<<<<< Updated upstream
         'user_id': user.idUser
     }
+=======
+        'user_id':user.idUser
+  }
+>>>>>>> Stashed changes
 
     return render(request, "admin_central_page.html", context)
 
 
+<<<<<<< Updated upstream
 @custom_login_required
 @admin_required(role='Admin régional')
+=======
+
+>>>>>>> Stashed changes
 def adminRegional_view(request, user_id):
     user = User.objects.get(idUser=user_id)
     region = Region.objects.get(adminRegion=user)
@@ -406,21 +569,39 @@ def adminRegional_view(request, user_id):
             user.motdepasse = motdepasse
 
         user.save()
+<<<<<<< Updated upstream
     notifications = Notification.objects.filter(adminreg=user_id)
+=======
+  notifications= Notification.objects.filter(adminreg=user_id)
+>>>>>>> Stashed changes
 
     context = {
         'user': user,
         'user_id': user_id,
+<<<<<<< Updated upstream
         'region': region,
         'notifications': notifications
     }
+=======
+        'region' : region,
+        'notifications':notifications
+  }
+>>>>>>> Stashed changes
 
     return render(request, "admin_regional_page.html", context)
 
 # admin page  -----------------------------------------------------------------------
 
 
+<<<<<<< Updated upstream
 def save_photos(request, lieu, event):
+=======
+
+
+
+
+def save_photos(request, lieu ,event):
+>>>>>>> Stashed changes
     if request.method == 'POST' and request.FILES.getlist('images'):
         images = request.FILES.getlist('images')
 
@@ -455,16 +636,37 @@ def History_Ajout_Lieu(request, id_lieu, user_id):
         return JsonResponse({"message": " added Historyuccessfully."})
 
 
+<<<<<<< Updated upstream
 # Les ajouts pour l'admin régional --------------------------------------------
 @custom_login_required
 @admin_required(role='Admin régional')
+=======
+#Notifier AdminCentral Ajout Lieu
+def History_Ajout_Lieu(request, id_lieu, user_id):
+ if request.method == 'POST':
+    #current_user_id = request.user.id
+    lieu = get_object_or_404(Lieu, pk=id_lieu)
+    user = get_object_or_404(User, pk=user_id)
+    history= HistoryLieu(Iduser=user, Idlieu=lieu, Type_Action="Ajout lieu")
+    history.save()
+    return JsonResponse({"message": " added Historyuccessfully."})
+
+
+>>>>>>> Stashed changes
 def add_lieu(request, user_id):
+    print(user_id)
     admin_region = User.objects.get(idUser=user_id)
     region = Region.objects.get(adminRegion=admin_region)
     communes = Commune.objects.filter(regionC=region)
     transports = Transport.objects.all()
+<<<<<<< Updated upstream
     notifications = Notification.objects.filter(adminreg=user_id)
 
+=======
+    notifications= Notification.objects.filter(adminreg=user_id)
+
+    
+>>>>>>> Stashed changes
     if request.method == 'POST':
         form = LieuForm(request.POST, communes=communes)
 
@@ -473,6 +675,7 @@ def add_lieu(request, user_id):
             lieu = form.save(commit=False)
             lieu.region = region
 
+<<<<<<< Updated upstream
             lieu.save()
             selected_transports = request.POST.getlist('transport')
             lieu.transport.set(selected_transports)
@@ -483,6 +686,11 @@ def add_lieu(request, user_id):
             save_photos(request, lieu.idLieu, None)
             History_Ajout_Lieu(request, lieu.idLieu, user_id)
             return redirect('add_lieu', user_id)
+=======
+          save_photos(request,lieu.idLieu,None)
+          History_Ajout_Lieu(request, lieu.idLieu, user_id)
+          return redirect('add_lieu',user_id)
+>>>>>>> Stashed changes
         else:
             print(form.errors)
 
@@ -494,6 +702,7 @@ def add_lieu(request, user_id):
     form.fields['commune'].choices = communes_choices
 
     context = {
+<<<<<<< Updated upstream
         'form': form,
         'user_id': user_id,
         'transports': transports,
@@ -501,11 +710,21 @@ def add_lieu(request, user_id):
         'themes': Theme.objects.all(),
         'produits_artis': ProduitsArtis.objects.all(),
         'notifications': notifications
+=======
+       'form': form , 
+       'user_id' : user_id ,
+       'transports' : transports,
+       'categories' : Categorie.objects.all() ,
+       'themes' : Theme.objects.all(),
+       'produits_artis' : ProduitsArtis.objects.all(),
+       'notifications': notifications
+>>>>>>> Stashed changes
     }
 
     return render(request, 'add_lieu.html', context)
 
 
+<<<<<<< Updated upstream
 # Envoyer notification
 
 def notification(request, id_event):
@@ -527,6 +746,37 @@ def notification(request, id_event):
     return HttpResponse('Invalid request method.')
 
 # Notifier AdminCentral Ajout Event
+=======
+#Envoyer notification 
+
+def notification(request,id_event):
+    if request.method == 'POST':
+        event = get_object_or_404(Evenement, pk=id_event)
+        lieu = get_object_or_404(Lieu, pk=event.id_lieu.idLieu)
+        print(lieu) 
+        users = User.objects.all()
+        for user in users:
+            if(user.profile=="Touriste"):
+                existing_notification = NotificationEvent.objects.filter(user=user, event=event, seen=True).exists()
+                if not existing_notification:
+                    notification = NotificationEvent.objects.create(user=user, event=event)
+            
+       
+        return render(request, 'index.html', {'event':event, 'lieu':lieu})
+        
+    
+    return HttpResponse('Invalid request method.')
+
+#Notifier AdminCentral Ajout Event
+def History_Ajout_Event(request, id_event, user_id):
+ if request.method == 'POST':
+    #current_user_id = request.user.id
+    event = get_object_or_404(Evenement, pk=id_event)
+    user = get_object_or_404(User, pk=user_id)
+    history= HistoryEvent(Iduser=user, Idevent=event, Type_Action="Ajout Evenement")
+    history.save()
+    return JsonResponse({"message": " added Historyuccessfully."})
+>>>>>>> Stashed changes
 
 
 def History_Ajout_Event(request, id_event, user_id):
@@ -546,22 +796,43 @@ def add_evenement(request, user_id):
     admin_region = User.objects.get(idUser=user_id)
     region = Region.objects.get(adminRegion=admin_region)
     lieux = Lieu.objects.filter(region=region)
+<<<<<<< Updated upstream
     notifications = Notification.objects.filter(adminreg=user_id)
+=======
+    notifications= Notification.objects.filter(adminreg=user_id)
+>>>>>>> Stashed changes
 
     if request.method == 'POST':
         form = EvenementForm(request.POST, lieux=lieux)
         if form.is_valid():
             event = form.save()
+<<<<<<< Updated upstream
 
             save_photos(request, event.id_lieu.idLieu, event)
             notification(request, event.idEvent)
             History_Ajout_Event(request, event.idEvent, user_id)
             return redirect('add_evenement', user_id)
+=======
+  
+            save_photos(request,event.id_lieu.idLieu,event)
+            notification(request, event.idEvent)
+            History_Ajout_Event(request, event.idEvent, user_id)
+            return redirect('add_evenement',user_id)
+>>>>>>> Stashed changes
     else:
         form = EvenementForm(lieux=lieux)
 
     lieux_choices = [(lieu.idLieu, lieu.nomLieu) for lieu in lieux]
     form.fields['id_lieu'].choices = lieux_choices
+<<<<<<< Updated upstream
+=======
+    
+    context = {
+       'form': form ,
+       'user_id' : user_id,
+       'notifications':notifications
+       
+>>>>>>> Stashed changes
 
     context = {
         'form': form,
@@ -586,12 +857,25 @@ def add_transport(request, user_id):
     else:
         form = TransportForm()
 
+<<<<<<< Updated upstream
     notifications = Notification.objects.filter(adminreg=user_id)
 
     context = {
         'form': form,
         'user_id': user_id,
         'notifications': notifications
+=======
+    notifications= Notification.objects.filter(adminreg=user_id)
+
+    context = {
+       'form': form , 
+       'user_id' : user_id,
+       'notifications':notifications
+
+       }
+    
+    return render(request, 'add_transport.html', context)
+>>>>>>> Stashed changes
 
     }
 
@@ -669,7 +953,12 @@ def adminCentral_stats(request):
     data_json = json.dumps(data)
     user = User.objects.get(profile='Admin central')
 
+<<<<<<< Updated upstream
     return render(request, 'statistiques.html', {'data_json': data_json, 'user_id': user.idUser})
+=======
+    return render(request, 'statistiques.html', {'data_json': data_json , 'user_id':user.idUser})
+    
+>>>>>>> Stashed changes
 
 
 # Profile treatment
@@ -679,6 +968,16 @@ def profile(request, user_id):
     user = User.objects.get(idUser=user_id)
     lieuxFavoris = Favoris.objects.filter(idUser=user_id)
 
+<<<<<<< Updated upstream
+=======
+#Profile treatment
+@custom_login_required
+@admin_required(role='Touriste')
+def profile(request, user_id):
+    user = User.objects.get(idUser=user_id)
+    lieuxFavoris = Favoris.objects.filter(idUser=user_id)
+    
+>>>>>>> Stashed changes
     if request.method == 'POST':
         nom = request.POST.get('nom')
         prenom = request.POST.get('prenom')
@@ -696,9 +995,15 @@ def profile(request, user_id):
             user.password = password  # Update the user's password with the new value
 
         user.save()
+<<<<<<< Updated upstream
 
         return redirect('profile', user_id=user_id)
 
+=======
+ 
+        return redirect('profile', user_id=user_id)
+    
+>>>>>>> Stashed changes
     return render(request, 'my_profile.html', {'user': user, 'lieuxFavoris': lieuxFavoris})
 
 # suppression
@@ -773,14 +1078,19 @@ def index(request):
     template = loader.get_template('index.html')
     return HttpResponse(template.render())
 
+<<<<<<< Updated upstream
 
 def listcomment(request, admin_id):
+=======
+def listcomment(request,admin_id):
+>>>>>>> Stashed changes
     comments = Comment.get_comments_for_admin(admin_id)
     notifications = Notification.objects.filter(adminreg=admin_id)
     template = loader.get_template('list-comment.html')
 
     context = {
         'comments': comments,
+<<<<<<< Updated upstream
         'idUser': admin_id,
         'notifications': notifications,
 
@@ -788,6 +1098,14 @@ def listcomment(request, admin_id):
 
     return HttpResponse(template.render(context, request))
 
+=======
+        'idUser':admin_id,
+        'notifications':notifications,
+        
+    }
+    
+    return HttpResponse(template.render(context,request))
+>>>>>>> Stashed changes
 
 def admin(request):
     template = loader.get_template('indexadmin.html')
@@ -804,15 +1122,28 @@ def lieu(request, lieu_id):
     username = request.user.username
     return render(request, 'comm.html', {'lieu': lieu, 'name': username})
 
+<<<<<<< Updated upstream
 
 def adminnot(request, admin_id):
     notifications = Notification.objects.filter(
         adminreg=admin_id).order_by('-created_at')[:5]
+=======
+def adminnot(request,admin_id):
+    notifications = Notification.objects.filter(adminreg=admin_id).order_by('-created_at')[:5]  
+>>>>>>> Stashed changes
     template = loader.get_template('indexadmin.html')
     context = {
         'notifications': notifications
     }
     return HttpResponse(template.render(context, request))
+
+from django.shortcuts import get_object_or_404, redirect
+
+def delete_comment(request, comment_id):
+    comment = get_object_or_404(Comment, id=comment_id)
+     
+    comment.delete()
+    return redirect('listcomment', admin_id=comment.get_admin_id()) 
 
 
 def delete_comment(request, comment_id):
@@ -852,6 +1183,13 @@ class AdminNotificationConsumer(AsyncWebsocketConsumer):
 
 # Restrict access to authenticated users
 
+<<<<<<< Updated upstream
+=======
+
+
+# Restrict access to authenticated users
+
+>>>>>>> Stashed changes
 def update_feedback(request):
     if request.method == 'POST' and request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest':
         lieu_id = request.POST.get('lieu_id')
@@ -914,16 +1252,25 @@ def retrieve_feedback(request):
         })
     else:
         return JsonResponse({'error': 'Invalid request method'})
+from django.core import serializers
+from django.http import JsonResponse
 
 
 # notifications evenements
+<<<<<<< Updated upstream
 # Ajouter favorite
 def favorite(request, user_id, id_lieu):
 
+=======
+# Ajouter favorite  
+def favorite(request, user_id, id_lieu):
+    
+>>>>>>> Stashed changes
     lieu = get_object_or_404(Lieu, pk=id_lieu)
     uuser = get_object_or_404(User, pk=user_id)
     fav = Favoris(id_lieu=lieu, idUser=uuser)
     fav.save()
+<<<<<<< Updated upstream
 
     user = User.objects.get(idUser=user_id)
     lieuxFavoris = Favoris.objects.filter(idUser=user_id)
@@ -932,6 +1279,16 @@ def favorite(request, user_id, id_lieu):
 
 
 # Afficher toutes les notifications
+=======
+    
+    user = User.objects.get(idUser=user_id)
+    lieuxFavoris = Favoris.objects.filter(idUser=user_id)
+
+    return render(request, 'my_profile.html',{'user' : user , 'lieuxFavoris':lieuxFavoris})
+
+
+#Afficher toutes les notifications
+>>>>>>> Stashed changes
 
 def view_notifications(request):
     print("hello")
@@ -946,6 +1303,7 @@ def view_notifications(request):
             'nomLieu': lieu.nomLieu,
         }
         notifications_data.append(notification_data)
+<<<<<<< Updated upstream
 
     return JsonResponse({'notifications': notifications_data})
 
@@ -1046,13 +1404,107 @@ def History_Supprimer_Lieu(request, id_lieu):
 @custom_login_required
 @admin_required(role='Touriste')
 def map(request, user_id):
+=======
+    
+    return JsonResponse({'notifications': notifications_data})
+
+# gestion d'historique
+def History(request):
+ if request.method == 'GET':
+    HistEvent = HistoryEvent.objects.all()
+    HistLieu = HistoryLieu.objects.all()
+    History_data = []
+
+    for hist_event in HistEvent:
+        event = get_object_or_404(Evenement, pk=hist_event.Idevent.idEvent)
+        admin_reg = get_object_or_404(User, pk=hist_event.Iduser.idUser)
+        region= event.id_lieu.region
+        history_data = {
+            
+            'username':admin_reg.username,
+            'Action': hist_event.Type_Action,
+            'Object': event.nomEvent,
+            'Time': hist_event.timestamp,
+            'region': region.nomRegion
+        }
+        History_data.append(history_data)
+
+    for hist_lieu in HistLieu:
+        lieu = get_object_or_404(Lieu, pk=hist_lieu.Idlieu.idLieu)
+        admin_reg = get_object_or_404(User, pk=hist_lieu.Iduser.idUser)
+        history_data = {
+            'username':admin_reg.username,
+            'Action': hist_lieu.Type_Action,
+            'Object': lieu.nomLieu,
+            'Time': hist_lieu.timestamp,
+            'region': lieu.region.nomRegion
+        }
+        History_data.append(history_data)
+
+    print(History_data)
+    return render(request, 'Historique.html', {'Histories': History_data})
+
+
+#---------------------------- Historique des evenments -------------------------------#
+
+#Notifier AdminCentral  Modifier Event
+def History_Modifier_Event(request, id_event):
+ if request.method == 'POST':
+    #current_user_id = request.user.id
+    event = get_object_or_404(Evenement, pk=id_event)
+    user = get_object_or_404(User, pk=1)
+    history= HistoryEvent(Iduser=user, Idevent=event, Type_Action="Modification Evenement")
+    history.save()
+    return JsonResponse({"message": " added Historyuccessfully."})
+
+#Notifier AdminCentral  Supprimer Event
+def History_Supprimer_Event(request, id_event):
+ if request.method == 'POST':
+    #current_user_id = request.user.id
+    event = get_object_or_404(Evenement, pk=id_event)
+    user = get_object_or_404(User, pk=1)
+    history= HistoryEvent(Iduser=user, Idevent=event, Type_Action="Suppression Evenement")
+    history.save()
+    return JsonResponse({"message": " added Historyuccessfully."})
+
+#-------------------------------- Historique Lieu ------------------------------------------------------#
+
+
+#Notifier AdminCentral  Modifier Lieu
+def History_Modifier_Lieu(request, id_lieu):
+ if request.method == 'POST':
+    #current_user_id = request.user.id
+    lieu = get_object_or_404(Lieu, pk=id_lieu)
+    user = get_object_or_404(User, pk=1)
+    history= HistoryLieu(Iduser=user, Idlieu=lieu, Type_Action="Modification lieu")
+    history.save()
+    return JsonResponse({"message": " added Historyuccessfully."})
+
+#Notifier AdminCentral  Supprimer Lieu
+def History_Supprimer_Lieu(request, id_lieu):
+ if request.method == 'POST':
+    #current_user_id = request.user.id
+    lieu = get_object_or_404(Lieu, pk=id_lieu)
+    user = get_object_or_404(User, pk=1)
+    history=HistoryLieu(Iduser=user, Idlieu=lieu, Type_Action="Suppression lieu")
+    history.save()
+    return JsonResponse({"message": " added Historyuccessfully."})
+ 
+
+#gestion de map
+
+def map(request,user_id):
+>>>>>>> Stashed changes
     form = SearchForm()
 
     # Create Map Object
     m = folium.Map(location=[28.033886, 1.659626], zoom_start=5)
 
     if request.method == 'POST':
+<<<<<<< Updated upstream
         # Handle form submission
+=======
+>>>>>>> Stashed changes
         form = SearchForm(request.POST)
         if form.is_valid():
             address = form.save()
@@ -1066,24 +1518,33 @@ def map(request, user_id):
                 return HttpResponse('Your address input is invalid')
 
             m = folium.Map(location=[lat, lng], zoom_start=15)
+<<<<<<< Updated upstream
             folium.Marker([lat, lng], tooltip='Click for more',
                           popup=country).add_to(m)
+=======
+            folium.Marker([lat, lng], tooltip='Click for more', popup=country).add_to(m)
+>>>>>>> Stashed changes
 
     lieux = Lieu.objects.all()
 
     # Add markers for each place
     for lieu in lieux:
+<<<<<<< Updated upstream
         url = reverse('LieuDetail', args=(user_id, lieu.nomLieu, lieu.idLieu))
         popup_content = f'<a href="{url}">{lieu.nomLieu}</a>'
         popup_content = f'<a href="/détail_lieu/{user_id}/{lieu.nomLieu}/{lieu.idLieu}">{lieu.nomLieu}</a>'
         folium.Marker([lieu.latitude, lieu.longitude], tooltip=lieu.nomLieu, popup=folium.Popup(
             popup_content), icon=folium.Icon(color='green')).add_to(m)
+=======
+        folium.Marker([lieu.latitude, lieu.longitude], tooltip=lieu.nomLieu, popup=lieu.descripLieu, icon=folium.Icon(color='green')).add_to(m)
+>>>>>>> Stashed changes
 
     # Get HTML Representation of Map Object
     m = m._repr_html_()
     context = {
         'm': m,
         'form': form,
+<<<<<<< Updated upstream
         'user': User.objects.get(idUser=user_id)
     }
 
@@ -1100,11 +1561,14 @@ def map(request, user_id):
         'm': m,
         'form': form,
         'user': User.objects.get(idUser=user_id)
+=======
+>>>>>>> Stashed changes
     }
 
     return render(request, 'map.html', context)
 
 
+<<<<<<< Updated upstream
 # lieux admin
 @custom_login_required
 @admin_required(role='Admin régional')
@@ -1121,6 +1585,19 @@ def ListeLieuxAdmin(request, user_id):
 
 @custom_login_required
 @admin_required(role='Admin régional')
+=======
+#lieux admin
+def ListeLieuxAdmin(request, user_id):
+   adminR = User.objects.get(idUser=user_id)
+   regionR = Region.objects.get(adminRegion=adminR)
+   lieux= Lieu.objects.filter(region=regionR)
+   context ={
+        'lieux': lieux,
+        'user_id': user_id
+     }
+   return render(request, 'meslieux.html', context)
+
+>>>>>>> Stashed changes
 def update_lieu(request, user_id, lieu_id):
     admin_region = User.objects.get(idUser=user_id)
     region = Region.objects.get(adminRegion=admin_region)
@@ -1143,15 +1620,23 @@ def update_lieu(request, user_id, lieu_id):
             lieu.produits_artis.set(selected_produits)
             lieu.save()
             save_photos(request, lieu.idLieu, None)
+<<<<<<< Updated upstream
 
+=======
+           
+>>>>>>> Stashed changes
             return redirect('update_lieu', user_id, lieu_id)
         else:
             print(form.errors)
     else:
         form = LieuForm(instance=lieu, communes=communes)
 
+<<<<<<< Updated upstream
     communes_choices = [(commune.idComm, commune.nomComm)
                         for commune in communes]
+=======
+    communes_choices = [(commune.idComm, commune.nomComm) for commune in communes]
+>>>>>>> Stashed changes
     form.fields['commune'].choices = communes_choices
 
     context = {
@@ -1168,14 +1653,18 @@ def update_lieu(request, user_id, lieu_id):
 
     return render(request, 'modifier_lieu.html', context)
 
+<<<<<<< Updated upstream
 
 @custom_login_required
 @admin_required(role='Admin régional')
+=======
+>>>>>>> Stashed changes
 def delete_lieu(request, lieu_id):
     lieu = get_object_or_404(Lieu, idLieu=lieu_id)
     lieu.delete()
     return HttpResponse(status=204)
 
+<<<<<<< Updated upstream
 # evenements admin
 
 
@@ -1204,10 +1693,33 @@ def update_event(request, user_id, event_id):
     # Get the existing event object
     event = Evenement.objects.get(idEvent=event_id)
     print("objet:", event)
+=======
+#evenements admin
+def ListeEventsAdmin(request, user_id):
+   adminR = User.objects.get(idUser=user_id)
+   regionR = Region.objects.get(adminRegion=adminR)
+   lieux= Lieu.objects.filter(region=regionR)
+   events= Evenement.objects.filter(id_lieu__in=lieux)
+   context ={
+        'lieux': lieux,
+        'user_id': user_id,
+        'events': events
+     }
+   return render(request, 'mesevents.html', context)
+
+def update_event(request, user_id, event_id):
+ 
+    admin_region = User.objects.get(idUser=user_id)
+    region = Region.objects.get(adminRegion= admin_region)
+    lieux = Lieu.objects.filter(region=region)
+    event = Evenement.objects.get(idEvent=event_id)  # Get the existing event object
+    print("objet:",event)
+>>>>>>> Stashed changes
     if request.method == 'POST':
         form = EvenementForm(request.POST, lieux=lieux, instance=event)
         if form.is_valid():
             event = form.save()
+<<<<<<< Updated upstream
             save_photos(request, event.id_lieu.idLieu, event)
 
             return redirect('update_event', user_id, event_id)
@@ -1231,11 +1743,34 @@ def update_event(request, user_id, event_id):
 
 @custom_login_required
 @admin_required(role='Admin régional')
+=======
+            save_photos(request,event.id_lieu.idLieu,event)
+
+            return redirect('update_event',user_id, event_id)
+    else:
+        form = EvenementForm(lieux=lieux, instance=event)
+    
+    lieux_choices = [(lieu.idLieu, lieu.nomLieu) for lieu in lieux]
+    form.fields['id_lieu'].choices = lieux_choices
+    
+    context = {
+       'form': form ,
+       'user_id' : user_id,
+       'event_id': event_id,
+       'event': event
+       
+
+       }
+    
+    return render(request, 'modifier_event.html', context)
+
+>>>>>>> Stashed changes
 def delete_event(request, event_id):
     event = get_object_or_404(Evenement, idEvent=event_id)
     event.delete()
     return HttpResponse(status=204)
 
+<<<<<<< Updated upstream
 # produits admin
 
 
@@ -1245,10 +1780,18 @@ def add_produit(request, user_id):
     if request.method == 'POST':
         form = ProduitsArtisForm(request.POST)
 
+=======
+#produits admin
+def add_produit(request, user_id):
+    if request.method == 'POST':
+        form = ProduitsArtisForm(request.POST)
+       
+>>>>>>> Stashed changes
         if form.is_valid():
             form.save()
             return redirect('add_produit', user_id)
     else:
+<<<<<<< Updated upstream
         form = ProduitsArtisForm()
 
     context = {
@@ -1280,6 +1823,33 @@ def ListeProduitsAdmin(request, user_id):
 def update_produit(request, user_id, produit_id):
     # Get the existing produit object
     produit = ProduitsArtis.objects.get(idProduit=produit_id)
+=======
+        form = ProduitsArtisForm( )
+
+
+    context = {
+       'form': form , 
+       'user_id' : user_id
+       }
+    
+    return render(request, 'add_produit.html', context)
+
+def ListeProduitsAdmin(request, user_id):
+   adminR = User.objects.get(idUser=user_id)
+   regionR = Region.objects.get(adminRegion=adminR)
+   lieux= Lieu.objects.filter(region=regionR)
+   produits = ProduitsArtis.objects.filter(lieu__in=lieux)
+   context ={
+        'lieux': lieux,
+        'user_id': user_id,
+        'produits': produits
+        
+     }
+   return render(request, 'mesproduits.html', context)
+
+def update_produit(request, user_id, produit_id):
+    produit = ProduitsArtis.objects.get(idProduit=produit_id)  # Get the existing produit object
+>>>>>>> Stashed changes
 
     if request.method == 'POST':
         form = ProduitsArtisForm(request.POST, instance=produit)
@@ -1299,30 +1869,45 @@ def update_produit(request, user_id, produit_id):
     return render(request, 'modifier_produit.html', context)
 
 
+<<<<<<< Updated upstream
 @custom_login_required
 @admin_required(role='Admin régional')
+=======
+>>>>>>> Stashed changes
 def delete_produit(request, produit_id):
     produit = get_object_or_404(ProduitsArtis, idProduit=produit_id)
     produit.delete()
     return HttpResponse(status=204)
+<<<<<<< Updated upstream
 
 
 # gestion des comptes
+=======
+#gestion des comptes
+>>>>>>> Stashed changes
 def addUser(request):
     user = None
     if request.method == 'POST':
         nom = request.POST.get('nom')
         prenom = request.POST.get('prenom')
         nom_utilisateur = request.POST.get('nom_utilisateur')
+<<<<<<< Updated upstream
         password = nom_utilisateur + '2023'
         profile = 'Admin régional'
 
         user = User(nomUser=nom, prenomUser=prenom,
                     username=nom_utilisateur, motdepasse=password, profile=profile)
+=======
+        password =  nom_utilisateur + '2023' 
+        profile = 'Admin régional'
+        
+        user = User(nomUser = nom, prenomUser = prenom, username = nom_utilisateur, motdepasse = password, profile = profile )
+>>>>>>> Stashed changes
         user.save()
         return redirect('listComptes')
 
     user = User.objects.get(profile='Admin central')
+<<<<<<< Updated upstream
     return render(request, 'add_user.html', {'user': user, 'user_id': user.idUser})
 
 
@@ -1331,13 +1916,24 @@ def listComptes(request):
     user = User.objects.get(profile='Admin central')
     return render(request, 'liste_comptes.html', {'users': users, 'user_id': user.idUser})
 
+=======
+    return render(request, 'add_user.html', {'user': user,'user_id':user.idUser})
+
+def listComptes(request):
+    users = User.objects.filter(profile = 'Admin régional')
+    user = User.objects.get(profile='Admin central')
+    return render(request, 'liste_comptes.html', {'users': users,'user_id':user.idUser})
+>>>>>>> Stashed changes
 
 def deleteUser(request, userId):
     user = get_object_or_404(User, idUser=userId)
     user.delete()
     return HttpResponse(status=204)
 
+<<<<<<< Updated upstream
 
+=======
+>>>>>>> Stashed changes
 def notification2(request, admin_id):
     if request.method == 'GET':
         notifications = Notification.objects.filter(adminreg=admin_id).values()
@@ -1346,4 +1942,8 @@ def notification2(request, admin_id):
             'notifications': notifications_list,
         })
     else:
+<<<<<<< Updated upstream
         return JsonResponse({'error': 'Invalid request method'})
+=======
+        return JsonResponse({'error': 'Invalid request method'})
+>>>>>>> Stashed changes

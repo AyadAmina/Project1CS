@@ -283,10 +283,17 @@
 												<li class="offers_icons_item"><img src="../../static/images/sailboat.png" alt=""></li>
 											</ul>
 										</div>
+<<<<<<< Updated upstream
 										<div class="button book_button"><a href="{% url 'LieuDetail' user.idUser lieu.nomLieu lieu.idLieu  %}">Savoir Plus <span></span><span></span><span></span></a></div>
 										<div class="offer_reviews">
 											
 										<a class="button book_button d-flex align-items-center justify-content-center"  href="{% url 'favorite' user.idUser lieu.idLieu %}"  style="width: 80px;background-color: #fa9e1b; border: none;" title="Favoris" name="favoris" type="submit" action="POST" ><i class="fas fa-heart fa-lg " style="font-size: 30px;"></i></a>
+=======
+										<div class="button book_button"><a href="{% url 'LieuDetail' user_id lieu.nomLieu lieu.idLieu  %}">Savoir Plus <span></span><span></span><span></span></a></div>
+										<div class="offer_reviews">
+											
+										<a class="button book_button"  href="{% url 'favorite' user_id lieu.idLieu %}"  style="width: 80px;background-color: #fa9e1b; border: none;" title="Favoris" name="favoris" type="submit" action="POST" ><i class="fas fa-heart fa-lg"></i></a>
+>>>>>>> Stashed changes
 											
 											
 										</div>

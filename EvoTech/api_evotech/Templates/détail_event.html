@@ -196,8 +196,19 @@
 							<div class="hotel_title_container d-flex flex-lg-row flex-column">
 								<div class="hotel_title_content">
 									<h1 class="hotel_title">{{event.nomEvent}}</h1>
+<<<<<<< Updated upstream
 									
 									<div class="hotel_location"><a href="{% url 'LieuDetail' user.idUser event.id_lieu id_lieu%}" style="color: #264653;">{{event.id_lieu}}</a></div>
+=======
+									<div class="rating_r rating_r_4 hotel_rating">
+										<i></i>
+										<i></i>
+										<i></i>
+										<i></i>
+										<i></i>
+									</div>
+									<div class="hotel_location"><a href="{% url 'LieuDetail' user_id event.id_lieu id_lieu%}" style="color: #264653;">{{event.id_lieu}}</a></div>
+>>>>>>> Stashed changes
 								    </br>
 									<li class="hotel_icons_item" ><i class="fas fa-clock fa-2x" style="color:#fa9e1b;"></i></li>
 								
@@ -211,7 +222,14 @@
 								
 								<div class="hotel_title_button ml-lg-auto text-lg-right" >
 									<div class="hotel_title_button_content" style="display: flex; align-items: center; justify-content: center;">
+<<<<<<< Updated upstream
 									<div class="button book_button trans_200"><a href="{% url 'ListeEvents' user.idUser %}">Retour à la liste<span></span><span></span><span></span></a></div>
+=======
+									<div class="button book_button trans_200"><a href="{% url 'ListeEvents' user_id %}">Retour à la liste<span></span><span></span><span></span></a></div>
+									</div>
+									<div class="hotel_map_link_container">
+										<div class="hotel_map_link">Voir la localisation du lieu sur map</div>
+>>>>>>> Stashed changes
 									</div>
 									
 								</div>
